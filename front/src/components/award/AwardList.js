@@ -1,21 +1,26 @@
-import { Button, Col } from "react-bootstrap";
+import { Card, Button, Row, Col, Container } from "react-bootstrap";
 
 const AwardList = ({ list, setIsEditing, isEditable }) => {
   console.log(list);
   return (
     <>
-      <span>{list.award}</span>
-      <span>{list.detail}</span>
-      {isEditable && (
-        <Col sm={{ span: 20 }}>
-          <Button
-            variant="outline-info"
-            size="sm"
-            onClick={() => setIsEditing(true)}
-          >
-            편집
-          </Button>
-        </Col>
+      {list.award && list.detail ? (
+        <Card.Text>
+          <Row className="align-items-center">
+            <Col>
+              <span>{list.award}</span>
+              <br></br>
+              <span className="text-muted">{list.detail}</span>
+            </Col>
+            <Col>
+              <Button className="mr-3" variant="outline-info" size="sm">
+                편집
+              </Button>
+            </Col>
+          </Row>
+        </Card.Text>
+      ) : (
+        ""
       )}
     </>
   );
