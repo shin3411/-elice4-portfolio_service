@@ -1,17 +1,21 @@
-import { useNavigate } from "react-router-dom";
 import { Card, Row, Button, Col } from "react-bootstrap";
 import AwardAddForm from "./AwardAddForm";
 import { useState } from "react";
+import AwardList from "./AwardList";
 
 function AwardCard({ user, setIsEditing, isEditable }) {
-  const navigate = useNavigate();
   const [add, setAdd] = useState(false);
+  const [list, setList] = useState({ award: "", detail: "" });
   return (
     <Card className="mb-2 mr-5">
       <Card.Body>
         <Row className="justify-content-md-center">
           <h5>수상이력</h5>
-          <div>{isEditable}</div>
+          <AwardList
+            list={list}
+            setIsEditing={setIsEditing}
+            isEditable={isEditable}
+          ></AwardList>
         </Row>
         {isEditable && (
           <Col>
@@ -24,7 +28,7 @@ function AwardCard({ user, setIsEditing, isEditable }) {
                 >
                   +
                 </Button>
-                {add ? <AwardAddForm user={user} setAdd={setAdd} /> : ""}
+                {add ? <AwardAddForm setList={setList} setAdd={setAdd} /> : ""}
               </Col>
             </Row>
           </Col>
