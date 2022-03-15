@@ -4,13 +4,13 @@ const AwardList = ({ list, setIsEditing, isEditable }) => {
   console.log(list);
   return (
     <>
-      {list.award && list.detail ? (
+      {list.map((item) => (
         <Card.Text>
           <Row className="align-items-center">
             <Col>
-              <span>{list.award}</span>
+              <span>{item.award}</span>
               <br></br>
-              <span className="text-muted">{list.detail}</span>
+              <span className="text-muted">{item.detail}</span>
             </Col>
             <Col>
               <Button className="mr-3" variant="outline-info" size="sm">
@@ -19,9 +19,7 @@ const AwardList = ({ list, setIsEditing, isEditable }) => {
             </Col>
           </Row>
         </Card.Text>
-      ) : (
-        ""
-      )}
+      ))}
     </>
   );
 };

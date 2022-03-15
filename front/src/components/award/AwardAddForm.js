@@ -8,10 +8,10 @@ const AwardAddForm = ({ setAdd, setList }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setList((current) => {
-      const newList = { ...current };
-      newList.award = awardDescription;
-      newList.detail = detailDescription;
-      return newList;
+      const newArr = [...current];
+      const newList = { award: awardDescription, detail: detailDescription };
+      newArr.push(newList);
+      return newArr;
     });
     setAdd(false);
   };

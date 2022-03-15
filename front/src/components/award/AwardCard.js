@@ -5,7 +5,7 @@ import AwardList from "./AwardList";
 
 function AwardCard({ user, setIsEditing, isEditable }) {
   const [add, setAdd] = useState(false);
-  const [list, setList] = useState({ award: false, detail: false });
+  const [list, setList] = useState([]);
   return (
     <Col>
       <Card>
