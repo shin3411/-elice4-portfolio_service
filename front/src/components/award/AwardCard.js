@@ -7,7 +7,7 @@ function AwardCard({ user, setIsEditing, isEditable }) {
   const navigate = useNavigate();
   const [add, setAdd] = useState(false);
   return (
-    <Card className="mb-2 ms-3 mr-5" style={{ width: "37rem" }}>
+    <Card className="mb-2 mr-5">
       <Card.Body>
         <Row className="justify-content-md-center">
           <h5>수상이력</h5>
