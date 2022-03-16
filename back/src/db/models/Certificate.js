@@ -1,18 +1,18 @@
-import { CertificateModel } from "../schemas/certificate";
+import { CertificateModel } from '../schemas/certificate'
 
 class Certificate {
-    static async create({ newcertificate }) {
-        const createdNewcertificate = await certificateModel.create(newcertificate);
-        return createdNewcertificate;
+    static async create({ newCertificate }) {
+        const createdNewCertificate = await CertificateModel.create(newCertificate);
+        return createdNewCertificate;
     }
 
-    static async findById({ certificate_id }) {
-        const certificate = await certificateModel.findOne({ _id: certificate_id });
+    static async findById({ _id }) {
+        const certificate = await CertificateModel.findOne({ _id: _id });
         return certificate;
     }
 
     static async findAll({ user_id }) {
-        const certificates = await certificateModel.find({ user_id: user_id });
+        const certificates = await CertificateModel.find({ user_id: user_id });
         return certificates;
     }
 
@@ -21,7 +21,7 @@ class Certificate {
         const update = { [fieldToUpdate]: newValue };
         const option = { returnOriginal: false };
 
-        const updatedCertificate = await certificateModel.findOneAndUpdate(
+        const updatedCertificate = await CertificateModel.findOneAndUpdate(
             filter,
             update,
             option
