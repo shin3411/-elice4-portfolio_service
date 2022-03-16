@@ -27,7 +27,7 @@ class eduService {
         const createdNewEdu = await Education.create({ ...query, id});
         createdNewEdu.errorMessage = null;
         
-        console.log(1,createdNewEdu);
+        
         return createdNewEdu;
     }
 
