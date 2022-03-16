@@ -3,7 +3,7 @@ import { Form, Button, ButtonGroup } from "react-bootstrap";
 
 import EducationRegisterForm from "./EducationRegisterForm";
 import EducationList from "./EducationList";
-import { RecoilRoot, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import addEducationState from "./atom/addEducationState";
 
 const Education = () => {

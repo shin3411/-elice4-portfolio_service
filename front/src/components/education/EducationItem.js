@@ -1,11 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-import EducationEditForm from "./EducationEditForm";
-
-import { useRecoilState } from "recoil";
-import educationListState from "./atom/educationListState";
-
 const EducationItem = ({
   key,
   id,
@@ -16,8 +11,6 @@ const EducationItem = ({
   edit,
   onEdit,
 }) => {
-  const [educationList, setEducationList] = useRecoilState(educationListState);
-
   console.log("item");
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
