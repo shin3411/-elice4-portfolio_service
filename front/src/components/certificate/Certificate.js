@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CertificateCard from "./CertificateCard";
 
 const Certificate = ({ isEditable, certificateList, setCertificateList }) => {
-  console.log(certificateList);
   return (
     <>
       {certificateList.map((certificate) => (
         <CertificateCard
+          key={certificate.id}
           certificate={certificate}
           isEditable={isEditable}
           setCertificateList={setCertificateList}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
@@ -14,7 +14,7 @@ const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
     if (!title || !description) return;
 
     const data = { user_id: user.id, title, description, when_date };
-    // Api.post("certificate/create", data).then((res) => setCertificateList(res.data))
+    // Api.post("certificate/create", data).then((res) => console.log(res.data))
 
     setCertificateList((current) => {
       return [...current, { title, description, when_date }];
