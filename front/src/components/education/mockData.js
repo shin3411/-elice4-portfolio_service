@@ -1,3 +1,5 @@
+// mock data 입니다.
+
 export const mockData = [
   {
     id: 0,
@@ -10,7 +12,7 @@ export const mockData = [
     id: 1,
     school: "외국대학교",
     major: "국제학과",
-    position: "학사졸업",
+    position: "학사 졸업",
     edit: false,
   },
 ];

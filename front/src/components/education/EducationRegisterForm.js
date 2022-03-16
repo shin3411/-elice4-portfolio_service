@@ -6,12 +6,14 @@ import { useRecoilState } from "recoil";
 import addEducationState from "./atom/addEducationState";
 import educationListState from "./atom/educationListState";
 
+// + 버튼을 눌렀을 때 나타나는 컴포넌트 입니다.
 const EducationRegisterForm = ({}) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
 
   const nextId = useRef(educationList.length);
 
+  // 사용자의 입력을 받아 저장하기 위한 state입니다.
   const [inputs, setInputs] = useState({
     id: nextId.current,
     school: "",
@@ -32,6 +34,7 @@ const EducationRegisterForm = ({}) => {
       major: "",
       position: "",
     });
+    setIsAddEducation(false);
   };
 
   const onChange = (e) => {
