@@ -6,19 +6,20 @@ import EducationEditForm from "./EducationEditForm";
 import { useRecoilState } from "recoil";
 import educationListState from "./atom/educationListState";
 
-const EducationItem = ({ key, id, idx, school, major, position, edit }) => {
+const EducationItem = ({
+  key,
+  id,
+  idx,
+  school,
+  major,
+  position,
+  edit,
+  onEdit,
+}) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
 
-  const onEdit = (idx) => {
-    setEducationList((cur) => {
-      const newList = [...cur, { ...cur[idx], edit: true }];
-      return newList;
-    });
-  };
   console.log("item");
-  return edit ? (
-    ""
-  ) : (
+  return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <ul
         style={{

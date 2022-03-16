@@ -4,7 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { useRecoilState } from "recoil";
 import editEducationState from "./atom/editEducationState";
 
-const EducationEditFrom = () => {
+const EducationEditFrom = ({ key, id, idx, school, major, position, edit }) => {
   const [isEdit, setIsEdit] = useRecoilState(editEducationState);
   console.log("isEdit");
   return (

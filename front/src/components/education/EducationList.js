@@ -16,20 +16,40 @@ const EducationList = () => {
   useEffect(() => {
     setEducationList(mockData);
   }, []);
+  const onEdit = (idx) => {
+    setEducationList(
+      educationList.map((list, i) =>
+        list.id === idx ? { ...list, edit: !list.edit } : list
+      )
+    );
+  };
 
   return (
     <div>
-      {educationList.map((list, idx) => (
-        <EducationItem
-          key={idx}
-          id={list.id}
-          idx={idx}
-          school={list.school}
-          major={list.major}
-          position={list.position}
-          edit={list.edit}
-        />
-      ))}
+      {educationList.map((list, idx) =>
+        !list.edit ? (
+          <EducationItem
+            key={idx}
+            id={list.id}
+            idx={idx}
+            school={list.school}
+            major={list.major}
+            position={list.position}
+            edit={list.edit}
+            onEdit={onEdit}
+          />
+        ) : (
+          <EducationEditForm
+            id={list.id}
+            idx={idx}
+            school={list.school}
+            major={list.major}
+            position={list.position}
+            edit={list.edit}
+            onEdit={onEdit}
+          />
+        )
+      )}
     </div>
   );
 };

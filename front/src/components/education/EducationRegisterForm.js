@@ -1,14 +1,39 @@
+import React, { useState } from "react";
+
 import { Form, Button, ButtonGroup } from "react-bootstrap";
 import { useRecoilState } from "recoil";
 import addEducationState from "./atom/addEducationState";
 
-const EducationRegisterForm = () => {
+const EducationRegisterForm = ({
+  key,
+  id,
+  idx,
+  school,
+  major,
+  position,
+  edit,
+  onEdit,
+}) => {
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
   console.log("register");
+
+  const [inputs, setInputs] = useState({
+    id,
+    school,
+    major,
+    position,
+    edit,
+  });
+
   return (
     <Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control className="m-2" type="text" placeholder="학교 이름" />
+        <Form.Control
+          className="m-2"
+          type="text"
+          placeholder="학교 이름"
+          value={inputs.school}
+        />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -55,7 +80,7 @@ const EducationRegisterForm = () => {
           확인
         </Button>
         <Button
-          onClick={() => setIsAddEducation(false)}
+          onClick={() => onEdit(idx)}
           variant="secondary"
           type="submit"
           style={{ marginLeft: "10px" }}
