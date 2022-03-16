@@ -29,7 +29,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
           setCertificateList={setCertificateList}
         />
         {isEditable ? (
-          <Row className="text-center">
+          <Row className="text-center mt-3 mb-4">
             <Col>
               <Button
                 variant="primary"

@@ -14,17 +14,17 @@ const CertificateEditForm = ({
     const when_date = e.target.date.value;
     console.log(title, description, when_date);
 
-    // Api.put(`certificates/{certificate.id}`, {title, description, when_date})
-    // setCertificateList((current) => {
-    //   const newCertificates = current.map((i) => {
-    //     if (i.id === certificate.id) {
-    //       return { id: certificate.id, title, description, when_date };
-    //     } else {
-    //       return i;
-    //     }
-    //   });
-    //   return newCertificates;
-    // });
+    Api.put(`certificates/{certificate.id}`, { title, description, when_date });
+    setCertificateList((current) => {
+      const newCertificates = current.map((i) => {
+        if (i.id === certificate.id) {
+          return { id: certificate.id, title, description, when_date };
+        } else {
+          return i;
+        }
+      });
+      return newCertificates;
+    });
     setIsEditing(false);
   };
 
