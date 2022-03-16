@@ -33,8 +33,9 @@ const EducationItem = ({
       </ul>
       <Button
         variant="outline-success"
-        className="m-4"
+        className=""
         onClick={() => onEdit(idx)}
+        style={{ margin: "13px" }}
       >
         편집
       </Button>

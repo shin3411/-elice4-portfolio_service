@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 import { useRecoilState } from "recoil";
 import editEducationState from "./atom/editEducationState";
 
-const EducationEditFrom = ({ key, id, idx, school, major, position, edit }) => {
-  const [isEdit, setIsEdit] = useRecoilState(editEducationState);
+const EducationEditFrom = ({
+  key,
+  id,
+  idx,
+  school,
+  major,
+  position,
+  edit,
+  onEdit,
+}) => {
+  const [radio, setRadio] = useState(position);
+
   console.log("isEdit");
   return (
     <Form.Group>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control className="m-2" type="text" placeholder="학교 이름" />
+        <Form.Control
+          defaultValue={school}
+          className="m-2"
+          type="text"
+          placeholder="학교 이름"
+        />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control className="m-2" type="text" placeholder="전공" />
+        <Form.Control
+          defaultValue={major}
+          className="m-2"
+          type="text"
+          placeholder="전공"
+        />
       </Form.Group>
       <Form.Group key=" inline-radio" className="mb-3 m-2">
         <Form.Check
@@ -57,7 +77,7 @@ const EducationEditFrom = ({ key, id, idx, school, major, position, edit }) => {
           확인
         </Button>
         <Button
-          onClick={() => setIsEdit(false)}
+          onClick={() => onEdit(idx)}
           variant="secondary"
           type="submit"
           style={{ marginLeft: "10px" }}

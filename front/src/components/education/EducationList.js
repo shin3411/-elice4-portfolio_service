@@ -18,7 +18,7 @@ const EducationList = () => {
   }, []);
   const onEdit = (idx) => {
     setEducationList(
-      educationList.map((list, i) =>
+      educationList.map((list) =>
         list.id === idx ? { ...list, edit: !list.edit } : list
       )
     );
