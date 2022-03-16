@@ -31,8 +31,38 @@ awardRouter.post("/award/create", login_required, async (req, res, next) => {
 })
 
 //하나만 조회
+awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
+    try {
+        const _id = req.params.id
+        const awardinfo = await AwardService.getAward({ _id })
 
-//전체 조회
+        if (awardinfo.errorMessage) {
+            throw new Error(awardinfo.errorMessage)
+        }
+
+        res.status(200).send(awardinfo)
+
+    } catch (err) {
+        next(err)
+    }
+})
+
+//특정유저의 전체 수상내용 조회
+awardRouter.get('/awardlist/:user_id', login_required, async (req, res, next) => {
+    try {
+        const user_id = req.params.user_id;
+        const awardlist = await AwardService.getAwards({ user_id });
+
+        if (awardlist.errorMessage) {
+            throw new Error(awardlist.errorMessage);
+        }
+
+        res.status(200).send(awardlist);
+
+    } catch (error) {
+        next(error);
+    }
+})
 
 //수정
 

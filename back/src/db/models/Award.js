@@ -6,8 +6,8 @@ class Award {
         return createdNewAward;
     }
 
-    static async findById({ award_id }) {
-        const award = await AwardModel.findOne({ _id: award_id });
+    static async findById({ _id }) {
+        const award = await AwardModel.findOne({ _id: _id });
         return award;
     }
 

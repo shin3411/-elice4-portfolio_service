@@ -12,10 +12,29 @@ class AwardService {
     }
 
     //특정 1개의 수상 정보 반환용
-    static async getAward() { }
+    static async getAward({ _id }) {
+
+        const award = await Award.findById({ _id })
+        if (!award) {
+            const errorMessage =
+                "해당 수상내용이 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        return award;
+    }
 
     //특정 유저의 모든 수상내역 반환용
-    static async getAwards() { }
+    static async getAwards({ user_id }) {
+        const awards = await Award.findAll({ user_id })
+        if (!awards) {
+            const errorMessage =
+                "해당 유저의 수상내용이 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        return awards;
+    }
 
     //특정 1개의 수상 정보 수정
     static async setAwards() { }
