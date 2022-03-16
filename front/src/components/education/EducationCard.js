@@ -6,7 +6,10 @@ import EducationList from "./EducationList";
 import { useRecoilState } from "recoil";
 import addEducationState from "./atom/addEducationState";
 
-const Education = () => {
+// EducationMVP 전체를 담고있는 컴포넌트 입니다.
+// isAddEducation의 상태를 통해 +버튼을 누르면 EducationRegisterForm이 렌더링되어
+// 학력 추가를 할 수 있습니다.
+const EducationCard = () => {
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
 
   return (
@@ -29,4 +32,4 @@ const Education = () => {
   );
 };
 
-export default Education;
+export default EducationCard;

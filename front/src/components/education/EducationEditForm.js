@@ -4,6 +4,8 @@ import { Button, Form } from "react-bootstrap";
 import { useRecoilState } from "recoil";
 import educationListState from "./atom/educationListState";
 
+// 학력 편집 폼 컴포넌트입니다.
+// 추가한 학력 중에서 골라 편집할 수 있습니다.
 const EducationEditFrom = ({
   key,
   id,
@@ -33,12 +35,14 @@ const EducationEditFrom = ({
     console.log(inputs);
   };
 
+  // 확인 버튼을 누르면 실행되는 함수입니다.
+  // id를 통해 수정한 데이터 객체를 찾고 수정해줍니다. edit을 false로 바꾸어 편집창을 닫습니다.
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
     setEducationList(
       educationList.map((list) =>
-        list.id === inputs.id ? { ...inputs } : list
+        list.id === inputs.id ? { ...inputs, edit: false } : list
       )
     );
   };

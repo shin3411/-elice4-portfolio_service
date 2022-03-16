@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
+// 학력 목록을 보여주는 컴포넌트 입니다.
+// 목록에는 학교, 학과, 졸업 상태, 편집 버튼이 있습니다.
 const EducationItem = ({
   key,
   id,
@@ -25,9 +27,9 @@ const EducationItem = ({
         </li>
       </ul>
       <Button
-        variant="outline-success"
+        variant="outline-info"
         className=""
-        onClick={() => onEdit(idx)}
+        onClick={() => onEdit(id)}
         style={{ margin: "13px" }}
       >
         편집
