@@ -1,25 +1,36 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
 
-const AwardEditForm = ({ setIsEditing }) => {
-  const [awardDescription, setAwardDescription] = useState();
+const AwardEditForm = ({ setList, idx, item, setIsEditing }) => {
+  const [awardDescription, setAwardDescription] = useState(item.award);
   //useState로 description 상태를 생성함.
-  const [detailDescription, setDetailDescription] = useState();
+  const [detailDescription, setDetailDescription] = useState(item.detail);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setIsEditing(false);
+    setList((current) => {
+      const newArr = [...current];
+      newArr[idx].award = awardDescription;
+      newArr[idx].detail = detailDescription;
+      newArr[idx].edit = false;
+      return newArr;
+    });
+  };
+  const handleCancel = () => {
+    setList((current) => {
+      const newArr = [...current];
+      newArr[idx].edit = false;
+      return newArr;
+    });
   };
 
   return (
-    <Card className="mb-2">
+    <Card className=" mb-2" border="light">
       <Card.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="awardDescription" className="mb-3">
             <Form.Control
               type="text"
-              placeholder="수상내역"
               value={awardDescription}
               onChange={(e) => setAwardDescription(e.target.value)}
             />
@@ -28,7 +39,6 @@ const AwardEditForm = ({ setIsEditing }) => {
           <Form.Group controlId="detailDescription">
             <Form.Control
               type="text"
-              placeholder="상세내역"
               value={detailDescription}
               onChange={(e) => setDetailDescription(e.target.value)}
             />
@@ -39,7 +49,7 @@ const AwardEditForm = ({ setIsEditing }) => {
               <Button variant="primary" type="submit" className="me-3">
                 확인
               </Button>
-              <Button variant="secondary" onClick={() => setIsEditing(false)}>
+              <Button variant="secondary" onClick={handleCancel}>
                 취소
               </Button>
             </Col>

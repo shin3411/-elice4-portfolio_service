@@ -9,7 +9,11 @@ const AwardAddForm = ({ setAdd, setList }) => {
     e.preventDefault();
     setList((current) => {
       const newArr = [...current];
-      const newList = { award: awardDescription, detail: detailDescription };
+      const newList = {
+        award: awardDescription,
+        detail: detailDescription,
+        edit: false,
+      };
       newArr.push(newList);
       return newArr;
     });

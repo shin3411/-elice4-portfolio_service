@@ -15,6 +15,7 @@ function AwardCard({ user, setIsEditing, isEditable }) {
             list={list}
             setIsEditing={setIsEditing}
             isEditable={isEditable}
+            setList={setList}
           ></AwardList>
           {isEditable && (
             <Row className="mt-3 mb-4 text-center text-info">
