@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
-const CertificateAddForm = ({
-  setIsAdding,
-  portfolioOwnerId,
-  setCertificateList,
-}) => {
+const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
   const handleSubmit = (e) => {
@@ -17,8 +13,8 @@ const CertificateAddForm = ({
 
     if (!title || !description) return;
 
-    const data = { user_id: portfolioOwnerId, title, description, when_date };
-    // Api.post("certificate/create", data);
+    const data = { user_id: user.id, title, description, when_date };
+    // Api.post("certificate/create", data).then((res) => setCertificateList(res.data))
 
     setCertificateList((current) => {
       return [...current, { title, description, when_date }];

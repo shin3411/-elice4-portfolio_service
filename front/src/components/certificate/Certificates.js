@@ -7,12 +7,17 @@ import * as Api from "../../api";
 const Certificates = ({ portfolioOwnerId, isEditable }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [certificateList, setCertificateList] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
+  }, [portfolioOwnerId]);
 
   //   useEffect(() => {
-  //     Api.get("certificatelist", portfolioOwnerId).then((res) =>
+  //     Api.get("certificatelist", user.id).then((res) =>
   //       setCertificateList(res.data)
   //     );
-  //   }, [portfolioOwnerId]);
+  //   }, [user]);
 
   return (
     <Card>
@@ -41,7 +46,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
         {isAdding ? (
           <CertificateAddForm
             setIsAdding={setIsAdding}
-            portfolioOwnerId={portfolioOwnerId}
+            user={user}
             setCertificateList={setCertificateList}
           />
         ) : null}
