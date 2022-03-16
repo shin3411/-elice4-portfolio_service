@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
 
-const AwardEditForm = ({ setList, idx, item, setIsEditing }) => {
+//이력내용 수정 폼
+const AwardEditForm = ({ setList, idx, item }) => {
   const [awardDescription, setAwardDescription] = useState(item.award);
-  //useState로 description 상태를 생성함.
   const [detailDescription, setDetailDescription] = useState(item.detail);
 
   const handleSubmit = async (e) => {

@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import AwardEditForm from "./AwardEditForm";
 
+//이력을 모아서 배열에 담고 출력하는 컴포넌트
 const AwardList = ({ list, setList, isEditable }) => {
   const handleEdit = (idx) => {
     setList((current) => {

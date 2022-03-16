@@ -3,7 +3,8 @@ import AwardAddForm from "./AwardAddForm";
 import { useState } from "react";
 import AwardList from "./AwardList";
 
-function AwardCard({ user, setIsEditing, isEditable }) {
+//수상이력리스트가 렌더링되는 부분, 추가 버튼이 있음
+function AwardCard({ isEditable }) {
   const [add, setAdd] = useState(false);
   const [list, setList] = useState([]);
   return (
@@ -13,7 +14,6 @@ function AwardCard({ user, setIsEditing, isEditable }) {
           <Card.Title>수상이력</Card.Title>
           <AwardList
             list={list}
-            setIsEditing={setIsEditing}
             isEditable={isEditable}
             setList={setList}
           ></AwardList>

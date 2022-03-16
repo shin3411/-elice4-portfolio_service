@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
 
+//수상내역, 상세내역의 input을 받는 이력 추가 폼
 const AwardAddForm = ({ setAdd, setList }) => {
   const [awardDescription, setAwardDescription] = useState();
-  //useState로 description 상태를 생성함.
   const [detailDescription, setDetailDescription] = useState();
   const handleSubmit = async (e) => {
     e.preventDefault();
