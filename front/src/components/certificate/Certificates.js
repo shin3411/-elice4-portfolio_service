@@ -8,11 +8,21 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [certificateList, setCertificateList] = useState([]);
 
+  //   useEffect(() => {
+  //     Api.get("certificatelist", portfolioOwnerId).then((res) =>
+  //       setCertificateList(res.data)
+  //     );
+  //   }, [portfolioOwnerId]);
+
   return (
     <Card>
       <Card.Body>
         <Card.Title>자격증</Card.Title>
-        <Certificate />
+        <Certificate
+          isEditable={isEditable}
+          certificateList={certificateList}
+          setCertificateList={setCertificateList}
+        />
         {isEditable ? (
           <Row className="text-center">
             <Col>
