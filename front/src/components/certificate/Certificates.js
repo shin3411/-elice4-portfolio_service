@@ -6,18 +6,35 @@ import * as Api from "../../api";
 
 const Certificates = ({ portfolioOwnerId, isEditable }) => {
   const [isAdding, setIsAdding] = useState(false);
+  const [certificateList, setCertificateList] = useState([]);
 
   return (
     <Card>
       <Card.Body>
         <Card.Title>자격증</Card.Title>
         <Certificate />
-        <Row className="text-center">
-          <Col>
-            <Button variant="primary">+</Button>
-          </Col>
-        </Row>
-        {isAdding ? <CertificateAddForm /> : null}
+        {isEditable ? (
+          <Row className="text-center">
+            <Col>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setIsAdding(true);
+                }}
+              >
+                +
+              </Button>
+            </Col>
+          </Row>
+        ) : null}
+
+        {isAdding ? (
+          <CertificateAddForm
+            setIsAdding={setIsAdding}
+            portfolioOwnerId={portfolioOwnerId}
+            setCertificateList={setCertificateList}
+          />
+        ) : null}
       </Card.Body>
     </Card>
   );
