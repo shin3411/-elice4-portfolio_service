@@ -2,7 +2,7 @@ import { EducationModel } from "../schemas/education";
 import { UserModel } from "../schemas/user";
 
 class Education {
-    static async create({ newEdu }){
+    static async create( newEdu ){
         const createdNewEdu = await EducationModel.create(newEdu);
         return createdNewEdu;
     }
@@ -12,22 +12,24 @@ class Education {
         return findEdu;
     }
 
-    static async findByQuery({ user_id, school, major, school, position }){
-        const userId = user_id ?? null;
-        const school = school ?? null;
-        const major = major ?? null;
-        const position = position ?? null;
-  
+    static async findByQuery({ userId, school, major, position }){
+        // const userId = userId ?? null;
+        // const school = school ?? null;
+        // const major = major ?? null;
+        // const position = position ?? null;
+        
         const query = { userId, school, major, position };
         
         const findEdu = await EducationModel.findOne(query);
+        
         return findEdu;
     }
 
     static async findAll(){
         // const user = await UserModel.findOne({id: user_id}).populate("educations");
         // return user.educations;
-        const educations = await Education.find({});
+        const educations = await EducationModel.find({});
+        console.log(educations);
         return educations;
     }
 

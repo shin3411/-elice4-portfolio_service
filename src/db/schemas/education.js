@@ -7,8 +7,8 @@ const EducationSchema = new Schema(
       required: true,
     },
     userId: {
-        type: Sehema.Types.ObjectId,
-        ref: "User",
+        type: String,
+        required: true,
     },
     school: {
       type: String,
