@@ -13,11 +13,11 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
     Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
   }, [portfolioOwnerId]);
 
-  //   useEffect(() => {
-  //     Api.get("certificatelist", user.id).then((res) =>
-  //       setCertificateList(res.data)
-  //     );
-  //   }, [user]);
+  // useEffect(() => {
+  //   Api.get("certificatelist", user.id).then((res) =>
+  //     setCertificateList(res.data)
+  //   );
+  // }, [user]);
 
   return (
     <Card>

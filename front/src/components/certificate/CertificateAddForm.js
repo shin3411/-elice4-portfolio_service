@@ -5,7 +5,7 @@ import * as Api from "../../api";
 const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const title = e.target.title.value;
     const description = e.target.description.value;
@@ -14,10 +14,11 @@ const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
     if (!title || !description) return;
 
     const data = { user_id: user.id, title, description, when_date };
-    // Api.post("certificate/create", data).then((res) => console.log(res.data))
+    const res = await Api.post("certificate/create", data);
+    const id = res.data.id;
 
     setCertificateList((current) => {
-      return [...current, { title, description, when_date }];
+      return [...current, { id, title, description, when_date }];
     });
     setIsAdding(false);
   };
