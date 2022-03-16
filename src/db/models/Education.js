@@ -1,5 +1,4 @@
 import { EducationModel } from "../schemas/education";
-import { UserModel } from "../schemas/user";
 
 class Education {
     static async create( newEdu ){
@@ -21,7 +20,6 @@ class Education {
         const query = { userId, school, major, position };
         
         const findEdu = await EducationModel.findOne(query);
-        
         return findEdu;
     }
 
@@ -29,7 +27,6 @@ class Education {
         // const user = await UserModel.findOne({id: user_id}).populate("educations");
         // return user.educations;
         const educations = await EducationModel.find({});
-        console.log(educations);
         return educations;
     }
 
