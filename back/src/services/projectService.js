@@ -2,10 +2,23 @@ import { Project } from "../db";
 import { v4 as uuidv4 } from "uuid";
 
 class projectService {
+    isValidDate(input){
+        return input instanceof Date && !isNaN(input);
+    }
+
     static async addProject({ user_id, title, description, fromDate, toDate }){
         if( !user_id || !title || !description || !fromDate || !toDate ){
             const errorMessage = 
              "빠트린 항목이 있습니다. 모두 채워주세요.";
+            return { errorMessage };
+        }
+
+        const fromDateCheck = new Date(fromDate);
+        const toDateCheck = new Date(toDate);
+
+        if(!isValidDate(fromDateCheck) || !isValidDate(toDateCheck)){
+            const errorMessage = 
+             "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
             return { errorMessage };
         }
 
@@ -72,22 +85,36 @@ class projectService {
         if (toUpdate.fromDate) {
         const fieldToUpdate = "fromDate";
         const newValue = toUpdate.fromDate;
+        
+        const newValueCheck = new Date(newValue);
+        if(!isValidDate(newValueCheck)){
+            const errorMessage =
+                "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
+            return { errorMessage };
+        }
         Project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.toDate) {
         const fieldToUpdate = "toDate";
         const newValue = toUpdate.toDate;
+
+        const newValueCheck = new Date(newValue);
+        if(!isValidDate(newValueCheck)){
+            const errorMessage =
+                "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
+            return { errorMessage };
+        }
         Project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
         return Project;
     }
 
-    static async getProjectList({ project_id }){
+    static async getProjectList({ user_id }){
         const projects = await Project.findAll();
         const filteredProjectList = projects
-        .filter(({ userId }) => userId === project_id);
+        .filter(({ userId }) => userId === user_id);
         
         if(filteredProjectList.length === 0){
             const errorMessage =
