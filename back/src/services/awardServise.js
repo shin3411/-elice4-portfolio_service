@@ -37,7 +37,27 @@ class AwardService {
     }
 
     //특정 1개의 수상 정보 수정
-    static async setAwards() { }
+    static async setAwards({ toUpdate, awardId, currentUserId }) {
+        let award = await Award.findById({ _id: awardId })
+
+        if (award.user_id !== currentUserId) {
+            const errorMessage = "본인거 아니라 권한 없음"
+            return { errorMessage }
+        }
+
+        if (toUpdate.title) {
+            const fieldToUpdate = 'title'
+            const newValue = toUpdate.title
+            award = await Award.update({ awardId, fieldToUpdate, newValue })
+        }
+        if (toUpdate.description) {
+            const fieldToUpdate = 'description'
+            const newValue = toUpdate.description
+            award = await Award.update({ awardId, fieldToUpdate, newValue })
+        }
+
+        return award
+    }
 
 }
 

@@ -65,5 +65,29 @@ awardRouter.get('/awardlist/:user_id', login_required, async (req, res, next) =>
 })
 
 //수정
+awardRouter.put('/awards/:id', login_required, async (req, res, next) => {
+    try {
+        //URI에서 수정할 award의 id를 받아옴
+        const awardId = req.params.id
 
+        //body에서 업데이트할 정보 추출 널 병합 연산자 이용
+        const title = req.body.title ?? null
+        const description = req.body.description ?? null
+
+        const toUpdate = { title, description }
+
+        //현재 요청준 로그인된 사용자의 아이디
+        const currentUserId = req.currentUserId
+
+        const updatedAward = await AwardService.setAwards({ toUpdate, awardId, currentUserId })
+
+        if (updatedAward.errorMessage) {
+            throw new Error(updatedAward.errorMessage);
+        }
+
+        res.status(200).json(updatedAward);
+    } catch (err) {
+        next(err)
+    }
+})
 export { awardRouter }
