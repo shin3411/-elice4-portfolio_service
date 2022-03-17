@@ -10,14 +10,14 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
     // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
-    const fromDate = e.target.fromDate.value;
-    const toDate = e.target.toDate.value;
+    const from_date = e.target.fromDate.value;
+    const to_date = e.target.toDate.value;
 
     const res = await Api.put(`projects/${project.id}`, {
       title,
       description,
-      fromDate,
-      toDate,
+      from_date,
+      to_date,
     });
     const editedProject = await res.data;
 
