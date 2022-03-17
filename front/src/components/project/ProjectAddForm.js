@@ -26,7 +26,10 @@ const ProjectAddForm = ({ setIsAdding, user, setProjectList }) => {
     let _id = 3;
 
     setProjectList((current) => {
-      return [...current, { _id, title, description, from_date, to_date }];
+      return [
+        ...current,
+        { _id, title, description, fromDate: from_date, toDate: to_date },
+      ];
     });
     setIsAdding(false);
   };

@@ -9,15 +9,15 @@ const mockData = [
     _id: 1,
     title: "web1",
     description: "front",
-    from_date: "2022-03-01",
-    to_date: "2022-03-14",
+    fromDate: "2022-03-01",
+    toDate: "2022-03-14",
   },
   {
     _id: 2,
     title: "web2",
     description: "back",
-    from_date: "2022-03-02",
-    to_date: "2022-03-12",
+    fromDate: "2022-03-02",
+    toDate: "2022-03-12",
   },
 ];
 // Project MVP 전체를 담는 컴포넌트
