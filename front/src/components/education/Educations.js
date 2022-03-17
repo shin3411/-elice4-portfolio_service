@@ -42,9 +42,9 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
           </Row>
         ) : null}
 
-        {isAddEducation ? (
+        {isAddEducation && (
           <EducationRegisterForm portfolioOwnerId={portfolioOwnerId} />
-        ) : null}
+        )}
       </Card.Body>
     </Card>
   );
