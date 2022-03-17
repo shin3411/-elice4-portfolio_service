@@ -41,25 +41,25 @@ class CertificateService {
         if (certificate.user_id !== currentUserId) {
             const errorMessage = "본인거 아니라 권한 없음"
             return { errorMessage }
-        }
+        } else {
+            if (toUpdate.title) {
+                const fieldToUpdate = 'title'
+                const newValue = toUpdate.title
+                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
+            }
+            if (toUpdate.description) {
+                const fieldToUpdate = 'description'
+                const newValue = toUpdate.description
+                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
+            }
+            if (toUpdate.date) {
+                const fieldToUpdate = 'date'
+                const newValue = toUpdate.date
+                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
+            }
 
-        if (toUpdate.title) {
-            const fieldToUpdate = 'title'
-            const newValue = toUpdate.title
-            certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
+            return certificate
         }
-        if (toUpdate.description) {
-            const fieldToUpdate = 'description'
-            const newValue = toUpdate.description
-            certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
-        }
-        if (toUpdate.date) {
-            const fieldToUpdate = 'date'
-            const newValue = toUpdate.date
-            certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
-        }
-
-        return certificate
     }
 
 }
