@@ -14,12 +14,12 @@ const CertificateEditForm = ({
     // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
-    const when_date = e.target.date.value;
+    const date = e.target.date.value;
 
     const res = await Api.put(`certificates/${certificate._id}`, {
       title,
       description,
-      when_date,
+      date,
     });
     const editedCertificate = await res.data;
 
