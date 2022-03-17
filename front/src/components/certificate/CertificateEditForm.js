@@ -16,23 +16,25 @@ const CertificateEditForm = ({
     const description = e.target.description.value;
     const when_date = e.target.date.value;
 
-    const res = await Api.put(`certificates/{certificate._id}`, {
+    const res = await Api.put(`certificates/${certificate._id}`, {
       title,
       description,
       when_date,
     });
+    const editedCertificate = await res.data;
+
+    setIsEditing(false);
 
     setCertificateList((current) => {
-      const newCertificates = current.map((i) => {
+      const newCertificateList = current.map((i) => {
         if (i._id === certificate._id) {
-          return res.data;
+          return editedCertificate;
         } else {
           return i;
         }
       });
-      return newCertificates;
+      return newCertificateList;
     });
-    setIsEditing(false);
   };
 
   return (
@@ -54,7 +56,7 @@ const CertificateEditForm = ({
           className="mt-3"
           type="date"
           name="date"
-          defaultValue={certificate.date}
+          defaultValue={certificate.date.substring(0, 10)}
         />
         <Row className="text-center mt-3">
           <Col>

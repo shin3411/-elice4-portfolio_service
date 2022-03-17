@@ -19,7 +19,9 @@ const CertificateCard = ({ certificate, isEditable, setCertificateList }) => {
           <Col>
             <div>{certificate.title}</div>
             <div className="text-muted">{certificate.description}</div>
-            <div className="text-muted">{certificate.date}</div>
+            <div className="text-muted">
+              {certificate.date.substring(0, 10)}
+            </div>
           </Col>
         )}
 
