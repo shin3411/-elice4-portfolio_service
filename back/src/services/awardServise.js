@@ -43,20 +43,20 @@ class AwardService {
         if (award.user_id !== currentUserId) {
             const errorMessage = "본인거 아니라 권한 없음"
             return { errorMessage }
-        }
+        } else {
+            if (toUpdate.title) {
+                const fieldToUpdate = 'title'
+                const newValue = toUpdate.title
+                award = await Award.update({ awardId, fieldToUpdate, newValue })
+            }
+            if (toUpdate.description) {
+                const fieldToUpdate = 'description'
+                const newValue = toUpdate.description
+                award = await Award.update({ awardId, fieldToUpdate, newValue })
+            }
 
-        if (toUpdate.title) {
-            const fieldToUpdate = 'title'
-            const newValue = toUpdate.title
-            award = await Award.update({ awardId, fieldToUpdate, newValue })
+            return award
         }
-        if (toUpdate.description) {
-            const fieldToUpdate = 'description'
-            const newValue = toUpdate.description
-            award = await Award.update({ awardId, fieldToUpdate, newValue })
-        }
-
-        return award
     }
 
 }
