@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 
-import * as Api from "../../api";
-
 import EducationEditForm from "./EducationEditForm";
-import { useRecoilState } from "recoil";
-import addEducationState from "./atom/addEducationState";
 
-// EducationMVP 전체를 담고있는 컴포넌트 입니다.
-// isAddEducation의 상태를 통해 +버튼을 누르면 EducationRegisterForm이 렌더링되어
-// 학력 추가를 할 수 있습니다.
+// 학력 목록 하나를 그리는 컴포넌트입니다.
+// 편집 버튼을 클릭하면 학력 목록에서 편집 폼으로 바뀝니다.
 const EducationCard = ({ education, isEditable, setEducationList }) => {
-  const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -20,8 +14,8 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
         {isEditing ? (
           <EducationEditForm
             education={education}
-            setIsEditing={setIsEditing}
             setEducationList={setEducationList}
+            setIsEditing={setIsEditing}
           />
         ) : (
           <Col>
@@ -31,7 +25,7 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
             </div>
           </Col>
         )}
-        {isEditable ? (
+        {!isEditing && (
           <Col xs={1}>
             <Button
               variant="outline-info"
@@ -41,7 +35,7 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
               편집
             </Button>
           </Col>
-        ) : null}
+        )}
       </Row>
     </div>
   );

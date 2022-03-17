@@ -5,7 +5,7 @@ import * as Api from "../../api";
 import { useRecoilState } from "recoil";
 import educationListState from "./atom/educationListState";
 
-// 학력 편집 폼 컴포넌트입니다.
+// 학력 편집 폼 컴포넌트 입니다.
 // 추가한 학력 중에서 골라 편집할 수 있습니다.
 const EducationEditFrom = ({ education, setIsEditing }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
@@ -25,10 +25,9 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
   };
 
   // 확인 버튼을 누르면 실행되는 함수입니다.
-  // id를 통해 수정한 데이터 객체를 찾고 수정해줍니다. edit을 false로 바꾸어 편집창을 닫습니다.
+  // PUT 요청으로 학력 정보를 수정합니다.
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
     const response = await Api.put(`educations/${education.id}`, inputs);
     const editedEdu = response.data;
     setIsEditing(false);
@@ -43,7 +42,6 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
     });
   };
 
-  console.log("isEdit");
   return (
     <Form.Group>
       <Form.Group className="m-3 mb-2" controlId="formBasicEmail">
