@@ -15,10 +15,10 @@ const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
 
     const data = { user_id: user.id, title, description, when_date };
     const res = await Api.post("certificate/create", data);
-    const id = res.data.id;
+    const _id = res.data._id;
 
     setCertificateList((current) => {
-      return [...current, { id, title, description, when_date }];
+      return [...current, { _id, title, description, date: when_date }];
     });
     setIsAdding(false);
   };

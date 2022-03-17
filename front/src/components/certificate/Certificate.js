@@ -6,7 +6,7 @@ const Certificate = ({ isEditable, certificateList, setCertificateList }) => {
     <>
       {certificateList.map((certificate) => (
         <CertificateCard
-          key={certificate.id}
+          key={certificate._id}
           certificate={certificate}
           isEditable={isEditable}
           setCertificateList={setCertificateList}

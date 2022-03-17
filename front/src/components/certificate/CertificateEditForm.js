@@ -12,13 +12,16 @@ const CertificateEditForm = ({
     const title = e.target.title.value;
     const description = e.target.description.value;
     const when_date = e.target.date.value;
-    console.log(title, description, when_date);
 
-    Api.put(`certificates/{certificate.id}`, { title, description, when_date });
+    Api.put(`certificates/{certificate._id}`, {
+      title,
+      description,
+      when_date,
+    });
     setCertificateList((current) => {
       const newCertificates = current.map((i) => {
         if (i.id === certificate.id) {
-          return { id: certificate.id, title, description, when_date };
+          return { _id: certificate._id, title, description, date: when_date };
         } else {
           return i;
         }
@@ -47,7 +50,7 @@ const CertificateEditForm = ({
           className="mt-3"
           type="date"
           name="date"
-          defaultValue={certificate.when_date}
+          defaultValue={certificate.date}
         />
         <Row className="text-center mt-3">
           <Col>
