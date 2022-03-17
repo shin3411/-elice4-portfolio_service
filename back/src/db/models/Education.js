@@ -28,7 +28,7 @@ class Education {
         // const user = await UserModel.findOne({id: user_id}).populate("educations");
         // return user.educations;
         const educations = await EducationModel.find({});
-        console.log(educations);
+
         return educations;
     }
 

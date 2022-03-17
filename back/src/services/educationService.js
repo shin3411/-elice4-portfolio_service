@@ -10,14 +10,6 @@ class eduService {
             return { errorMessage };
         }
 
-        const findUser = await User.findById({ user_id });
-
-        if(!findUser){
-            const errorMessage =
-             "해당 user_id는 존재하지 않습니다. 다시 확인해주세요.";
-            return { errorMessage };
-        }
-
         const query = {
             userId: user_id,
             school,

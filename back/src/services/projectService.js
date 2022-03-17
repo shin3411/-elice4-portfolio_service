@@ -17,13 +17,6 @@ class projectService {
         const fromDateCheck = new Date(from_date);
         const toDateCheck = new Date(to_date);
 
-        const findUser = await User.findById({ user_id });
-
-        if(!findUser){
-            const errorMessage =
-             "해당 user_id는 존재하지 않습니다. 다시 확인해주세요.";
-            return { errorMessage };
-        }
 
         if(!projectService.isValidDate(fromDateCheck) || !projectService.isValidDate(toDateCheck)){
             const errorMessage = 
