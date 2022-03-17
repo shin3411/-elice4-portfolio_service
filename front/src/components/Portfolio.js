@@ -63,7 +63,7 @@ function Portfolio() {
         </Col>
         <Col>
           <div style={{ textAlign: "" }}>
-            <EducationCard />
+            <EducationCard portfolioOwnerId={portfolioOwner.id} />
           </div>
         </Col>
       </Row>

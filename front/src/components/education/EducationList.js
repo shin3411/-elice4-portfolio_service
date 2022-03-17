@@ -1,18 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
 
 import EducationEditForm from "./EducationEditForm";
 import EducationItem from "./EducationItem";
-import { mockData } from "./mockData";
 
 import { useRecoilState } from "recoil";
 import educationListState from "./atom/educationListState";
 
-// 학력 목록을 보여주는 컴포넌트 입니다. edit의 true/false에 따라 EducationItem, EducationEditForm을 렌더링 합니다.
-const EducationList = () => {
+import * as Api from "../../api";
+import { UserStateContext } from "../../App";
+
+// 학력 목록을 보여주는 컴포넌트 edit의 true/false에 따라 EducationItem, EducationEditForm을 렌더링 합니다.
+const EducationList = ({ fetch }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
+  const userState = useContext(UserStateContext);
 
   useEffect(() => {
-    setEducationList(mockData);
+    fetch();
+    console.log("fetch");
   }, []);
 
   // edit의 value를 true, false로 바꾸어주는 함수입니다. 편집 버튼을 눌렀을 때 실행되며

@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
 
 import { Form, Button, ButtonGroup } from "react-bootstrap";
-
+import * as Api from "../../api";
 import { useRecoilState } from "recoil";
 import addEducationState from "./atom/addEducationState";
 import educationListState from "./atom/educationListState";
 
 // + 버튼을 눌렀을 때 나타나는 EducationRegisterForm 컴포넌트 입니다.
 // 사용자에게 입력받은 학력 내용을 추가해주는 기능을 합니다.
-const EducationRegisterForm = ({}) => {
+const EducationRegisterForm = ({ fetch }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
 
@@ -16,7 +16,7 @@ const EducationRegisterForm = ({}) => {
 
   // 사용자의 입력을 받아 저장하기 위한 state입니다.
   const [inputs, setInputs] = useState({
-    id: nextId.current,
+    user_id: nextId.current,
     school: "",
     major: "",
     position: "",
@@ -26,17 +26,10 @@ const EducationRegisterForm = ({}) => {
 
   // 확인 버튼을 눌렀을 때 실행되는 함수로, 입력받은 정보가 저장된 inputs를
   // 전체 학력 정보가 저장된 educationList와 합칩니다.
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setEducationList([...educationList, inputs]);
-    console.log(nextId.current);
-    nextId.current += 1;
-    setInputs({
-      id: nextId.current,
-      school: "",
-      major: "",
-      position: "",
-    });
+    const response = await Api.post("education/create", inputs);
+    fetch();
     setIsAddEducation(false);
   };
 
