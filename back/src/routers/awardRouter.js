@@ -14,7 +14,9 @@ awardRouter.post("/award/create", login_required, async (req, res, next) => {
             );
         }
 
-        const user_id = req.body.user_id
+        //user_id 받는 방식 변경 이제 바디에 user_id 넣지 않는 걸로
+        //const user_id = req.body.user_id
+        const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
 
