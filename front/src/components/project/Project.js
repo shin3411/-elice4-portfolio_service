@@ -1,19 +1,19 @@
 import React from "react";
+import ProjectCard from "./ProjectCard";
 
+// project 목록을 담는 컴포넌트
 const Project = ({ isEditable, projectList, setProjectList }) => {
   console.log(projectList);
   return (
     <>
-      {projectList.map((i) => {
-        return (
-          <div>
-            <div>{i.title}</div>
-            <div>{i.description}</div>
-            <div>{i.from_date}</div>
-            <div>{i.to_date}</div>
-          </div>
-        );
-      })}
+      {projectList.map((project) => (
+        <ProjectCard
+          key={project.id}
+          project={project}
+          isEditable={isEditable}
+          setProjectList={setProjectList}
+        />
+      ))}
     </>
   );
 };
