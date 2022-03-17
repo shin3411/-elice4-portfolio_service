@@ -3,10 +3,10 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
 // + 버튼 클릭했을 때 + 버튼 하단에 나타나는 폼 컴포넌트
-const ProjectAddForm = ({ setIsAdding, user, setProjectList }) => {
+const ProjectAddForm = ({ setIsAdding, portfolioOwnerId, setProjectList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
-  // 폼 제출시 실행되는 함수. 입력받은 정보를 post하고 certificateList에 합침
+  // 폼 제출시 실행되는 함수. 입력받은 정보를 post하고 projectList에 합침
   const handleSubmit = async (e) => {
     e.preventDefault();
     // 입력받은 정보 가져옴
@@ -20,16 +20,18 @@ const ProjectAddForm = ({ setIsAdding, user, setProjectList }) => {
     // 프로젝트 시작 날짜가 종료 날짜보다 늦은 날짜면 리턴. 제출X
     if (from_date > to_date) return;
 
-    // const data = { user_id: user.id, title, description, from_date, to_date };
-    // const res = await Api.post("project/create", data);
-    // const _id = res.data._id;
-    let _id = 3;
+    const data = {
+      user_id: portfolioOwnerId,
+      title,
+      description,
+      from_date,
+      to_date,
+    };
+    const res = await Api.post("project/create", data);
+    const createdData = res.data;
 
     setProjectList((current) => {
-      return [
-        ...current,
-        { _id, title, description, fromDate: from_date, toDate: to_date },
-      ];
+      return [...current, createdData];
     });
     setIsAdding(false);
   };

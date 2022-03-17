@@ -4,7 +4,7 @@ import * as Api from "../../api";
 
 // project 편집 폼 컴포넌트
 const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
-  // 폼 제출 시 실행되는 함수. 입력받은 정보를 put하고 certificateList에 적용
+  // 폼 제출 시 실행되는 함수. 입력받은 정보를 put하고 projectList에 적용
   const handleSubmit = async (e) => {
     e.preventDefault();
     // 입력받은 정보 가져옴
@@ -13,25 +13,18 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
     const fromDate = e.target.fromDate.value;
     const toDate = e.target.toDate.value;
 
-    // const res = await Api.put(`projects/{projects._id}`, {
-    //   title,
-    //   description,
-    //   fromDate,
-    //   toDate,
-    // });
-    // const editedProject = await res.data;
+    const res = await Api.put(`projects/${project.id}`, {
+      title,
+      description,
+      fromDate,
+      toDate,
+    });
+    const editedProject = await res.data;
 
     setProjectList((current) => {
       const newProject = current.map((i) => {
-        if (i._id === project._id) {
-          // return editedProject
-          return {
-            _id: i._id,
-            title,
-            description,
-            fromDate,
-            toDate,
-          };
+        if (i.id === project.id) {
+          return editedProject;
         } else {
           return i;
         }

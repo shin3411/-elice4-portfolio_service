@@ -4,38 +4,19 @@ import Project from "./Project";
 import ProjectAddForm from "./ProjectAddForm";
 import * as Api from "../../api";
 
-const mockData = [
-  {
-    _id: 1,
-    title: "web1",
-    description: "front",
-    fromDate: "2022-03-01",
-    toDate: "2022-03-14",
-  },
-  {
-    _id: 2,
-    title: "web2",
-    description: "back",
-    fromDate: "2022-03-02",
-    toDate: "2022-03-12",
-  },
-];
 // Project MVP 전체를 담는 컴포넌트
 const Projects = ({ portfolioOwnerId, isEditable }) => {
   const [isAdding, setIsAdding] = useState(false);
-  const [projectList, setProjectList] = useState(mockData);
-  const [user, setUser] = useState(null);
+  const [projectList, setProjectList] = useState([]);
 
   useEffect(() => {
-    Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
+    Api.get("projectlist", portfolioOwnerId).then((res) =>
+      setProjectList(res.data)
+    );
   }, [portfolioOwnerId]);
 
-  //   useEffect(() => {
-  //     Api.get("projectlist", user.id).then((res) => setProjectList(res.data));
-  //   }, [user]);
-
   return (
-    <Card>
+    <Card className="mb-2">
       <Card.Body>
         <Card.Title>프로젝트</Card.Title>
         <Project
@@ -61,7 +42,7 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
         {isAdding ? (
           <ProjectAddForm
             setIsAdding={setIsAdding}
-            user={user}
+            portfolioOwnerId={portfolioOwnerId}
             setProjectList={setProjectList}
           />
         ) : null}

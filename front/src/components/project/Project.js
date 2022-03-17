@@ -7,7 +7,7 @@ const Project = ({ isEditable, projectList, setProjectList }) => {
     <>
       {projectList.map((project) => (
         <ProjectCard
-          key={project._id}
+          key={project.id}
           project={project}
           isEditable={isEditable}
           setProjectList={setProjectList}
