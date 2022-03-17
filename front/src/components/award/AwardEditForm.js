@@ -1,27 +1,33 @@
 import React, { useState } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
-
+import * as Api from "../../api";
 //이력내용 수정 폼
-const AwardEditForm = ({ setList, idx, item }) => {
-  const [awardDescription, setAwardDescription] = useState(item.award);
-  const [detailDescription, setDetailDescription] = useState(item.detail);
-
+const AwardEditForm = ({ setIsEditing, setList, award }) => {
+  const [awardDescription, setAwardDescription] = useState(award.title);
+  const [detailDescription, setDetailDescription] = useState(award.description);
+  console.log(award._id);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setList((current) => {
-      const newArr = [...current];
-      newArr[idx].award = awardDescription;
-      newArr[idx].detail = detailDescription;
-      newArr[idx].edit = false;
-      return newArr;
+    const res = await Api.put(`awards/${award._id}`, {
+      title: awardDescription,
+      description: detailDescription,
     });
+
+    const editedAwards = await res.data;
+    setList((current) => {
+      const newAwards = current.map((i) => {
+        if (i._id === award._id) {
+          return editedAwards;
+        } else {
+          return i;
+        }
+      });
+      return newAwards;
+    });
+    setIsEditing(false);
   };
   const handleCancel = () => {
-    setList((current) => {
-      const newArr = [...current];
-      newArr[idx].edit = false;
-      return newArr;
-    });
+    setIsEditing(false);
   };
 
   return (

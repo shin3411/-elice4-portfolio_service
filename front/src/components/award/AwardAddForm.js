@@ -1,25 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Card, Col, Row } from "react-bootstrap";
+import * as Api from "../../api";
 
 //수상내역, 상세내역의 input을 받는 이력 추가 폼
 const AwardAddForm = ({ setAdd, setList }) => {
   const [awardDescription, setAwardDescription] = useState();
   const [detailDescription, setDetailDescription] = useState();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // "award/create" 엔드포인트로 post요청함.
+    const res = await Api.post("award/create", {
+      title: awardDescription,
+      description: detailDescription,
+    });
     setList((current) => {
-      const newArr = [...current];
-      const newList = {
-        award: awardDescription,
-        detail: detailDescription,
-        edit: false,
-      };
-      newArr.push(newList);
-      return newArr;
+      return [...current, res.data];
     });
     setAdd(false);
   };
-
   return (
     <>
       <Card className="mt-2 mb-2" border="light">
