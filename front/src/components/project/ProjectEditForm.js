@@ -21,6 +21,8 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
     });
     const editedProject = await res.data;
 
+    setIsEditing(false);
+
     setProjectList((current) => {
       const newProject = current.map((i) => {
         if (i.id === project.id) {
@@ -31,7 +33,6 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
       });
       return newProject;
     });
-    setIsEditing(false);
   };
   return (
     <Form onSubmit={handleSubmit}>

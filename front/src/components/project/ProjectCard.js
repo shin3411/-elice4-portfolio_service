@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import ProjectEditForm from "./ProjectEditForm";
 
-// certificate 목록 중 하나를 나타내는 컴포넌트
-// 편집 버튼을 누르면 편집폼(CertificateEditForm)이 나타남
+// project 목록 중 하나를 나타내는 컴포넌트
+// 편집 버튼을 누르면 편집폼(ProjectEditForm)이 나타남
 const ProjectCard = ({ project, isEditable, setProjectList }) => {
   const [isEditing, setIsEditing] = useState(false);
 
