@@ -1,5 +1,6 @@
 import { Education } from "../db";
 import { v4 as uuidv4 } from "uuid";
+import { User } from "../db";
 
 class eduService {
     static async addEdu({ user_id, school, major, position }){
@@ -27,7 +28,7 @@ class eduService {
         const createdNewEdu = await Education.create({ ...query, id});
         createdNewEdu.errorMessage = null;
         
-        console.log(1,createdNewEdu);
+        
         return createdNewEdu;
     }
 
