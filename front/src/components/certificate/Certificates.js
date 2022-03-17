@@ -4,6 +4,7 @@ import Certificate from "./Certificate";
 import CertificateAddForm from "./CertificateAddForm";
 import * as Api from "../../api";
 
+// Certificate MVP 전체를 담는 컴포넌트
 const Certificates = ({ portfolioOwnerId, isEditable }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [certificateList, setCertificateList] = useState([]);

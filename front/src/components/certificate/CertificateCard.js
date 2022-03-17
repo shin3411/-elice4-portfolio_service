@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import CertificateEditForm from "./CertificateEditForm";
 
+// certificate 목록 중 하나를 나타내는 컴포넌트
+// 편집 버튼을 누르면 편집폼(CertificateEditForm)이 나타남
 const CertificateCard = ({ certificate, isEditable, setCertificateList }) => {
   const [isEditing, setIsEditing] = useState(false);
   return (

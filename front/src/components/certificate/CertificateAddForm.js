@@ -2,15 +2,19 @@ import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
+// + 버튼 클릭했을 때 + 버튼 하단에 나타나는 폼 컴포넌트
 const CertificateAddForm = ({ setIsAdding, user, setCertificateList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
+  // 폼 제출시 실행되는 함수. 입력받은 정보를 post하고 certificateList에 합침
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
     const when_date = e.target.date.value;
 
+    // 입력받은 정보가 없으면 리턴. 제춡X
     if (!title || !description) return;
 
     const data = { user_id: user.id, title, description, when_date };

@@ -2,13 +2,16 @@ import React from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
+// certificate 편집 폼 컴포넌트
 const CertificateEditForm = ({
   certificate,
   setCertificateList,
   setIsEditing,
 }) => {
+  // 폼 제출 시 실행되는 함수. 입력받은 정보를 put하고 certificateList에 적용
   const handleSubmit = (e) => {
     e.preventDefault();
+    // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
     const when_date = e.target.date.value;
@@ -18,6 +21,7 @@ const CertificateEditForm = ({
       description,
       when_date,
     });
+
     setCertificateList((current) => {
       const newCertificates = current.map((i) => {
         if (i.id === certificate.id) {
