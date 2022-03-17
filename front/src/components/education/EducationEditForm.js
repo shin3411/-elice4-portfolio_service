@@ -1,29 +1,19 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
+import * as Api from "../../api";
 
 import { useRecoilState } from "recoil";
 import educationListState from "./atom/educationListState";
 
 // 학력 편집 폼 컴포넌트입니다.
 // 추가한 학력 중에서 골라 편집할 수 있습니다.
-const EducationEditFrom = ({
-  key,
-  id,
-  idx,
-  school,
-  major,
-  position,
-  edit,
-  onEdit,
-}) => {
+const EducationEditFrom = ({ education, setIsEditing }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
 
   const [inputs, setInputs] = useState({
-    id,
-    school,
-    major,
-    position,
-    edit,
+    school: education.school,
+    major: education.major,
+    position: education.position,
   });
 
   const onChange = (e) => {
@@ -32,25 +22,31 @@ const EducationEditFrom = ({
       ...inputs,
       [name]: value,
     });
-    console.log(inputs);
   };
 
   // 확인 버튼을 누르면 실행되는 함수입니다.
   // id를 통해 수정한 데이터 객체를 찾고 수정해줍니다. edit을 false로 바꾸어 편집창을 닫습니다.
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     console.log(inputs);
-    setEducationList(
-      educationList.map((list) =>
-        list.id === inputs.id ? { ...inputs, edit: false } : list
-      )
-    );
+    const response = await Api.put(`educations/${education.id}`, inputs);
+    const editedEdu = response.data;
+    setIsEditing(false);
+
+    setEducationList((prev) => {
+      const newEdu = prev.map((v) => {
+        if (v.id === education.id) {
+          return editedEdu;
+        } else return v;
+      });
+      return newEdu;
+    });
   };
 
   console.log("isEdit");
   return (
     <Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="m-3 mb-2" controlId="formBasicEmail">
         <Form.Control
           name="school"
           defaultValue={inputs.school}
@@ -61,7 +57,7 @@ const EducationEditFrom = ({
         />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="m-3 mb-4" controlId="formBasicPassword">
         <Form.Control
           name="major"
           defaultValue={inputs.major}
@@ -124,7 +120,7 @@ const EducationEditFrom = ({
           확인
         </Button>
         <Button
-          onClick={() => onEdit(idx)}
+          onClick={() => setIsEditing(false)}
           variant="secondary"
           type="submit"
           style={{ marginLeft: "10px" }}

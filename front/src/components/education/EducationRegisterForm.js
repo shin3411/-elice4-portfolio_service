@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 import { Form, Button, ButtonGroup } from "react-bootstrap";
 import * as Api from "../../api";
@@ -8,15 +8,12 @@ import educationListState from "./atom/educationListState";
 
 // + 버튼을 눌렀을 때 나타나는 EducationRegisterForm 컴포넌트 입니다.
 // 사용자에게 입력받은 학력 내용을 추가해주는 기능을 합니다.
-const EducationRegisterForm = ({ fetch }) => {
+const EducationRegisterForm = ({ portfolioOwnerId }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
 
-  const nextId = useRef(educationList.length);
-
   // 사용자의 입력을 받아 저장하기 위한 state입니다.
   const [inputs, setInputs] = useState({
-    user_id: nextId.current,
     school: "",
     major: "",
     position: "",
@@ -29,7 +26,12 @@ const EducationRegisterForm = ({ fetch }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const response = await Api.post("education/create", inputs);
-    fetch();
+    if (!response) {
+      console.log("POST 요청 실패하였습니다.");
+    }
+    setEducationList((cur) => {
+      return [...cur, response.data];
+    });
     setIsAddEducation(false);
   };
 
@@ -44,7 +46,7 @@ const EducationRegisterForm = ({ fetch }) => {
 
   return (
     <Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Group className="m-3 mb-2">
         <Form.Control
           name="school"
           defaultValue={inputs.school}
@@ -55,7 +57,7 @@ const EducationRegisterForm = ({ fetch }) => {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="m-3 mb-4">
         <Form.Control
           name="major"
           defaultValue={inputs.major}
