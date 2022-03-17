@@ -1,22 +1,31 @@
 import { Project } from "../db";
 import { v4 as uuidv4 } from "uuid";
+import { User } from "../db";
 
 class projectService {
-    isValidDate(input){
+    static isValidDate(input){
         return input instanceof Date && !isNaN(input);
     }
-
-    static async addProject({ user_id, title, description, fromDate, toDate }){
-        if( !user_id || !title || !description || !fromDate || !toDate ){
+    
+    static async addProject({ user_id, title, description, from_date, to_date }){
+        if( !user_id || !title || !description || !from_date || !to_date ){
             const errorMessage = 
              "빠트린 항목이 있습니다. 모두 채워주세요.";
             return { errorMessage };
         }
 
-        const fromDateCheck = new Date(fromDate);
-        const toDateCheck = new Date(toDate);
+        const fromDateCheck = new Date(from_date);
+        const toDateCheck = new Date(to_date);
 
-        if(!isValidDate(fromDateCheck) || !isValidDate(toDateCheck)){
+        const findUser = await User.findById({ user_id });
+
+        if(!findUser){
+            const errorMessage =
+             "해당 user_id는 존재하지 않습니다. 다시 확인해주세요.";
+            return { errorMessage };
+        }
+
+        if(!projectService.isValidDate(fromDateCheck) || !projectService.isValidDate(toDateCheck)){
             const errorMessage = 
              "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
             return { errorMessage };
@@ -26,8 +35,8 @@ class projectService {
             userId: user_id,
             title,
             description,
-            fromDate,
-            toDate,
+            fromDate: from_date,
+            toDate: to_date,
         }
         
         const project = await Project.findByQuery(query);
@@ -55,7 +64,7 @@ class projectService {
             return { errorMessage };
         }
 
-        return Project;
+        return project;
     }
 
     static async setProject({ project_id, toUpdate }){
@@ -73,42 +82,42 @@ class projectService {
         if (toUpdate.title) {
         const fieldToUpdate = "title";
         const newValue = toUpdate.title;
-        Project = await Project.update({ project_id, fieldToUpdate, newValue });
+        project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
         if (toUpdate.description) {
         const fieldToUpdate = "description";
         const newValue = toUpdate.description;
-        Project = await Project.update({ project_id, fieldToUpdate, newValue });
+        project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
-        if (toUpdate.fromDate) {
+        if (toUpdate.from_date) {
         const fieldToUpdate = "fromDate";
-        const newValue = toUpdate.fromDate;
+        const newValue = toUpdate.from_date;
         
         const newValueCheck = new Date(newValue);
-        if(!isValidDate(newValueCheck)){
+        if(!projectService.isValidDate(newValueCheck)){
             const errorMessage =
                 "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
             return { errorMessage };
         }
-        Project = await Project.update({ project_id, fieldToUpdate, newValue });
+        project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
-        if (toUpdate.toDate) {
+        if (toUpdate.to_date) {
         const fieldToUpdate = "toDate";
-        const newValue = toUpdate.toDate;
+        const newValue = toUpdate.to_date;
 
         const newValueCheck = new Date(newValue);
-        if(!isValidDate(newValueCheck)){
+        if(!projectService.isValidDate(newValueCheck)){
             const errorMessage =
                 "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
             return { errorMessage };
         }
-        Project = await Project.update({ project_id, fieldToUpdate, newValue });
+        project = await Project.update({ project_id, fieldToUpdate, newValue });
         }
 
-        return Project;
+        return project;
     }
 
     static async getProjectList({ user_id }){
@@ -118,7 +127,7 @@ class projectService {
         
         if(filteredProjectList.length === 0){
             const errorMessage =
-             "해당하는 project_id가 없어 Edulist를 줄 수 없습니다."
+             "해당하는 user_id가 없어 Projectlist를 줄 수 없습니다."
             return { errorMessage };
         }
 

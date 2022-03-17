@@ -1,11 +1,20 @@
 import { Education } from "../db";
 import { v4 as uuidv4 } from "uuid";
+import { User } from "../db";
 
 class eduService {
     static async addEdu({ user_id, school, major, position }){
         if( !user_id || !school || !major || !position){
             const errorMessage = 
              "빠트린 항목이 있습니다. 모두 채워주세요.";
+            return { errorMessage };
+        }
+
+        const findUser = await User.findById({ user_id });
+
+        if(!findUser){
+            const errorMessage =
+             "해당 user_id는 존재하지 않습니다. 다시 확인해주세요.";
             return { errorMessage };
         }
 
