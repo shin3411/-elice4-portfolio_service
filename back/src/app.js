@@ -1,6 +1,8 @@
 import cors from "cors";
 import express from "express";
 import { userAuthRouter } from "./routers/userRouter";
+import { eduRouter } from "./routers/educationRouter";
+import { projectRouter } from "./routers/projectRouter";
 import { awardRouter } from "./routers/awardRouter";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 
@@ -22,7 +24,10 @@ app.get("/", (req, res) => {
 
 // router, service 구현 (userAuthRouter는 맨 위에 있어야 함.)
 app.use(userAuthRouter);
-
+// edu router service 구현
+app.use(eduRouter);
+// project router service 구현
+app.use(projectRouter);
 // award router service 구현
 app.use(awardRouter)
 
