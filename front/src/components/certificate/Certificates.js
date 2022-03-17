@@ -16,7 +16,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
   }, [portfolioOwnerId]);
 
   return (
-    <Card>
+    <Card className="mb-2">
       <Card.Body>
         <Card.Title>자격증</Card.Title>
         <Certificate
