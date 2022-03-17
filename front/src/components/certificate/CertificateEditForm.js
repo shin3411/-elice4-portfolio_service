@@ -9,14 +9,14 @@ const CertificateEditForm = ({
   setIsEditing,
 }) => {
   // 폼 제출 시 실행되는 함수. 입력받은 정보를 put하고 certificateList에 적용
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
     const when_date = e.target.date.value;
 
-    Api.put(`certificates/{certificate._id}`, {
+    const res = await Api.put(`certificates/{certificate._id}`, {
       title,
       description,
       when_date,
@@ -24,8 +24,8 @@ const CertificateEditForm = ({
 
     setCertificateList((current) => {
       const newCertificates = current.map((i) => {
-        if (i.id === certificate.id) {
-          return { _id: certificate._id, title, description, date: when_date };
+        if (i._id === certificate._id) {
+          return res.data;
         } else {
           return i;
         }
