@@ -13,7 +13,6 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
     // "awardlist" 엔드포인트로 GET 요청을 하고, Awards를 response의 data로 세팅함.
     Api.get("awardlist", portfolioOwnerId).then((res) => setList(res.data));
   }, [portfolioOwnerId]);
-  console.log(list);
 
   return (
     <Col>
