@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Form, Button, ButtonGroup } from "react-bootstrap";
 
 import EducationEditForm from "./EducationEditForm";
 import EducationItem from "./EducationItem";
@@ -16,12 +15,12 @@ const EducationList = () => {
     setEducationList(mockData);
   }, []);
 
-  // edit의 value를 true로 바꾸어주는 함수입니다. 편집 버튼을 눌렀을 때 실행되며
+  // edit의 value를 true, false로 바꾸어주는 함수입니다. 편집 버튼을 눌렀을 때 실행되며
   // edit을 true로 바꾸면 편집 폼으로 바뀝니다.
   const onEdit = (id) => {
     setEducationList(
       educationList.map((list) =>
-        list.id === id ? { ...list, edit: true } : list
+        list.id === id ? { ...list, edit: !list.edit } : list
       )
     );
   };
