@@ -47,7 +47,6 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
         {isAdding ? (
           <CertificateAddForm
             setIsAdding={setIsAdding}
-            user={user}
             setCertificateList={setCertificateList}
           />
         ) : null}
