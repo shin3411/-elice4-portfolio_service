@@ -26,12 +26,18 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
       from_date: fromDate,
       to_date: toDate,
     };
-    const res = await Api.post("project/create", data);
-    const createdData = res.data;
 
-    setProjectList((current) => {
-      return [...current, createdData];
-    });
+    try {
+      const res = await Api.post("project/create", data);
+      const createdData = res.data;
+
+      setProjectList((current) => {
+        return [...current, createdData];
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+
     setIsAdding(false);
   };
 

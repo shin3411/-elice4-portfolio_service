@@ -13,26 +13,30 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
     const from_date = e.target.fromDate.value;
     const to_date = e.target.toDate.value;
 
-    const res = await Api.put(`projects/${project.id}`, {
-      title,
-      description,
-      from_date,
-      to_date,
-    });
-    const editedProject = res.data;
-
-    setIsEditing(false);
-
-    setProjectList((current) => {
-      const newProject = current.map((i) => {
-        if (i.id === project.id) {
-          return editedProject;
-        } else {
-          return i;
-        }
+    try {
+      const res = await Api.put(`projects/${project.id}`, {
+        title,
+        description,
+        from_date,
+        to_date,
       });
-      return newProject;
-    });
+      const editedProject = res.data;
+
+      setIsEditing(false);
+
+      setProjectList((current) => {
+        const newProject = current.map((i) => {
+          if (i.id === project.id) {
+            return editedProject;
+          } else {
+            return i;
+          }
+        });
+        return newProject;
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
   };
   return (
     <Form onSubmit={handleSubmit}>
