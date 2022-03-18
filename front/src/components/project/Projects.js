@@ -24,7 +24,7 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
           projectList={projectList}
           setProjectList={setProjectList}
         />
-        {isEditable ? (
+        {isEditable && (
           <Row className="text-center mt-3 mb-4">
             <Col>
               <Button
@@ -37,15 +37,14 @@ const Projects = ({ portfolioOwnerId, isEditable }) => {
               </Button>
             </Col>
           </Row>
-        ) : null}
+        )}
 
-        {isAdding ? (
+        {isAdding && (
           <ProjectAddForm
             setIsAdding={setIsAdding}
-            portfolioOwnerId={portfolioOwnerId}
             setProjectList={setProjectList}
           />
-        ) : null}
+        )}
       </Card.Body>
     </Card>
   );

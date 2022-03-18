@@ -19,7 +19,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
       from_date,
       to_date,
     });
-    const editedProject = await res.data;
+    const editedProject = res.data;
 
     setIsEditing(false);
 

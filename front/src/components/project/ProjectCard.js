@@ -26,7 +26,7 @@ const ProjectCard = ({ project, isEditable, setProjectList }) => {
           </Col>
         )}
 
-        {isEditable ? (
+        {isEditable && (
           <Col xs={1}>
             <Button
               variant="outline-info"
@@ -36,7 +36,7 @@ const ProjectCard = ({ project, isEditable, setProjectList }) => {
               편집
             </Button>
           </Col>
-        ) : null}
+        )}
       </Row>
     </div>
   );
