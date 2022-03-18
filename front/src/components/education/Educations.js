@@ -5,8 +5,8 @@ import EducationRegisterForm from "./EducationRegisterForm";
 import * as Api from "../../api";
 
 import { useRecoilState } from "recoil";
-import addEducationState from "./atom/addEducationState";
-import educationListState from "./atom/educationListState";
+import addEducationState from "../../atom/addEducationState";
+import educationListState from "../../atom/educationListState";
 
 // 학력 정보 전체를 담는 컴포넌트입니다.
 const Educations = ({ portfolioOwnerId, isEditable }) => {
@@ -16,8 +16,12 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
   // 로그인한 유저의 모든 학력 정보를 불러와 저장합니다.
   useEffect(() => {
     const fetch = async () => {
-      const response = await Api.get("educationlist", portfolioOwnerId);
-      setEducationList(response.data);
+      try {
+        const response = await Api.get("educationlist", portfolioOwnerId);
+        setEducationList(response.data);
+      } catch (error) {
+        setEducationList([]);
+      }
     };
     fetch();
   }, [portfolioOwnerId]);
@@ -27,7 +31,7 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
       <Card.Body>
         <Card.Title>학력</Card.Title>
         <Education isEditable={isEditable} />
-        {isEditable ? (
+        {isEditable && (
           <Row className="text-center mt-3 mb-4">
             <Col>
               <Button
@@ -40,11 +44,9 @@ const Educations = ({ portfolioOwnerId, isEditable }) => {
               </Button>
             </Col>
           </Row>
-        ) : null}
-
-        {isAddEducation && (
-          <EducationRegisterForm portfolioOwnerId={portfolioOwnerId} />
         )}
+
+        {isAddEducation && <EducationRegisterForm />}
       </Card.Body>
     </Card>
   );

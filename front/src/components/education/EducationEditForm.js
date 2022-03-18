@@ -3,12 +3,13 @@ import { Form, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
 import { useRecoilState } from "recoil";
-import educationListState from "./atom/educationListState";
+import educationListState from "../../atom/educationListState";
 
 // 학력 편집 폼 컴포넌트 입니다.
 // 추가한 학력 중에서 골라 편집할 수 있습니다.
 const EducationEditFrom = ({ education, setIsEditing }) => {
   const [educationList, setEducationList] = useRecoilState(educationListState);
+  const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
   const [inputs, setInputs] = useState({
     school: education.school,
@@ -66,46 +67,19 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
         />
       </Form.Group>
       <Form.Group key=" inline-radio" className="mb-3 m-2">
-        <Form.Check
-          inline
-          label="재학 중"
-          name="position"
-          type="radio"
-          id={`inline-radio-1`}
-          onChange={onChange}
-          defaultValue={"재학 중"}
-          defaultChecked={inputs.position === "재학 중" ? true : false}
-        />
-        <Form.Check
-          inline
-          label="학사 졸업"
-          name="position"
-          type="radio"
-          id={`inline-radio-2`}
-          onChange={onChange}
-          defaultValue={"학사 졸업"}
-          defaultChecked={inputs.position === "학사 졸업" ? true : false}
-        />
-        <Form.Check
-          inline
-          label="석사 졸업"
-          name="position"
-          type="radio"
-          id={`inline-radio-3`}
-          onChange={onChange}
-          defaultValue={"석사 졸업"}
-          defaultChecked={inputs.position === "석사 졸업" ? true : false}
-        />
-        <Form.Check
-          inline
-          label="박사 졸업"
-          name="position"
-          type="radio"
-          id={`inline-radio-4`}
-          defaultValue={"박사 졸업"}
-          onChange={onChange}
-          defaultChecked={inputs.position === "박사 졸업" ? true : false}
-        />
+        {grades.map((grade, idx) => (
+          <Form.Check
+            key={`inline-radio-${idx}`}
+            inline
+            label={grade}
+            name="position"
+            type="radio"
+            id={`inline-radio-${idx}`}
+            onChange={onChange}
+            defaultValue={grade}
+            defaultChecked={inputs.position === grade ? true : false}
+          />
+        ))}
       </Form.Group>
 
       <div style={{ textAlign: "center" }} className="mb-3">
