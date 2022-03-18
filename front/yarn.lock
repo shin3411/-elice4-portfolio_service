@@ -2503,13 +2503,13 @@
   "version" "2.1.2"
 
 "autoprefixer@^10.0.2", "autoprefixer@^10.4.2":
-  "integrity" "sha512-9fOPpHKuDW1w/0EKfRmVnxTDt8166MAnLI3mgZ1JCnhNtYWxcJ6Ud5CO/AVOZi/AvFa8DY9RTy3h3+tFBlrrdQ=="
-  "resolved" "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.2.tgz"
-  "version" "10.4.2"
+  "integrity" "sha512-Tm8JxsB286VweiZ5F0anmbyGiNI3v3wGv3mz9W+cxEDYB/6jbnj6GM9H9mK3wIL8ftgl+C07Lcwb8PG5PCCPzA=="
+  "resolved" "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.4.tgz"
+  "version" "10.4.4"
   dependencies:
-    "browserslist" "^4.19.1"
-    "caniuse-lite" "^1.0.30001297"
-    "fraction.js" "^4.1.2"
+    "browserslist" "^4.20.2"
+    "caniuse-lite" "^1.0.30001317"
+    "fraction.js" "^4.2.0"
     "normalize-range" "^0.1.2"
     "picocolors" "^1.0.0"
     "postcss-value-parser" "^4.2.0"
@@ -2767,13 +2767,13 @@
   "resolved" "https://registry.npmjs.org/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz"
   "version" "1.0.0"
 
-"browserslist@^4.0.0", "browserslist@^4.14.5", "browserslist@^4.16.6", "browserslist@^4.17.5", "browserslist@^4.18.1", "browserslist@^4.19.1", "browserslist@^4.19.3", "browserslist@>= 4", "browserslist@>=4":
-  "integrity" "sha512-bnpOoa+DownbciXj0jVGENf8VYQnE2LNWomhYuCsMmmx9Jd9lwq0WXODuwpSsp8AVdKM2/HorrzxAfbKvWTByQ=="
-  "resolved" "https://registry.npmjs.org/browserslist/-/browserslist-4.20.0.tgz"
-  "version" "4.20.0"
+"browserslist@^4.0.0", "browserslist@^4.14.5", "browserslist@^4.16.6", "browserslist@^4.17.5", "browserslist@^4.18.1", "browserslist@^4.19.1", "browserslist@^4.19.3", "browserslist@^4.20.2", "browserslist@>= 4", "browserslist@>=4":
+  "integrity" "sha512-CQOBCqp/9pDvDbx3xfMi+86pr4KXIf2FDkTTdeuYw8OxS9t898LA1Khq57gtufFILXpfgsSx5woNgsBgvGjpsA=="
+  "resolved" "https://registry.npmjs.org/browserslist/-/browserslist-4.20.2.tgz"
+  "version" "4.20.2"
   dependencies:
-    "caniuse-lite" "^1.0.30001313"
-    "electron-to-chromium" "^1.4.76"
+    "caniuse-lite" "^1.0.30001317"
+    "electron-to-chromium" "^1.4.84"
     "escalade" "^3.1.1"
     "node-releases" "^2.0.2"
     "picocolors" "^1.0.0"
@@ -2856,10 +2856,10 @@
     "lodash.memoize" "^4.1.2"
     "lodash.uniq" "^4.5.0"
 
-"caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30001297", "caniuse-lite@^1.0.30001313":
-  "integrity" "sha512-0zaSO+TnCHtHJIbpLroX7nsD+vYuOVjl3uzFbJO1wMVbuveJA0RK2WcQA9ZUIOiO0/ArMiMgHJLxfEZhQiC0kw=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001314.tgz"
-  "version" "1.0.30001314"
+"caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30001317":
+  "integrity" "sha512-xIZLh8gBm4dqNX0gkzrBeyI86J2eCjWzYAs40q88smG844YIrN4tVQl/RhquHvKEKImWWFIVh1Lxe5n1G/N+GQ=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001317.tgz"
+  "version" "1.0.30001317"
 
 "case-sensitive-paths-webpack-plugin@^2.4.0":
   "integrity" "sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw=="
@@ -3769,10 +3769,10 @@
   dependencies:
     "jake" "^10.6.1"
 
-"electron-to-chromium@^1.4.76":
-  "integrity" "sha512-COsbJCGVYCc/aAY4cd94x1Js3q0r406YKGbdL8LXHg0O9dEjuFEFU/vZneRxBxKo/f1lLHi0YyAR7sbFM+i8Bg=="
-  "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.80.tgz"
-  "version" "1.4.80"
+"electron-to-chromium@^1.4.84":
+  "integrity" "sha512-EVTZ+igi8x63pK4bPuA95PXIs2b2Cowi3WQwI9f9qManLiZJOD1Lash1J3W4TvvcUCcIR4o/rgi9o8UicXSO+w=="
+  "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.86.tgz"
+  "version" "1.4.86"
 
 "emittery@^0.8.1":
   "integrity" "sha512-uDfvUjVrfGJJhymx/kz6prltenw1u7WrCg1oa94zYY8xxVpLLUu045LAT0dhDZdXG58/EpPL/5kA180fQ/qudg=="
@@ -4442,7 +4442,7 @@
   "resolved" "https://registry.npmjs.org/forwarded/-/forwarded-0.2.0.tgz"
   "version" "0.2.0"
 
-"fraction.js@^4.1.2":
+"fraction.js@^4.2.0":
   "integrity" "sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA=="
   "resolved" "https://registry.npmjs.org/fraction.js/-/fraction.js-4.2.0.tgz"
   "version" "4.2.0"
