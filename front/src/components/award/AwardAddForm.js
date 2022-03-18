@@ -19,7 +19,7 @@ const AwardAddForm = ({ setAdd, setList }) => {
         return [...current, data];
       });
     } catch (e) {
-      throw new Error(e);
+      console.log("데이터를 불러오지 못했습니다.", e);
     }
 
     setAdd(false);
