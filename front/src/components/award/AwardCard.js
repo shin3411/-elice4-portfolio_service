@@ -36,7 +36,7 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
                 >
                   +
                 </Button>
-                {add ? <AwardAddForm setList={setList} setAdd={setAdd} /> : ""}
+                {add && <AwardAddForm setList={setList} setAdd={setAdd} />}
               </Col>
             </Row>
           )}

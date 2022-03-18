@@ -10,13 +10,18 @@ const AwardAddForm = ({ setAdd, setList }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // "award/create" 엔드포인트로 post요청함.
-    const res = await Api.post("award/create", {
-      title: awardDescription,
-      description: detailDescription,
-    });
-    setList((current) => {
-      return [...current, res.data];
-    });
+    try {
+      const { data } = await Api.post("award/create", {
+        title: awardDescription,
+        description: detailDescription,
+      });
+      setList((current) => {
+        return [...current, data];
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
+
     setAdd(false);
   };
   return (

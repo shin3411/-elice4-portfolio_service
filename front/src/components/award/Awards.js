@@ -17,7 +17,7 @@ const Awards = ({ award, setList, isEditable }) => {
             award={award}
             setList={setList}
             setIsEditing={setIsEditing}
-          ></AwardEditForm>
+          />
         ) : (
           <>
             <Col>
