@@ -25,7 +25,7 @@ const CertificateCard = ({ certificate, isEditable, setCertificateList }) => {
           </Col>
         )}
 
-        {isEditable ? (
+        {isEditable && (
           <Col xs={1}>
             <Button
               variant="outline-info"
@@ -35,7 +35,7 @@ const CertificateCard = ({ certificate, isEditable, setCertificateList }) => {
               편집
             </Button>
           </Col>
-        ) : null}
+        )}
       </Row>
     </div>
   );

@@ -24,7 +24,7 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
           certificateList={certificateList}
           setCertificateList={setCertificateList}
         />
-        {isEditable ? (
+        {isEditable && (
           <Row className="text-center mt-3 mb-4">
             <Col>
               <Button
@@ -37,14 +37,14 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
               </Button>
             </Col>
           </Row>
-        ) : null}
+        )}
 
-        {isAdding ? (
+        {isAdding && (
           <CertificateAddForm
             setIsAdding={setIsAdding}
             setCertificateList={setCertificateList}
           />
-        ) : null}
+        )}
       </Card.Body>
     </Card>
   );

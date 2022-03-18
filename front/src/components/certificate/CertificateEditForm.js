@@ -21,7 +21,7 @@ const CertificateEditForm = ({
       description,
       date,
     });
-    const editedCertificate = await res.data;
+    const editedCertificate = res.data;
 
     setIsEditing(false);
 
