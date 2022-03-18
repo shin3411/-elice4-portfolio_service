@@ -7,8 +7,12 @@ import educationListState from "../../atom/educationListState";
 
 // 학력 편집 폼 컴포넌트 입니다.
 // 추가한 학력 중에서 골라 편집할 수 있습니다.
-const EducationEditFrom = ({ education, setIsEditing }) => {
-  const [educationList, setEducationList] = useRecoilState(educationListState);
+const EducationEditFrom = ({
+  education,
+  setIsEditing,
+  setEditButtonVisible,
+}) => {
+  const [, setEducationList] = useRecoilState(educationListState);
   const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
   const [inputs, setInputs] = useState({
@@ -31,6 +35,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
     e.preventDefault();
     const response = await Api.put(`educations/${education.id}`, inputs);
     const editedEdu = response.data;
+    setEditButtonVisible(true);
     setIsEditing(false);
 
     setEducationList((prev) => {
@@ -45,7 +50,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
 
   return (
     <Form.Group>
-      <Form.Group className="m-3 mb-2" controlId="formBasicEmail">
+      <Form.Group className="mt-3" controlId="formBasicEmail">
         <Form.Control
           name="school"
           defaultValue={inputs.school}
@@ -56,7 +61,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
         />
       </Form.Group>
 
-      <Form.Group className="m-3 mb-4" controlId="formBasicPassword">
+      <Form.Group className="mt-3" controlId="formBasicPassword">
         <Form.Control
           name="major"
           defaultValue={inputs.major}
@@ -66,7 +71,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           onChange={onChange}
         />
       </Form.Group>
-      <Form.Group key=" inline-radio" className="mb-3 m-2">
+      <Form.Group key=" inline-radio" className="mt-3">
         {grades.map((grade, idx) => (
           <Form.Check
             key={`inline-radio-${idx}`}
@@ -92,7 +97,10 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           확인
         </Button>
         <Button
-          onClick={() => setIsEditing(false)}
+          onClick={() => {
+            setEditButtonVisible(true);
+            setIsEditing(false);
+          }}
           variant="secondary"
           type="submit"
           style={{ marginLeft: "10px" }}

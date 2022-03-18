@@ -9,8 +9,8 @@ import educationListState from "../../atom/educationListState";
 // + 버튼을 눌렀을 때 나타나는 학력 추가 컴포넌트 입니다.
 // 사용자에게 입력받은 학력 내용을 추가해주는 기능을 합니다.
 const EducationRegisterForm = () => {
-  const [educationList, setEducationList] = useRecoilState(educationListState);
-  const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
+  const [, setEducationList] = useRecoilState(educationListState);
+  const [, setIsAddEducation] = useRecoilState(addEducationState);
 
   const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
@@ -46,7 +46,7 @@ const EducationRegisterForm = () => {
 
   return (
     <Form.Group>
-      <Form.Group className="m-3 mb-2">
+      <Form.Group className="mt-3">
         <Form.Control
           name="school"
           defaultValue={inputs.school}
@@ -57,7 +57,7 @@ const EducationRegisterForm = () => {
         />
       </Form.Group>
 
-      <Form.Group className="m-3 mb-4">
+      <Form.Group className="mt-3">
         <Form.Control
           name="major"
           defaultValue={inputs.major}
@@ -67,7 +67,7 @@ const EducationRegisterForm = () => {
           placeholder="전공"
         />
       </Form.Group>
-      <Form.Group key=" inline-radio" className="mb-3 m-2">
+      <Form.Group key=" inline-radio" className="mt-3">
         {grades.map((grade, idx) => (
           <Form.Check
             inline

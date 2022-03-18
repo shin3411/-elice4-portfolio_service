@@ -7,6 +7,7 @@ import EducationEditForm from "./EducationEditForm";
 // 편집 버튼을 클릭하면 학력 목록에서 편집 폼으로 바뀝니다.
 const EducationCard = ({ education, isEditable, setEducationList }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [editButtonVisible, setEditButtonVisible] = useState(true); // 편집 버튼을 클릭하면 사라지게 하기 위한 상태 입니다.
 
   return (
     <div className="mb-3">
@@ -16,6 +17,7 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
             education={education}
             setEducationList={setEducationList}
             setIsEditing={setIsEditing}
+            setEditButtonVisible={setEditButtonVisible}
           />
         ) : (
           <Col>
@@ -25,12 +27,15 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
             </div>
           </Col>
         )}
-        {!isEditing && (
+        {isEditable && editButtonVisible && (
           <Col xs={1}>
             <Button
               variant="outline-info"
               size="sm"
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                setEditButtonVisible(false);
+                setIsEditing(true);
+              }}
             >
               편집
             </Button>

@@ -11,7 +11,7 @@ import educationListState from "../../atom/educationListState";
 // 학력 정보 전체를 담는 컴포넌트입니다.
 const Educations = ({ portfolioOwnerId, isEditable }) => {
   const [isAddEducation, setIsAddEducation] = useRecoilState(addEducationState);
-  const [educationList, setEducationList] = useRecoilState(educationListState);
+  const [, setEducationList] = useRecoilState(educationListState);
 
   // 로그인한 유저의 모든 학력 정보를 불러와 저장합니다.
   useEffect(() => {
