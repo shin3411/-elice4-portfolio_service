@@ -70,8 +70,8 @@ const EducationRegisterForm = () => {
       <Form.Group key=" inline-radio" className="mb-3 m-2">
         {grades.map((grade, idx) => (
           <Form.Check
-            key={`inline-radio-${idx}`}
             inline
+            key={`inline-radio-${idx}`}
             label={grade}
             name="position"
             type="radio"
