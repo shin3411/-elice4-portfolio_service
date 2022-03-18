@@ -16,25 +16,29 @@ const CertificateEditForm = ({
     const description = e.target.description.value;
     const date = e.target.date.value;
 
-    const res = await Api.put(`certificates/${certificate._id}`, {
-      title,
-      description,
-      date,
-    });
-    const editedCertificate = res.data;
-
-    setIsEditing(false);
-
-    setCertificateList((current) => {
-      const newCertificateList = current.map((i) => {
-        if (i._id === certificate._id) {
-          return editedCertificate;
-        } else {
-          return i;
-        }
+    try {
+      const res = await Api.put(`certificates/${certificate._id}`, {
+        title,
+        description,
+        date,
       });
-      return newCertificateList;
-    });
+      const editedCertificate = res.data;
+
+      setIsEditing(false);
+
+      setCertificateList((current) => {
+        const newCertificateList = current.map((i) => {
+          if (i._id === certificate._id) {
+            return editedCertificate;
+          } else {
+            return i;
+          }
+        });
+        return newCertificateList;
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
   };
 
   return (

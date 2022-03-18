@@ -16,14 +16,18 @@ const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
 
     // 입력받은 정보가 없으면 리턴. 제춡X
     if (!title || !description) return;
-
     const data = { title, description, date };
-    const res = await Api.post("certificate/create", data);
-    const createdData = res.data;
 
-    setCertificateList((current) => {
-      return [...current, createdData];
-    });
+    try {
+      const res = await Api.post("certificate/create", data);
+      const createdData = res.data;
+
+      setCertificateList((current) => {
+        return [...current, createdData];
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
 
     setIsAdding(false);
   };
