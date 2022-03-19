@@ -37,7 +37,7 @@ const CertificateEditForm = ({
         return newCertificateList;
       });
     } catch (e) {
-      throw new Error(e);
+      console.log(e);
     }
   };
 

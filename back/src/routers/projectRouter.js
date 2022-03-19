@@ -83,4 +83,19 @@ projectRouter.get('/projectlist/:user_id', login_required, async (req, res, next
     }
 })
 
+projectRouter.delete('/projects/:id', login_required, async (req, res, next) => {
+    try{
+        const project_id = req.params.id;
+        const project = await projectService.deleteProject({ project_id });
+        
+        if(project.errorMessage){
+            throw new Error(project.errorMessage);
+        }
+        res.status(200).send(project);
+
+    } catch(err) {
+        next(err);
+    }
+})
+
 export { projectRouter };

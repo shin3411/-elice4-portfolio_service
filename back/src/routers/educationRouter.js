@@ -17,7 +17,7 @@ eduRouter.post('/education/create', login_required, async (req, res, next) => {
         if(newEdu.errorMessage){
             throw new Error(newEdu.errorMessage);
         }
-        console.log(newEdu);
+        
         res.status(201).send(newEdu);
 
     } catch(err) {
@@ -77,6 +77,21 @@ eduRouter.get('/educationlist/:user_id', login_required, async (req, res, next) 
             throw new Error(eduList.errorMessage);
         }
         res.status(200).send(eduList);
+
+    } catch(err) {
+        next(err);
+    }
+})
+
+eduRouter.delete('/educations/:id', login_required, async (req, res, next) => {
+    try{
+        const edu_id = req.params.id;
+        const edu = await eduService.deleteEdu({ edu_id });
+
+        if(edu.errorMessage){
+            throw new Error(edu.errorMessage);
+        }
+        res.status(200).send(edu);
 
     } catch(err) {
         next(err);

@@ -44,6 +44,11 @@ class Education {
         );
         return updatedEducation;
     }
+
+    static async deleteById({ edu_id }){
+        const findEdu = await EducationModel.findOneAndDelete({id: edu_id});
+        return findEdu;
+    }
 }
 
 export { Education };

@@ -59,6 +59,25 @@ class AwardService {
         }
     }
 
+    //특정 1개의 수상 정보 삭제
+    static async deleteAward({ awardId, currentUserId }) {
+        let award = await Award.findById({ _id: awardId })
+
+        if (!award) {
+            const errorMessage =
+                "해당 수상내용이 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        if (award.user_id !== currentUserId) {
+            const errorMessage = "본인거 아니라 권한 없음"
+            return { errorMessage }
+        }
+        award = await Award.delete({ awardId })
+
+        return award;
+    }
+
 }
 
 export { AwardService }

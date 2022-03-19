@@ -62,6 +62,24 @@ class CertificateService {
         }
     }
 
+    //특정 1개의 수상 정보 삭제
+    static async deleteCertificate({ certificateId, currentUserId }) {
+        let certificate = await Certificate.findById({ _id: certificateId })
+
+        if (!certificate) {
+            const errorMessage =
+                "해당 자격증이 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        if (certificate.user_id !== currentUserId) {
+            const errorMessage = "본인거 아니라 권한 없음"
+            return { errorMessage }
+        }
+        certificate = await Certificate.delete({ certificateId })
+
+        return certificate;
+    }
 }
 
 export { CertificateService }
