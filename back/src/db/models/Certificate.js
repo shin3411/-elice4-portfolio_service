@@ -26,9 +26,12 @@ class Certificate {
             update,
             option
         );
-        console.log(certificateId)
-        console.log(updatedCertificate)
         return updatedCertificate;
+    }
+
+    static async delete({ certificateId }) {
+        const ret = await CertificateModel.findOneAndDelete({ _id: certificateId })
+        return ret
     }
 }
 

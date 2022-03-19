@@ -28,6 +28,11 @@ class Award {
         );
         return updatedaward;
     }
+
+    static async delete({ awardId }) {
+        const ret = await AwardModel.findOneAndDelete({ _id: awardId })
+        return ret
+    }
 }
 
 export { Award };

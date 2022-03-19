@@ -92,4 +92,26 @@ awardRouter.put('/awards/:id', login_required, async (req, res, next) => {
         next(err)
     }
 })
+
+//삭제
+awardRouter.delete('/awards/:id', login_required, async (req, res, next) => {
+    try {
+        //URI에서 수정할 award의 id를 받아옴
+        const awardId = req.params.id
+
+        //현재 요청준 로그인된 사용자의 아이디
+        const currentUserId = req.currentUserId
+
+        const deletedAward = await AwardService.deleteAward({ awardId, currentUserId })
+
+        if (deletedAward.errorMessage) {
+            throw new Error(deletedAward.errorMessage);
+        }
+
+        res.status(200).json(deletedAward);
+    } catch (err) {
+        next(err)
+    }
+})
+
 export { awardRouter }
