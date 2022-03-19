@@ -7,17 +7,21 @@ const AwardEditForm = ({ setIsEditing, setList, award }) => {
   const [detailDescription, setDetailDescription] = useState(award.description);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await Api.put(`awards/${award._id}`, {
-      title: awardDescription,
-      description: detailDescription,
-    });
+    try {
+      const res = await Api.put(`awards/${award._id}`, {
+        title: awardDescription,
+        description: detailDescription,
+      });
 
-    const editedAwards = await res.data;
-    setList((current) => {
-      const editedIndex = current.findIndex((i) => i._id === award._id);
-      current[editedIndex] = editedAwards;
-      return [...current];
-    });
+      const editedAwards = await res.data;
+      setList((current) => {
+        const editedIndex = current.findIndex((i) => i._id === award._id);
+        current[editedIndex] = editedAwards;
+        return [...current];
+      });
+    } catch (e) {
+      console.log(e);
+    }
     setIsEditing(false);
   };
   const handleCancel = () => {
