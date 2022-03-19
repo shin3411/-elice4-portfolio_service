@@ -35,7 +35,7 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
         return [...current, createdData];
       });
     } catch (e) {
-      throw new Error(e);
+      console.log(e);
     }
 
     setIsAdding(false);
