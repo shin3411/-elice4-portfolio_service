@@ -22,9 +22,11 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
           <Card.Title>수상이력</Card.Title>
           {list.map((award) => (
             <Awards
+              key={award._id}
               award={award}
               isEditable={isEditable}
               setList={setList}
+              list={list}
             ></Awards>
           ))}
           {isEditable && (
