@@ -29,7 +29,7 @@ const EducationCard = ({ education, isEditable, setEducationList }) => {
             </Col>
           )}
           {isEditable && !isEditing && (
-            <Col xs={2}>
+            <Col xs={2} className="text-center">
               <Button
                 className="me-2"
                 variant="outline-info"
