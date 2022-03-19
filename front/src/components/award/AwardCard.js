@@ -5,6 +5,7 @@ import Awards from "./Awards";
 import * as Api from "../../api";
 
 //수상이력들이 렌더링되는 부분, 추가 버튼이 있음
+
 function AwardCard({ portfolioOwnerId, isEditable }) {
   const [add, setAdd] = useState(false);
   const [list, setList] = useState([]);

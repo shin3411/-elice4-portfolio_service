@@ -14,14 +14,9 @@ const AwardEditForm = ({ setIsEditing, setList, award }) => {
 
     const editedAwards = await res.data;
     setList((current) => {
-      const newAwards = current.map((i) => {
-        if (i._id === award._id) {
-          return editedAwards;
-        } else {
-          return i;
-        }
-      });
-      return newAwards;
+      const editedIndex = current.findIndex((i) => i._id === award._id);
+      current[editedIndex] = editedAwards;
+      return [...current];
     });
     setIsEditing(false);
   };
