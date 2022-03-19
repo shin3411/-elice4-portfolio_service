@@ -35,7 +35,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
         return newProject;
       });
     } catch (e) {
-      throw new Error(e);
+      console.log(e);
     }
   };
   return (
