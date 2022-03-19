@@ -1,6 +1,6 @@
 import { Project } from "../db";
 import { v4 as uuidv4 } from "uuid";
-import { User } from "../db";
+
 
 class projectService {
     static isValidDate(input){
@@ -33,10 +33,10 @@ class projectService {
         }
         
         const project = await Project.findByQuery(query);
-        //학적 중복
+        //프로젝트 중복
         if(project){
             const errorMessage = 
-             "중복된 학적입니다. 다른 학적을 입력해 주세요."
+             "중복된 프로젝트입니다. 다른 프로젝트를 입력해 주세요."
             return { errorMessage };
         }
         const id = uuidv4();
@@ -53,7 +53,7 @@ class projectService {
 
         if(!project){
             const errorMessage = 
-             "해당 학적이 존재하지 않습니다.";
+             "해당 프로젝트가 존재하지 않습니다.";
             return { errorMessage };
         }
 
@@ -125,6 +125,18 @@ class projectService {
         }
 
         return filteredProjectList;
+    }
+
+    static async deleteProject({ project_id }){
+        const result = await Project.deleteById({ project_id });
+
+        if(!result){
+            const errorMessage =
+            "해당 프로젝트가 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        return result;
     }
 }
 

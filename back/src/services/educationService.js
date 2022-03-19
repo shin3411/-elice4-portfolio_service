@@ -90,6 +90,18 @@ class eduService {
 
         return filteredEduList;
     }
+
+    static async deleteEdu({ edu_id }){
+        const education = await Education.deleteById({ edu_id });
+        
+        if(!education){
+            const errorMessage = 
+             "해당 학적이 존재하지 않습니다.";
+            return { errorMessage };
+        }
+
+        return education;
+    }
 }
 
 export { eduService };
