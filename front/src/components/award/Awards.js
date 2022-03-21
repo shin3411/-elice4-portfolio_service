@@ -28,7 +28,7 @@ const Awards = ({ award, setList, list, isEditable }) => {
     }
   };
   return (
-    <div>
+    <div className="mb-3">
       <Row className="align-items-center">
         {isEditing ? (
           <AwardEditForm
