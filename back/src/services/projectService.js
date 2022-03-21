@@ -7,6 +7,26 @@ class projectService {
         return input instanceof Date && !isNaN(input);
     }
     
+    static dateToString(dateObj){
+        const fullYear = String(dateObj.getFullYear());
+        const month = String(dateObj.getMonth() + 1);
+        const date = String(dateObj.getDate());
+        
+        const dateString = `${fullYear.padStart(4,'0')}-${month.padStart(2,'0')}-${date.padStart(2,'0')}`
+        return dateString;
+    }
+
+    static refineDateFields(project){
+        const { fromDate, toDate } = project;
+        const fromDateString = projectService.dateToString(fromDate);
+        const toDateString = projectService.dateToString(toDate);
+
+        project.fromDate = fromDateString;
+        project.toDate = toDateString;
+        console.log(project);
+        return project;
+    }
+
     static async addProject({ user_id, title, description, from_date, to_date }){
         if( !user_id || !title || !description || !from_date || !to_date ){
             const errorMessage = 
@@ -24,12 +44,13 @@ class projectService {
             return { errorMessage };
         }
 
+        
         const query = {
             userId: user_id,
             title,
             description,
-            fromDate: from_date,
-            toDate: to_date,
+            fromDate: new Date(from_date),
+            toDate: new Date(to_date),
         }
         
         const project = await Project.findByQuery(query);
@@ -57,7 +78,8 @@ class projectService {
             return { errorMessage };
         }
 
-        return project;
+        const modifiedProject = projectService.refineDateFields(project);
+        return modifiedProject;
     }
 
     static async setProject({ project_id, toUpdate }){
@@ -71,72 +93,74 @@ class projectService {
         return { errorMessage };
         }
 
-        // 업데이트 대상에 title이 있다면, 즉 title 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.title) {
-        const fieldToUpdate = "title";
-        const newValue = toUpdate.title;
-        project = await Project.update({ project_id, fieldToUpdate, newValue });
+        if (toUpdate.from_date) {        
+            const from_date = new Date(toUpdate.from_date);
+            if(!projectService.isValidDate(from_date)){
+                const errorMessage =
+                    "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
+                return { errorMessage };
+            }
         }
 
-        if (toUpdate.description) {
-        const fieldToUpdate = "description";
-        const newValue = toUpdate.description;
-        project = await Project.update({ project_id, fieldToUpdate, newValue });
+        if (toUpdate.to_date) {        
+            const to_date = new Date(toUpdate.to_date);
+            if(!projectService.isValidDate(to_date)){
+                const errorMessage =
+                    "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
+                return { errorMessage };
+            }
         }
 
-        if (toUpdate.from_date) {
-        const fieldToUpdate = "fromDate";
-        const newValue = toUpdate.from_date;
-        
-        const newValueCheck = new Date(newValue);
-        if(!projectService.isValidDate(newValueCheck)){
-            const errorMessage =
-                "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
-            return { errorMessage };
-        }
-        project = await Project.update({ project_id, fieldToUpdate, newValue });
-        }
+        for(const [key, value] of Object.entries(toUpdate)){
+            if(!value){
+                delete toUpdate[key];
+                continue;
+            }
+            
+            if(key === "from_date"){
+                delete toUpdate[key];
+                toUpdate["fromDate"] = new Date(value);
+            }
 
-        if (toUpdate.to_date) {
-        const fieldToUpdate = "toDate";
-        const newValue = toUpdate.to_date;
-
-        const newValueCheck = new Date(newValue);
-        if(!projectService.isValidDate(newValueCheck)){
-            const errorMessage =
-                "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
-            return { errorMessage };
+            if(key === "to_date"){
+                delete toUpdate[key];
+                toUpdate["toDate"] = new Date(value);
+            }
         }
-        project = await Project.update({ project_id, fieldToUpdate, newValue });
-        }
-
-        return project;
+        project = await Project.update({ project_id, toUpdate });
+        const modifiedProject = projectService.refineDateFields(project);
+        return modifiedProject;
     }
 
     static async getProjectList({ user_id }){
-        const projects = await Project.findAll();
-        const filteredProjectList = projects
-        .filter(({ userId }) => userId === user_id);
+        const projects = await Project.findAll({ user_id });
         
-        if(filteredProjectList.length === 0){
+        if(projects.length === 0){
             const errorMessage =
              "해당하는 user_id가 없어 Projectlist를 줄 수 없습니다."
             return { errorMessage };
         }
 
-        return filteredProjectList;
+        const modifiedProjects = projects.map(project => {
+            const modifiedProject = projectService.refineDateFields(project);
+            return modifiedProject;
+        })
+
+        return modifiedProjects;
+
     }
 
     static async deleteProject({ project_id }){
-        const result = await Project.deleteById({ project_id });
+        const project = await Project.deleteById({ project_id });
 
-        if(!result){
+        if(!project){
             const errorMessage =
             "해당 프로젝트가 존재하지 않습니다.";
             return { errorMessage };
         }
 
-        return result;
+        const modifiedProject = projectService.refineDateFields(project);
+        return modifiedProject;
     }
 }
 

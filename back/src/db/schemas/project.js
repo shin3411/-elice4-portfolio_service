@@ -20,11 +20,11 @@ const ProjectSchema = new Schema(
         default: "아직 설명이 없습니다. 추가해 주세요.",
       },
       fromDate: {
-        type: String,
+        type: Date,
         required: true,
       },
       toDate: {
-        type: String,
+        type: Date,
         required: true,
       },
     },

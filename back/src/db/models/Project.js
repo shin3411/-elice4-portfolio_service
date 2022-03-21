@@ -18,19 +18,18 @@ class Project {
         return findProject;
     }
 
-    static async findAll(){
-        const projects = await ProjectModel.find({});
+    static async findAll({ user_id }){
+        const projects = await ProjectModel.find({ userId: user_id });
         return projects;
     }
 
-    static async update({ project_id, fieldToUpdate, newValue }){
+    static async update({ project_id, toUpdate }){
         const filter = { id: project_id };
-        const update = { [fieldToUpdate]: newValue };
         const option = { returnOriginal: false };
 
         const updatedProject = await ProjectModel.findOneAndUpdate(
             filter, 
-            update,
+            toUpdate,
             option
         );
         return updatedProject;
