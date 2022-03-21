@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import GlobalCss from "./styles/GlobalCss";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
@@ -10,12 +11,14 @@ import Network from "./components/user/Network";
 import RegisterForm from "./components/user/RegisterForm";
 import Portfolio from "./components/Portfolio";
 
-import { RecoilRoot } from "recoil";
+import { useRecoilValue } from "recoil";
+import { modeState } from "./atom/themeState";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 
 function App() {
+  const currentTheme = useRecoilValue(modeState);
   // useReducer 훅을 통해 userState 상태와 dispatch함수를 생성함.
   const [userState, dispatch] = useReducer(loginReducer, {
     user: null,
@@ -55,23 +58,22 @@ function App() {
   }
 
   return (
-    <RecoilRoot>
-      <DispatchContext.Provider value={dispatch}>
-        <UserStateContext.Provider value={userState}>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/" exact element={<Portfolio />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
-              <Route path="/users/:userId" element={<Portfolio />} />
-              <Route path="/network" element={<Network />} />
-              <Route path="*" element={<Portfolio />} />
-            </Routes>
-          </Router>
-        </UserStateContext.Provider>
-      </DispatchContext.Provider>
-    </RecoilRoot>
+    <DispatchContext.Provider value={dispatch}>
+      <UserStateContext.Provider value={userState}>
+        <GlobalCss currentTheme={currentTheme} />
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" exact element={<Portfolio />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/users/:userId" element={<Portfolio />} />
+            <Route path="/network" element={<Network />} />
+            <Route path="*" element={<Portfolio />} />
+          </Routes>
+        </Router>
+      </UserStateContext.Provider>
+    </DispatchContext.Provider>
   );
 }
 

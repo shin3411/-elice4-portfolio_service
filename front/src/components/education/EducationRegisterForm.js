@@ -67,7 +67,7 @@ const EducationRegisterForm = () => {
           placeholder="전공"
         />
       </Form.Group>
-      <Form.Group key=" inline-radio" className="mt-3">
+      <Form.Group key=" inline-radio" className="mt-3 mb-2">
         {grades.map((grade, idx) => (
           <Form.Check
             inline

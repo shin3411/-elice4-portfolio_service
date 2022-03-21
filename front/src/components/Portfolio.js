@@ -7,7 +7,6 @@ import * as Api from "../api";
 import User from "./user/User";
 import Award from "./award/Award";
 
-import ThemeToggle from "./ThemeToggle";
 import Certificates from "./certificate/Certificates";
 import Projects from "./project/Projects";
 import Educations from "./education/Educations";
@@ -59,9 +58,6 @@ function Portfolio() {
 
   return (
     <Container fluid>
-      <Col className="mb-2" style={{ textAlign: "right" }}>
-        <ThemeToggle />
-      </Col>
       <Row>
         <Col lg="3">
           <User
