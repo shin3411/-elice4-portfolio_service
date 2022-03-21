@@ -21,8 +21,13 @@ export const DarkState = atom({
   },
 });
 
+export const getTheme = () => {
+  const theme = localStorage.getItem("mode");
+  return theme === "dark" ? DarkState : LightState;
+};
+
 // 현재 모드를 저장하는 modeState
 export const modeState = atom({
   key: "isMode",
-  default: LightState,
+  default: getTheme(),
 });
