@@ -17,7 +17,7 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
 
   return (
     <Col>
-      <Card>
+      <Card className="mb-2">
         <Card.Body>
           <Card.Title>수상이력</Card.Title>
           {list.map((award) => (
@@ -30,7 +30,7 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
             ></Awards>
           ))}
           {isEditable && (
-            <Row className="mt-3 mb-4 text-center text-info">
+            <Row className="mt-3 mb-3 text-center text-info">
               <Col sm={{ span: 20 }}>
                 <Button
                   variant="primary"
@@ -39,10 +39,10 @@ function AwardCard({ portfolioOwnerId, isEditable }) {
                 >
                   +
                 </Button>
-                {add && <AwardAddForm setList={setList} setAdd={setAdd} />}
               </Col>
             </Row>
           )}
+          {add && <AwardAddForm setList={setList} setAdd={setAdd} />}
         </Card.Body>
       </Card>
     </Col>
