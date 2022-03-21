@@ -15,7 +15,6 @@ certificateRouter.post("/certificate/create", login_required, async (req, res, n
         }
 
         //생각해보니까 login_required 거치니까 body로 user_id 받지 않아도됨
-        //const user_id = req.body.user_id
         const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description

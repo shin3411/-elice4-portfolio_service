@@ -5,7 +5,6 @@ class CertificateService {
     static async addCertificate({ user_id, title, description, date }) {
         const newCertificate = { user_id, title, description, date }
         const createdNewCertificate = await Certificate.create({ newCertificate })
-        createdNewCertificate.errorMessage = null
         return createdNewCertificate
     }
 
@@ -13,7 +12,7 @@ class CertificateService {
     static async getCertificate({ _id }) {
 
         const certificate = await Certificate.findById({ _id })
-        if (!certificate) {
+        if (certificate.length == 0) {
             const errorMessage =
                 "해당 수상내용이 존재하지 않습니다.";
             return { errorMessage };
@@ -25,7 +24,7 @@ class CertificateService {
     //특정 유저의 모든 수상내역 반환용
     static async getCertificates({ user_id }) {
         const certificates = await Certificate.findAll({ user_id })
-        if (!certificates) {
+        if (certificates.length == 0) {
             const errorMessage =
                 "해당 유저의 수상내용이 존재하지 않습니다.";
             return { errorMessage };
@@ -39,25 +38,10 @@ class CertificateService {
         let certificate = await Certificate.findById({ _id: certificateId })
 
         if (certificate.user_id !== currentUserId) {
-            const errorMessage = "본인거 아니라 권한 없음"
+            const errorMessage = "권한이 없어 수정할 수 없습니다. 수정하려는 대상이 본인의 것인지 확인해주세요."
             return { errorMessage }
         } else {
-            if (toUpdate.title) {
-                const fieldToUpdate = 'title'
-                const newValue = toUpdate.title
-                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
-            }
-            if (toUpdate.description) {
-                const fieldToUpdate = 'description'
-                const newValue = toUpdate.description
-                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
-            }
-            if (toUpdate.date) {
-                const fieldToUpdate = 'date'
-                const newValue = toUpdate.date
-                certificate = await Certificate.update({ certificateId, fieldToUpdate, newValue })
-            }
-
+            certificate = await Certificate.update({ certificateId, toUpdate })
             return certificate
         }
     }
@@ -73,7 +57,7 @@ class CertificateService {
         }
 
         if (certificate.user_id !== currentUserId) {
-            const errorMessage = "본인거 아니라 권한 없음"
+            const errorMessage = "권한이 없어 삭제할 수 없습니다. 삭제하려는 대상이 본인의 것인지 확인해주세요."
             return { errorMessage }
         }
         certificate = await Certificate.delete({ certificateId })

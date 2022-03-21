@@ -7,7 +7,6 @@ class AwardService {
     static async addAward({ user_id, title, description }) {
         const newAward = { user_id, title, description }
         const createdNewAward = await Award.create({ newAward })
-        createdNewAward.errorMessage = null
         return createdNewAward
     }
 
