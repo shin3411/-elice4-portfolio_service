@@ -54,7 +54,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
           onChange={(e) => setTitle(e.target.value)}
         />
         {!isTitleValid && (
-          <Form.Text className="text-danger">필수 입력 내용입니다.</Form.Text>
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
       </Form.Group>
       <Form.Group>
@@ -66,7 +66,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
           onChange={(e) => setDescription(e.target.value)}
         />
         {!isDescriptionValid && (
-          <Form.Text className="text-danger">필수 입력 내용입니다.</Form.Text>
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
       </Form.Group>
       <Form.Group>
