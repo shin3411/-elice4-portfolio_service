@@ -10,12 +10,11 @@ awardRouter.post("/award/create", login_required, async (req, res, next) => {
     try {
         if (is.emptyObject(req.body)) {
             throw new Error(
-                "headers의 Content-Type을 application/json으로 설정해주세요"
+                "body에 아무내용이 없습니다. 내용을 채워주세요"
             );
         }
 
         //user_id 받는 방식 변경 이제 바디에 user_id 넣지 않는 걸로
-        //const user_id = req.body.user_id
         const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
