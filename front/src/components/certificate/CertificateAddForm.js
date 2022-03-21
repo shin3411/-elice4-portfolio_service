@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
@@ -6,16 +6,18 @@ import * as Api from "../../api";
 const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(defaultDate);
+
+  const isTitleValid = title.length > 0;
+  const isDescriptionValid = description.length > 0;
+  const isFormValid = isTitleValid && isDescriptionValid;
+
   // 폼 제출시 실행되는 함수. 입력받은 정보를 post하고 certificateList에 합침
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 입력받은 정보 가져옴
-    const title = e.target.title.value;
-    const description = e.target.description.value;
-    const date = e.target.date.value;
 
-    // 입력받은 정보가 없으면 리턴. 제춡X
-    if (!title || !description) return;
     const data = { title, description, date };
 
     try {
@@ -34,27 +36,39 @@ const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Control
-        className="mt-3"
-        type="text"
-        placeholder="자격증 제목"
-        name="title"
-      />
-      <Form.Control
-        className="mt-3"
-        type="text"
-        placeholder="상세내역"
-        name="description"
-      />
+      <Form.Group>
+        <Form.Control
+          className="mt-3"
+          type="text"
+          placeholder="자격증 제목"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        {!isTitleValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          className="mt-3"
+          type="text"
+          placeholder="상세내역"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        {!isDescriptionValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
+      </Form.Group>
       <Form.Control
         className="mt-3"
         type="date"
-        defaultValue={defaultDate}
-        name="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
       />
       <Row className="text-center mt-3">
         <Col>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={!isFormValid}>
             확인
           </Button>
           <Button

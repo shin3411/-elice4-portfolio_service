@@ -17,6 +17,12 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
     position: education.position,
   });
 
+  // 학교 이름, 전공, 졸업 상태의 입력 여부를 확인
+  const isSchoolValid = inputs.school.length > 0;
+  const isMajorValid = inputs.major.length > 0;
+  const isPositionValid = inputs.position !== "";
+  const isFormValid = isSchoolValid && isMajorValid && isPositionValid;
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setInputs({
@@ -54,6 +60,9 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           placeholder="학교 이름"
           onChange={onChange}
         />
+        {!isSchoolValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
       </Form.Group>
 
       <Form.Group className="mt-3" controlId="formBasicPassword">
@@ -65,6 +74,9 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           placeholder="전공"
           onChange={onChange}
         />
+        {!isMajorValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
       </Form.Group>
       <Form.Group key=" inline-radio" className="mt-3 mb-2">
         {grades.map((grade, idx) => (
@@ -88,6 +100,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           variant="primary"
           type="submit"
           style={{ marginRight: "10px" }}
+          disabled={!isFormValid}
         >
           확인
         </Button>

@@ -21,6 +21,12 @@ const EducationRegisterForm = () => {
     position: "",
   });
 
+  // 학교 이름, 전공, 졸업 상태의 입력 여부를 확인
+  const isSchoolValid = inputs.school.length > 0;
+  const isMajorValid = inputs.major.length > 0;
+  const isPositionValid = inputs.position !== "";
+  const isFormValid = isSchoolValid && isMajorValid && isPositionValid;
+
   // 확인 버튼을 눌렀을 때 실행되는 함수로, 입력받은 정보가 저장된 inputs를
   // POST 요청으로 db에 저장합니다.
   const onSubmit = async (e) => {
@@ -55,6 +61,9 @@ const EducationRegisterForm = () => {
           type="text"
           placeholder="학교 이름"
         />
+        {!isSchoolValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
       </Form.Group>
 
       <Form.Group className="mt-3">
@@ -66,6 +75,9 @@ const EducationRegisterForm = () => {
           type="text"
           placeholder="전공"
         />
+        {!isMajorValid && (
+          <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
       </Form.Group>
       <Form.Group key=" inline-radio" className="mt-3 mb-2">
         {grades.map((grade, idx) => (
@@ -81,12 +93,16 @@ const EducationRegisterForm = () => {
           />
         ))}
       </Form.Group>
+      {!isPositionValid && (
+        <Form.Text className="text-success">필수 선택사항입니다.</Form.Text>
+      )}
 
       <div style={{ textAlign: "center" }} className="mb-3">
         <Button
           onClick={onSubmit}
           variant="primary"
           type="submit"
+          disabled={!isFormValid}
           style={{ marginRight: "10px" }}
         >
           확인

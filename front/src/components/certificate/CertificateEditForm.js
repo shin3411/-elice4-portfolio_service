@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
@@ -8,13 +8,17 @@ const CertificateEditForm = ({
   setCertificateList,
   setIsEditing,
 }) => {
+  const [title, setTitle] = useState(certificate.title);
+  const [description, setDescription] = useState(certificate.description);
+  const [date, setDate] = useState(certificate.date.substring(0, 10));
+
+  const isTitleValid = title.length > 0;
+  const isDescriptionValid = description.length > 0;
+  const isFormValid = isTitleValid && isDescriptionValid;
+
   // 폼 제출 시 실행되는 함수. 입력받은 정보를 put하고 certificateList에 적용
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 입력받은 정보 가져옴
-    const title = e.target.title.value;
-    const description = e.target.description.value;
-    const date = e.target.date.value;
 
     try {
       const res = await Api.put(`certificates/${certificate._id}`, {
@@ -44,27 +48,37 @@ const CertificateEditForm = ({
   return (
     <Col>
       <Form onSubmit={handleSubmit}>
-        <Form.Control
-          className="mt-3"
-          type="text"
-          name="title"
-          defaultValue={certificate.title}
-        />
-        <Form.Control
-          className="mt-3"
-          type="text"
-          name="description"
-          defaultValue={certificate.description}
-        />
+        <Form.Group>
+          <Form.Control
+            className="mt-3"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          {!isTitleValid && (
+            <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            className="mt-3"
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          {!isDescriptionValid && (
+            <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+          )}
+        </Form.Group>
         <Form.Control
           className="mt-3"
           type="date"
-          name="date"
-          defaultValue={certificate.date.substring(0, 10)}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
         />
         <Row className="text-center mt-3">
           <Col>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={!isFormValid}>
               확인
             </Button>
             <Button
