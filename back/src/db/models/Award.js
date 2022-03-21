@@ -16,9 +16,9 @@ class Award {
         return awards;
     }
 
-    static async update({ awardId, fieldToUpdate, newValue }) {
+    static async update({ awardId, toUpdate }) {
         const filter = { _id: awardId };
-        const update = { [fieldToUpdate]: newValue };
+        const update = toUpdate;
         const option = { returnOriginal: false };
 
         const updatedaward = await AwardModel.findOneAndUpdate(
