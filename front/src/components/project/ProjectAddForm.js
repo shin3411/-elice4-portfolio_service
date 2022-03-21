@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
@@ -6,19 +6,20 @@ import * as Api from "../../api";
 const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
   const defaultDate = new Date().toISOString().substring(0, 10);
 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [fromDate, setFromDate] = useState(defaultDate);
+  const [toDate, setToDate] = useState(defaultDate);
+
+  const isTitleValid = title.length > 0;
+  const isDescriptionValid = description.length > 0;
+  const isDateValid = new Date(fromDate) <= new Date(toDate);
+  const isFormValid = isTitleValid && isDescriptionValid && isDateValid;
+
   // 폼 제출시 실행되는 함수. 입력받은 정보를 post하고 projectList에 합침
   const handleSubmit = async (e) => {
     e.preventDefault();
     // 입력받은 정보 가져옴
-    const title = e.target.title.value;
-    const description = e.target.description.value;
-    const fromDate = e.target.from_date.value;
-    const toDate = e.target.to_date.value;
-
-    // 입력받은 정보가 없으면 리턴. 제춡X
-    if (!title || !description) return;
-    // 프로젝트 시작 날짜가 종료 날짜보다 늦은 날짜면 리턴. 제출X
-    if (new Date(fromDate) > new Date(toDate)) return;
 
     const data = {
       title,
@@ -43,39 +44,58 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Control
-        className="mt-3"
-        type="text"
-        placeholder="프로젝트 제목"
-        name="title"
-      />
-      <Form.Control
-        className="mt-3"
-        type="text"
-        placeholder="상세내역"
-        name="description"
-      />
-      <Row>
-        <Col>
-          <Form.Control
-            className="mt-3"
-            type="date"
-            defaultValue={defaultDate}
-            name="from_date"
-          />
-        </Col>
-        <Col>
-          <Form.Control
-            className="mt-3"
-            type="date"
-            defaultValue={defaultDate}
-            name="to_date"
-          />
-        </Col>
-      </Row>
+      <Form.Group>
+        <Form.Control
+          className="mt-3"
+          type="text"
+          placeholder="프로젝트 제목"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        {!isTitleValid && (
+          <Form.Text className="text-danger">필수 입력 내용입니다.</Form.Text>
+        )}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          className="mt-3"
+          type="text"
+          placeholder="상세내역"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        {!isDescriptionValid && (
+          <Form.Text className="text-danger">필수 입력 내용입니다.</Form.Text>
+        )}
+      </Form.Group>
+      <Form.Group>
+        <Row>
+          <Col>
+            <Form.Control
+              className="mt-3"
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <Form.Control
+              className="mt-3"
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </Col>
+        </Row>
+        {!isDateValid && (
+          <Form.Text className="text-danger">
+            입력기간을 확인해주세요.
+          </Form.Text>
+        )}
+      </Form.Group>
       <Row className="text-center mt-3">
         <Col>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={!isFormValid}>
             확인
           </Button>
           <Button
