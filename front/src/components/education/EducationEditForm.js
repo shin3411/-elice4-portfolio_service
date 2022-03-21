@@ -7,11 +7,7 @@ import educationListState from "../../atom/educationListState";
 
 // 학력 편집 폼 컴포넌트 입니다.
 // 추가한 학력 중에서 골라 편집할 수 있습니다.
-const EducationEditFrom = ({
-  education,
-  setIsEditing,
-  setEditButtonVisible,
-}) => {
+const EducationEditFrom = ({ education, setIsEditing }) => {
   const [, setEducationList] = useRecoilState(educationListState);
   const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
@@ -35,7 +31,6 @@ const EducationEditFrom = ({
     e.preventDefault();
     const response = await Api.put(`educations/${education.id}`, inputs);
     const editedEdu = response.data;
-    setEditButtonVisible(true);
     setIsEditing(false);
 
     setEducationList((prev) => {
@@ -97,10 +92,7 @@ const EducationEditFrom = ({
           확인
         </Button>
         <Button
-          onClick={() => {
-            setEditButtonVisible(true);
-            setIsEditing(false);
-          }}
+          onClick={() => setIsEditing(false)}
           variant="secondary"
           type="submit"
           style={{ marginLeft: "10px" }}
