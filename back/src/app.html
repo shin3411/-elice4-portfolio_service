@@ -1,0 +1,129 @@
+<h1>My Profile</h1>
+<form id="form" method="POST" action="/profileimg" enctype='multipart/form-data'>
+  <div class="mb">
+    <input type="text" name="text1" value="text01">
+  </div>
+  <div class="mb">
+    <label id="img-label" for="img">사진 업로드</label>
+    <input type="file" name="myImg" accept="image/*" multiple="false" />
+  </div>
+  <div class="mb">
+    <button id="btn" type="submit">submit</button>
+  </div>
+</form>
+<div id="submitResult" class="mb"></div>
+<div id="img-container"></div>
+
+<script>
+//div 끼리 위아래에 너무 붙어 있어서... 그냥 margin-bottom으로 10px 넣어줌
+const divNodeList = document.querySelectorAll(".mb");
+divNodeList.forEach(elem => {
+  elem.style = "margin-bottom: 10px;";
+})
+
+//처음엔 로그인해서 sessionStorage.userToken에 로그인정보의 토큰 저장
+const login = async ({ email, password }) => {
+  try {
+    // "user/login" 엔드포인트로 post요청함.
+    const userData = {
+        email,
+        password,
+    }
+    const res = await fetch("user/login", {
+      method: 'POST',
+      headers: {
+      "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData)
+    });
+    // 유저 정보는 response의 data임.
+    const user = await res.json();
+    // JWT 토큰은 유저 정보의 token임.
+    const jwtToken = user.token;
+    // sessionStorage에 "userToken"이라는 키로 JWT 토큰을 저장함.
+    sessionStorage.setItem("userToken", jwtToken);
+    console.log("로그인 성공");
+    
+  } catch (err) {
+    console.log("로그인에 실패하였습니다.\n", err);
+  }
+}
+
+//로그인한 유저의 프로필 이미지 가져오는 코드
+const getOneImage = async () => {
+  const container = document.getElementById("img-container");
+  try{
+  const response  = await fetch ("/profileimg",{
+    method : "GET",
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+    }
+  });
+  
+    console.log(response);
+    const blobImg = await response.blob();
+    console.log(blobImg);
+    const imgUrl = URL.createObjectURL(blobImg);
+    console.log(imgUrl);
+    
+    const html = `<img src="${imgUrl}" width="600" alt="">`;
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = e.message;
+  }
+}
+
+//로그인한 유저의 프로필 이미지 서버에 업로드하는 코드
+const formProcess = async () => {
+
+  const form = document.getElementById('form');
+  form.addEventListener('submit', async (e) => { 
+    e.preventDefault();
+    const fileInput = document.querySelector('input[type=file]');
+
+    //새로운 formData 객체를 만든다.
+    const formData = new FormData();
+    //formData.append()의 첫 인자에는 보낼 데이터에 대한 "필드 이름", 두 번째 인자에는 "보낼 데이터"
+    //input DOM 요소에 .files[0]를 붙여 "입력한 파일"을 얻을 수 있다.
+    formData.append("myImg", fileInput.files[0]);
+    console.log(fileInput.files[0]);
+
+    container = document.getElementById('submitResult');
+    try{
+      const response = await fetch('/profileimg', { 
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+        },
+        body: formData
+      });
+      console.log(response);
+      const jsonResult = await response.json();
+      console.log(jsonResult);
+
+      container.innerHTML = JSON.stringify(jsonResult);
+
+      //업로드한 이미지를 다시 불러온다.
+      getOneImage();
+    } catch(e) {
+      container.innerHTML = e.message;
+    }
+  });
+
+}
+
+
+window.onload = async () => {
+
+  //로그인할 이메일, 비번을 담는 객체
+  const loginData = {
+    email: "test1@test.com",
+    password: "1234",
+  }
+
+  await login(loginData);
+  formProcess();
+  getOneImage();
+
+};
+</script>
