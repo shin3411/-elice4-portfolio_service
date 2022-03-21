@@ -10,15 +10,18 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
     // 입력받은 정보 가져옴
     const title = e.target.title.value;
     const description = e.target.description.value;
-    const from_date = e.target.fromDate.value;
-    const to_date = e.target.toDate.value;
+    const fromDate = e.target.fromDate.value;
+    const toDate = e.target.toDate.value;
+
+    // 프로젝트 시작 날짜가 종료 날짜보다 늦은 날짜면 리턴. 제출X
+    if (new Date(fromDate) > new Date(toDate)) return;
 
     try {
       const res = await Api.put(`projects/${project.id}`, {
         title,
         description,
-        from_date,
-        to_date,
+        from_date: fromDate,
+        to_date: toDate,
       });
       const editedProject = res.data;
 
