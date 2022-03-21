@@ -28,7 +28,7 @@ const Awards = ({ award, setList, list, isEditable }) => {
     }
   };
   return (
-    <Card.Text>
+    <div>
       <Row className="align-items-center">
         {isEditing ? (
           <AwardEditForm
@@ -84,7 +84,7 @@ const Awards = ({ award, setList, list, isEditable }) => {
           </Modal.Footer>
         </Modal>
       </Row>
-    </Card.Text>
+    </div>
   );
 };
 
