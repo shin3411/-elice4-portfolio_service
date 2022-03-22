@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Form, Row, Col } from "react-bootstrap";
+import { UserStateContext } from "../../App";
+
 import AwardSearchForm from "./AwardSearchForm";
 import EducationSearchForm from "./EducationSearchForm";
 import ProjectSearchForm from "./ProjectSearchForm";
 import CertificateSearchForm from "./CertificateSearchForm";
 
 const Search = () => {
+  const navigate = useNavigate();
+  const userState = useContext(UserStateContext);
+
   const selectList = [
     { value: "educations", item: "학력" },
     { value: "awards", item: "수상이력" },
@@ -13,6 +19,13 @@ const Search = () => {
     { value: "certificates", item: "자격증" },
   ];
   const [selected, setSelected] = useState("educations");
+
+  useEffect(() => {
+    if (!userState.user) {
+      navigate("/login");
+      return;
+    }
+  }, [userState, navigate]);
 
   return (
     <Container>
