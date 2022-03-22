@@ -28,9 +28,9 @@ class CertificateService {
         return certificate;
     }
 
-    //특정 유저의 모든 수상내역 반환용
-    static async getCertificates({ user_id }) {
-        const certificates = await Certificate.findByQuery({ user_id })
+    //특정 쿼리의 수상내역 반환용
+    static async getCertificates(query) {
+        const certificates = await Certificate.findByQuery(query)
         if (certificates.length == 0) {
             const errorMessage =
                 "해당 유저의 수상내용이 존재하지 않습니다.";
