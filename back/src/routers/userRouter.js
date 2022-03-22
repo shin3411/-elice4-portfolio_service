@@ -122,11 +122,16 @@ userAuthRouter.put(
 //검색
 userAuthRouter.get('/users/search', login_required, async (req, res, next) => {
   try {
-    const query = req.query
-    if (query.name) {
-      query.name = { $regex: query.name }
-    } if (query.email) {
-      query.email = { $regex: query.email }
+    const query = {}
+    //한글 깨져서 오는것 decode
+    if (req.query.name) {
+      query.name = { $regex: decodeURIComponent(req.query.name) }
+    }
+    if (req.query.email) {
+      query.email = { $regex: decodeURIComponent(req.query.email) }
+    }
+    if (!(query.name || query.email)) {
+      throw new Error('쿼리를 정확하게 입력해 주세요.')
     }
     const result = await userAuthService.getUsers(query)
     res.status(200).send(result)
