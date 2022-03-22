@@ -119,6 +119,17 @@ userAuthRouter.put(
   }
 );
 
+userAuthRouter.get('/users/search', login_required, async (req, res, next) => {
+  try {
+    const query = req.query
+    console.log(query)
+    const result = await userAuthService.getUsers(query)
+    res.status(200).send(result)
+  } catch (err) {
+    next(err)
+  }
+})
+
 userAuthRouter.get(
   "/users/:id",
   login_required,
