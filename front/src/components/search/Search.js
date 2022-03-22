@@ -19,6 +19,7 @@ const Search = () => {
     { value: "certificates", item: "자격증" },
   ];
   const [selected, setSelected] = useState("educations");
+  const [data, setData] = useState({});
 
   useEffect(() => {
     if (!userState.user) {
@@ -43,10 +44,12 @@ const Search = () => {
           </Form.Select>
         </Col>
 
-        {selected === "educations" && <EducationSearchForm />}
-        {selected === "awards" && <AwardSearchForm />}
-        {selected === "projects" && <ProjectSearchForm />}
-        {selected === "certificates" && <CertificateSearchForm />}
+        {selected === "educations" && <EducationSearchForm setData={setData} />}
+        {selected === "awards" && <AwardSearchForm setData={setData} />}
+        {selected === "projects" && <ProjectSearchForm setData={setData} />}
+        {selected === "certificates" && (
+          <CertificateSearchForm setData={setData} />
+        )}
       </Row>
     </Container>
   );

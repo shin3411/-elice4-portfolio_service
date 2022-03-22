@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Row, Col, InputGroup, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
-const EducationSearchForm = () => {
+const EducationSearchForm = ({ setData }) => {
   const [school, setSchool] = useState("");
   const [major, setMajor] = useState("");
   const [position, setPosition] = useState("");
@@ -15,8 +15,16 @@ const EducationSearchForm = () => {
     { value: "박사졸업", item: "박사 졸업" },
   ];
 
-  const handleSubmit = (e) => {
+  const formValid = school || major || position;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { data } = await Api.get("educations", "search", {
+      school: school ? school : null,
+      major: major ? major : null,
+      position: position ? position : null,
+    });
+    setData({ educations: data });
   };
 
   return (
@@ -50,7 +58,9 @@ const EducationSearchForm = () => {
             </InputGroup>
           </Col>
           <Col xs={2}>
-            <Button type="submit">검색</Button>
+            <Button type="submit" disabled={!formValid}>
+              검색
+            </Button>
           </Col>
         </Row>
       </Form>
