@@ -2,7 +2,9 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../App";
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar, Container, NavDropdown } from "react-bootstrap";
+
+import { useMediaQuery } from "react-responsive";
 
 import ThemeToggle from "./ThemeToggle";
 
@@ -31,13 +33,22 @@ function Header() {
 
   const ModeState = useRecoilValue(modeState);
 
-  return (
+  // useMediaQuery훅을 사용해서 사용자가 모바일 환경인지 확인
+  const isMobile = useMediaQuery({
+    query: "(max-width: 767px)",
+  });
+
+  return !isMobile ? (
     <Navbar
       className="mb-2 mt-2"
       variant={ModeState.mode === "dark" ? "dark" : "white"}
     >
       <Container>
-        <Navbar.Brand>Logo</Navbar.Brand>
+        <Navbar.Brand>
+          Sharing
+          <br />
+          Portfolios
+        </Navbar.Brand>
         <Nav activeKey={location.pathname}>
           <Nav.Item className="m-1">
             <Nav.Link onClick={() => navigate("/")}>My Page</Nav.Link>
@@ -54,6 +65,8 @@ function Header() {
         </Nav>
       </Container>
     </Navbar>
+  ) : (
+    <ThemeToggle />
   );
 }
 

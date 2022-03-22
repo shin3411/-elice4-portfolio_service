@@ -11,6 +11,7 @@ import educationListState from "../../atom/educationListState";
 const EducationRegisterForm = () => {
   const [, setEducationList] = useRecoilState(educationListState);
   const [, setIsAddEducation] = useRecoilState(addEducationState);
+  const [isDuplicate, setIsDuplicate] = useState(false); // 학력 중복을 확인하기 위한 state
 
   const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
@@ -36,15 +37,15 @@ const EducationRegisterForm = () => {
       setEducationList((cur) => {
         return [...cur, response.data];
       });
-    } catch (err) {
-      alert("중복된 학적입니다. 다른 학적을 입력해 주세요.");
+      setIsAddEducation(false);
+    } catch (e) {
+      setIsDuplicate(true);
     }
-
-    setIsAddEducation(false);
   };
 
   // input 창, radio 버튼을 통한 사용자 입력을 inputs에 저장하는 함수입니다.
   const onChange = (e) => {
+    setIsDuplicate(false);
     const { name, value } = e.target;
     setInputs({
       ...inputs,
@@ -65,6 +66,9 @@ const EducationRegisterForm = () => {
         />
         {!isSchoolValid && (
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
+        )}
+        {isDuplicate && (
+          <Form.Text className="text-success">중복된 학적입니다.</Form.Text>
         )}
       </Form.Group>
 

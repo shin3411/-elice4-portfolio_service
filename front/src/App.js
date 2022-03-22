@@ -86,4 +86,12 @@ export default App;
 const Wrapper = styled.div`
   width: 1400px;
   margin: auto;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    button {
+      margin: 5px;
+    }
+  }
 `;
