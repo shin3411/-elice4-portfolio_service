@@ -5,8 +5,7 @@
   </div>
   <div class="mb">
     <label id="img-label" for="img">사진 업로드</label>
-    <!-- <input type="file" name="myImg" accept="image/*" onchange="handleFiles(this.files[0])"/> -->
-    <input type="file" name="myImg" accept="image/*" />
+    <input type="file" name="myImg" accept="image/*" onchange="handleFiles(this.files[0])"/>
   </div>
   <div class="mb">
     <button id="btn" type="submit">submit</button>
@@ -113,52 +112,44 @@ const getOneImage = async () => {
 
 // }
 
-const formProcess = () => {
-  const fileInput = document.querySelector('input[type=file]');
-  fileInput.onchange = handleFile;
-}
 
-function handleFile()  {
-  console.log(this.files[0]);
+
+const handleFiles = async (file) => {
+  const fileBlob = file;
+  console.log(fileBlob);
   alert('handleFile');
-}
-
-// const handleFiles = async (file) => {
-//   const fileBlob = file;
-//   console.log(fileBlob);
-//   alert('handleFile');
   
 
-//   //새로운 formData 객체를 만든다.
-//   const formData = new FormData();
-//   //formData.append()의 첫 인자에는 보낼 데이터에 대한 "필드 이름", 두 번째 인자에는 "보낼 데이터"
-//   //input DOM 요소에 .files[0]를 붙여 "입력한 파일"을 얻을 수 있다.
-//   formData.append("myImg", fileBlob);
+  //새로운 formData 객체를 만든다.
+  const formData = new FormData();
+  //formData.append()의 첫 인자에는 보낼 데이터에 대한 "필드 이름", 두 번째 인자에는 "보낼 데이터"
+  //input DOM 요소에 .files[0]를 붙여 "입력한 파일"을 얻을 수 있다.
+  formData.append("myImg", fileBlob);
 
-//   console.log(formData);
+  console.log(formData);
 
-//   container = document.getElementById('submitResult');
-//   try{
-//     const response = await fetch('http://localhost:5001/profileimg', { 
-//       method: 'POST',
-//       headers: {
-//         Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-//       },
-//       body: formData
-//     });
-//     console.log(response);
-//     const jsonResult = await response.json();
-//     console.log(jsonResult);
+  container = document.getElementById('submitResult');
+  try{
+    const response = await fetch('http://localhost:5001/profileimg', { 
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      },
+      body: formData
+    });
+    console.log(response);
+    const jsonResult = await response.json();
+    console.log(jsonResult);
 
-//     container.innerHTML = JSON.stringify(jsonResult);
+    container.innerHTML = JSON.stringify(jsonResult);
 
-//     //업로드한 이미지를 다시 불러온다.
-//     getOneImage();
-//   } catch(e) {
-//     container.innerHTML = e.message;
-//   }
+    //업로드한 이미지를 다시 불러온다.
+    getOneImage();
+  } catch(e) {
+    container.innerHTML = e.message;
+  }
 
-// }
+}
 
 
 window.onload = async () => {
@@ -170,7 +161,7 @@ window.onload = async () => {
   }
 
   await login(loginData);
-  formProcess();
+  //formProcess();
   getOneImage();
 
   
