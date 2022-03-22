@@ -2,8 +2,12 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../App";
+import { Navbar, Container } from "react-bootstrap";
 
 import ThemeToggle from "./ThemeToggle";
+
+import { useRecoilValue } from "recoil";
+import { modeState } from "../atom/themeState";
 
 function Header() {
   const navigate = useNavigate();
@@ -25,30 +29,31 @@ function Header() {
     navigate("/");
   };
 
+  const ModeState = useRecoilValue(modeState);
+
   return (
-    <>
-      <Nav activeKey={location.pathname} style={{ marginBottom: "-40px" }}>
-        <Nav.Item className="me-auto mb-5">
-          <Nav.Link disabled>
-            안녕하세요, 포트폴리오 공유 서비스입니다.
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
-        </Nav.Item>
-        {isLogin && (
-          <Nav.Item>
-            <Nav.Link onClick={logout}>로그아웃</Nav.Link>
+    <Navbar
+      className="mb-2 mt-2"
+      variant={ModeState.mode === "dark" ? "dark" : "white"}
+    >
+      <Container>
+        <Navbar.Brand>Logo</Navbar.Brand>
+        <Nav activeKey={location.pathname}>
+          <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/")}>My Page</Nav.Link>
           </Nav.Item>
-        )}
-      </Nav>
-      <div style={{ textAlign: "right", margin: "10px" }}>
-        <ThemeToggle />
-      </div>
-    </>
+          <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/network")}>Network</Nav.Link>
+          </Nav.Item>
+          {isLogin && (
+            <Nav.Item className="m-1">
+              <Nav.Link onClick={logout}>Logout</Nav.Link>
+            </Nav.Item>
+          )}
+          <ThemeToggle />
+        </Nav>
+      </Container>
+    </Navbar>
   );
 }
 

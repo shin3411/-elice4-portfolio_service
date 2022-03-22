@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalCss from "./styles/GlobalCss";
+import styled from "styled-components";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
@@ -59,23 +60,30 @@ function App() {
   }
 
   return (
-    <DispatchContext.Provider value={dispatch}>
-      <UserStateContext.Provider value={userState}>
-        <GlobalCss currentTheme={currentTheme} />
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/" exact element={<Portfolio />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/users/:userId" element={<Portfolio />} />
-            <Route path="/network" element={<Network />} />
-            <Route path="*" element={<Portfolio />} />
-          </Routes>
-        </Router>
-      </UserStateContext.Provider>
-    </DispatchContext.Provider>
+    <Wrapper>
+      <DispatchContext.Provider value={dispatch}>
+        <UserStateContext.Provider value={userState}>
+          <Router>
+            <Header />
+            <GlobalCss currentTheme={currentTheme} />
+            <Routes>
+              <Route path="/" exact element={<Portfolio />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="/users/:userId" element={<Portfolio />} />
+              <Route path="/network" element={<Network />} />
+              <Route path="*" element={<Portfolio />} />
+            </Routes>
+          </Router>
+        </UserStateContext.Provider>
+      </DispatchContext.Provider>
+    </Wrapper>
   );
 }
 
 export default App;
+
+const Wrapper = styled.div`
+  width: 1400px;
+  margin: auto;
+`;

@@ -7,13 +7,11 @@ const ThemeToggle = () => {
   const lightMode = useRecoilValue(LightState);
   const darkMode = useRecoilValue(DarkState);
   const [ModeState, setModeState] = useRecoilState(modeState);
-  console.log(ModeState);
   return (
     <ToggleWrapper
       ModeState={ModeState}
       onClick={(e) => {
         e.preventDefault();
-        window.localStorage.setItem("mode", ModeState.mode);
         setModeState((cur) => (cur === lightMode ? darkMode : lightMode));
       }}
     >

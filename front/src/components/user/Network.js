@@ -24,7 +24,7 @@ function Network() {
 
   return (
     <Container fluid>
-      <Row xs="auto" className="jusify-content-center">
+      <Row xs="auto" style={{ width: "100%", marginLeft: "60px" }}>
         {users.map((user) => (
           <UserCard key={user.id} user={user} isNetwork />
         ))}

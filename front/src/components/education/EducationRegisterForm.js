@@ -31,13 +31,15 @@ const EducationRegisterForm = () => {
   // POST 요청으로 db에 저장합니다.
   const onSubmit = async (e) => {
     e.preventDefault();
-    const response = await Api.post("education/create", inputs);
-    if (!response) {
-      console.log("POST 요청 실패하였습니다.");
+    try {
+      const response = await Api.post("education/create", inputs);
+      setEducationList((cur) => {
+        return [...cur, response.data];
+      });
+    } catch (err) {
+      alert("중복된 학적입니다. 다른 학적을 입력해 주세요.");
     }
-    setEducationList((cur) => {
-      return [...cur, response.data];
-    });
+
     setIsAddEducation(false);
   };
 
