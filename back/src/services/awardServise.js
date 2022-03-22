@@ -30,11 +30,11 @@ class AwardService {
     }
 
     //특정 유저의 모든 수상내역 반환용
-    static async getAwards({ user_id }) {
-        const awards = await Award.findByQuery({ user_id })
+    static async getAwards(query) {
+        const awards = await Award.findByQuery(query)
         if (awards.length == 0) {
             const errorMessage =
-                "해당 유저의 수상내용이 존재하지 않습니다.";
+                "해당 수상내용이 존재하지 않습니다.";
             return { errorMessage };
         }
 

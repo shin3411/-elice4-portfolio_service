@@ -31,6 +31,22 @@ awardRouter.post("/award/create", login_required, async (req, res, next) => {
     }
 })
 
+//검색
+awardRouter.get('/awards/search', login_required, async (req, res, next) => {
+    try {
+        const query = req.query
+        if (query.title) {
+            query.title = { $regex: query.title }
+        } if (query.description) {
+            query.description = { $regex: query.description }
+        }
+        const result = await AwardService.getAwards(query)
+        res.status(200).send(result)
+    } catch (err) {
+        next(err)
+    }
+})
+
 //하나만 조회
 awardRouter.get('/awards/:id', login_required, async (req, res, next) => {
     try {

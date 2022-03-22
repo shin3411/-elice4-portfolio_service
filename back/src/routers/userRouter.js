@@ -119,10 +119,15 @@ userAuthRouter.put(
   }
 );
 
+//검색
 userAuthRouter.get('/users/search', login_required, async (req, res, next) => {
   try {
     const query = req.query
-    console.log(query)
+    if (query.name) {
+      query.name = { $regex: query.name }
+    } if (query.email) {
+      query.email = { $regex: query.email }
+    }
     const result = await userAuthService.getUsers(query)
     res.status(200).send(result)
   } catch (err) {
