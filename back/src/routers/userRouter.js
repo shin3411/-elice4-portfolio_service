@@ -138,6 +138,26 @@ userAuthRouter.get(
   }
 );
 
+userAuthRouter.get(
+  "/userLists",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const { page, limit } = req.query;
+      // 특정 페이지의 사용자 목록을 얻음
+      const users = await userAuthService.getUsersbyPage({ page, limit });
+
+      if(users?.errorMessage) {
+        throw new Error(users.errorMessage);
+      }
+
+      res.status(200).send(users);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
 userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
   res

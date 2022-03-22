@@ -23,7 +23,7 @@ class projectService {
 
         project.fromDate = fromDateString;
         project.toDate = toDateString;
-        console.log(project);
+        
         return project;
     }
 
