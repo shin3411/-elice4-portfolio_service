@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../App";
-import { Navbar, Container, NavDropdown } from "react-bootstrap";
+import { Navbar, Container } from "react-bootstrap";
 
 import { useMediaQuery } from "react-responsive";
 
+import MobileNavbar from "./MobileNavbar";
 import ThemeToggle from "./ThemeToggle";
 
 import { useRecoilValue } from "recoil";
@@ -66,7 +67,11 @@ function Header() {
       </Container>
     </Navbar>
   ) : (
-    <ThemeToggle />
+    <>
+      <MobileNavbar logout={logout} />
+      <ThemeToggle />
+      <hr />
+    </>
   );
 }
 

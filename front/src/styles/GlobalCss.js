@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
   transition: 0.3s;
   font-family: 'Nunito', sans-serif;
 }
+
   div.card-body {
     border: 1px solid #C7C8D2;
   box-sizing: border-box;
