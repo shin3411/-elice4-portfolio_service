@@ -26,8 +26,8 @@ class userAuthService {
 
     //UserImg도 따로 생성
     const createdUserId = createdNewUser.id;
-    const createdUserImg = await UserImg.create({ userId: createdUserId });
-    console.log(createdUserImg);
+    await UserImg.create({ userId: createdUserId });
+    
 
     createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
@@ -135,11 +135,9 @@ class userAuthService {
 
   static async setUserImg({ userId, img, filePath }){
     const foundUserImg = await UserImg.findById({ userId });
-    
-    if(foundUserImg?.userId !== userId ){
-      const errorMessage =
-       "다른 유저의 이미지를 바꿀 수 없습니다.";
-      return { errorMessage };
+
+    if(!foundUserImg){
+      await UserImg.create({ userId });
     }
 
     const setImgDocument = {

@@ -9,6 +9,8 @@ function UserEditForm({ user, setIsEditing, setUser }) {
   const [email, setEmail] = useState(user.email);
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
+  //useState로 imgChanged 상태를 생성함.
+  const [imgChanged, setImgChanged] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +26,41 @@ function UserEditForm({ user, setIsEditing, setUser }) {
     // 해당 유저 정보로 user을 세팅함.
     setUser(updatedUser);
 
+    //input으로 들어온 imgFile이 변했을 때 서버로 이미지를 업로드함.
+    if(imgChanged){
+
+      const FormInput = document.getElementById("userEditImg");
+      const fileBlob = FormInput.files[0];
+
+      const formData = new FormData();
+      formData.append("myImg", fileBlob);
+      const response = await fetch("http://localhost:5001/profileimg", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+        },
+        body: formData,
+      });
+      const jsonResult = await response.json();
+      console.log(jsonResult);
+    }
+
     // isEditing을 false로 세팅함.
     setIsEditing(false);
   };
+
+  // const handleProfileImageChange = async (fileBlob) => {
+  //   const formData = new FormData();
+  //   formData.append("myImg", fileBlob);
+  //   const response = await fetch("http://localhost:5001/profileimg", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+  //     },
+  //     body: formData,
+  //   });
+  //   const jsonResult = await response.json();
+  // }
 
   return (
     <Card className="mb-2">
@@ -50,12 +84,26 @@ function UserEditForm({ user, setIsEditing, setUser }) {
             />
           </Form.Group>
 
-          <Form.Group controlId="userEditDescription">
+          <Form.Group controlId="userEditDescription" className="mb-3">
             <Form.Control
               type="text"
               placeholder="정보, 인사말"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="userEditImg" >
+            <Form.Control
+              name="myImg"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                //handleProfileImageChange(e.target.files[0]);
+                //e.target.files를 사용하면 파일들을 가져올 수 있다.
+
+                setImgChanged(true);
+              }}
             />
           </Form.Group>
 

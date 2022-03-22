@@ -4,12 +4,10 @@ const userImgSchema = new Schema({
     userId: {
         type: String,
         required: true,
-        unique: true,
     },
     filePath: {
         type: String,
         required: false,
-        unique: true,
     },
     img: {
         data: {type: Buffer},
