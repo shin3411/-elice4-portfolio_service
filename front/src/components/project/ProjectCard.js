@@ -37,7 +37,8 @@ const ProjectCard = ({ project, isEditable, setProjectList }) => {
             <div>{project.title}</div>
             <div className="text-muted">{project.description}</div>
             <div className="text-muted">
-              {project.fromDate} ~ {project.toDate}
+              {project.fromDate.substring(0, 10)} ~{" "}
+              {project.toDate.substring(0, 10)}
             </div>
           </Col>
         )}

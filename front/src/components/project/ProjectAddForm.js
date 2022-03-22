@@ -88,7 +88,7 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
           </Col>
         </Row>
         {!isDateValid && (
-          <Form.Text className="text-danger">
+          <Form.Text className="text-success">
             입력기간을 확인해주세요.
           </Form.Text>
         )}

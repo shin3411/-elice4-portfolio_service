@@ -6,8 +6,8 @@ import * as Api from "../../api";
 const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
   const [title, setTitle] = useState(project.title);
   const [description, setDescription] = useState(project.description);
-  const [fromDate, setFromDate] = useState(project.fromDate);
-  const [toDate, setToDate] = useState(project.toDate);
+  const [fromDate, setFromDate] = useState(project.fromDate.substring(0, 10));
+  const [toDate, setToDate] = useState(project.toDate.substring(0, 10));
 
   const isTitleValid = title.length > 0;
   const isDescriptionValid = description.length > 0;
@@ -89,7 +89,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
           </Col>
         </Row>
         {!isDateValid && (
-          <Form.Text className="text-danger">
+          <Form.Text className="text-success">
             입력기간을 확인해주세요.
           </Form.Text>
         )}
