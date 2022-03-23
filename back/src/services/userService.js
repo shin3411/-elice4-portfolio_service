@@ -76,8 +76,8 @@ class userAuthService {
     return loginUser;
   }
 
-  static async getUsers() {
-    const users = await User.findAll();
+  static async getUsers(query) {
+    const users = await User.findByQuery(query);
     return users;
   }
 
@@ -91,7 +91,7 @@ class userAuthService {
         "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
-   
+
     // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
     if (toUpdate.name) {
       const fieldToUpdate = "name";
@@ -116,7 +116,7 @@ class userAuthService {
       const newValue = toUpdate.description;
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
-    
+
     return user;
   }
 
@@ -165,8 +165,8 @@ class userAuthService {
     return successResult;
   }
 
-  static async getUserImg({ currentUserId }){
-    const foundUserImg = await UserImg.findById({ userId: currentUserId });
+  static async getUserImg({ user_id }){
+    const foundUserImg = await UserImg.findById({ userId: user_id });
     
     if(!foundUserImg){
       const errorMessage = 
