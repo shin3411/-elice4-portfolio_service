@@ -11,14 +11,14 @@ class Award {
         return award;
     }
 
-    static async findAll({ user_id }) {
-        const awards = await AwardModel.find({ user_id: user_id });
+    static async findByQuery(query) {
+        const awards = await AwardModel.find(query);
         return awards;
     }
 
-    static async update({ awardId, fieldToUpdate, newValue }) {
+    static async update({ awardId, toUpdate }) {
         const filter = { _id: awardId };
-        const update = { [fieldToUpdate]: newValue };
+        const update = toUpdate;
         const option = { returnOriginal: false };
 
         const updatedaward = await AwardModel.findOneAndUpdate(
@@ -27,6 +27,11 @@ class Award {
             option
         );
         return updatedaward;
+    }
+
+    static async delete({ awardId }) {
+        const ret = await AwardModel.findOneAndDelete({ _id: awardId })
+        return ret
     }
 }
 

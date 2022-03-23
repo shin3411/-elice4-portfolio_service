@@ -55,40 +55,26 @@ class eduService {
         return { errorMessage };
         }
 
-        // 업데이트 대상에 school이 있다면, 즉 school 값이 null 이 아니라면 업데이트 진행
-        if (toUpdate.school) {
-        const fieldToUpdate = "school";
-        const newValue = toUpdate.school;
-        education = await Education.update({ edu_id, fieldToUpdate, newValue });
+        for(const [key, value] of Object.entries(toUpdate)){
+            if(!value){
+                delete toUpdate[key]
+            }
         }
-
-        if (toUpdate.major) {
-        const fieldToUpdate = "major";
-        const newValue = toUpdate.major;
-        education = await Education.update({ edu_id, fieldToUpdate, newValue });
-        }
-
-        if (toUpdate.position) {
-        const fieldToUpdate = "position";
-        const newValue = toUpdate.position;
-        education = await Education.update({ edu_id, fieldToUpdate, newValue });
-        }
-
+        
+        education = await Education.update({ edu_id, toUpdate });
         return education;
     }
 
     static async getEduList({ user_id }){
-        const educations = await Education.findAll();
-        const filteredEduList = educations
-        .filter(({ userId }) => userId === user_id);
+        const educations = await Education.findAll({ user_id });
         
-        if(filteredEduList.length === 0){
+        if(educations.length === 0){
             const errorMessage =
              "해당하는 user_id가 없어 Edulist를 줄 수 없습니다."
             return { errorMessage };
         }
 
-        return filteredEduList;
+        return educations;
     }
 
     static async deleteEdu({ edu_id }){

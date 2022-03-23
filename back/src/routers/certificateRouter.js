@@ -15,7 +15,6 @@ certificateRouter.post("/certificate/create", login_required, async (req, res, n
         }
 
         //생각해보니까 login_required 거치니까 body로 user_id 받지 않아도됨
-        //const user_id = req.body.user_id
         const user_id = req.currentUserId
         const title = req.body.title
         const description = req.body.description
@@ -94,4 +93,26 @@ certificateRouter.put('/certificates/:id', login_required, async (req, res, next
         next(err)
     }
 })
+
+//삭제
+certificateRouter.delete('/certificates/:id', login_required, async (req, res, next) => {
+    try {
+        //URI에서 수정할 certificate의 id를 받아옴
+        const certificateId = req.params.id
+
+        //현재 요청준 로그인된 사용자의 아이디
+        const currentUserId = req.currentUserId
+
+        const deletedCertificate = await CertificateService.deleteCertificate({ certificateId, currentUserId })
+
+        if (deletedCertificate.errorMessage) {
+            throw new Error(deletedCertificate.errorMessage);
+        }
+
+        res.status(200).json(deletedCertificate);
+    } catch (err) {
+        next(err)
+    }
+})
+
 export { certificateRouter }

@@ -10,9 +10,13 @@ const Certificates = ({ portfolioOwnerId, isEditable }) => {
   const [certificateList, setCertificateList] = useState([]);
 
   useEffect(() => {
-    Api.get("certificatelist", portfolioOwnerId).then((res) =>
-      setCertificateList(res.data)
-    );
+    try {
+      Api.get("certificatelist", portfolioOwnerId).then((res) =>
+        setCertificateList(res.data)
+      );
+    } catch (e) {
+      console.log(e);
+    }
   }, [portfolioOwnerId]);
 
   return (

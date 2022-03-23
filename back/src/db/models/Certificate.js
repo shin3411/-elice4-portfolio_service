@@ -16,9 +16,9 @@ class Certificate {
         return certificates;
     }
 
-    static async update({ certificateId, fieldToUpdate, newValue }) {
+    static async update({ certificateId, toUpdate }) {
         const filter = { _id: certificateId };
-        const update = { [fieldToUpdate]: newValue };
+        const update = toUpdate;
         const option = { returnOriginal: false };
 
         const updatedCertificate = await CertificateModel.findOneAndUpdate(
@@ -26,9 +26,12 @@ class Certificate {
             update,
             option
         );
-        console.log(certificateId)
-        console.log(updatedCertificate)
         return updatedCertificate;
+    }
+
+    static async delete({ certificateId }) {
+        const ret = await CertificateModel.findOneAndDelete({ _id: certificateId })
+        return ret
     }
 }
 
