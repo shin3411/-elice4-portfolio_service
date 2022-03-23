@@ -84,7 +84,11 @@ eduRouter.put('/educations/:id', login_required, async (req, res, next) => {
         // position에 할당되는 값은 undefined 이다!
         const { school, major, position } = req.body;
         const toUpdate = { school, major, position };
-        const edu = await eduService.setEdu({ edu_id, toUpdate });
+
+        //현재 요청준 로그인된 사용자의 아이디
+        const currentUserId = req.currentUserId
+
+        const edu = await eduService.setEdu({ edu_id, toUpdate, currentUserId });
 
         if (edu.errorMessage) {
             throw new Error(edu.errorMessage);
