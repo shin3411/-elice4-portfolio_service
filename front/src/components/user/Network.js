@@ -32,7 +32,7 @@ function Network() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const searchedUsers = await Api.get(
-      `users/search?${selected}=searchValue`
+      `users/search?${selected}=${encodeURIComponent(searchValue)}`
     ).then((res) => setUsers(res.data));
     setUsers(searchedUsers);
   };
