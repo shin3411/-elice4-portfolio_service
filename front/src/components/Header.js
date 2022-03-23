@@ -52,6 +52,9 @@ function Header() {
         </Navbar.Brand>
         <Nav activeKey={location.pathname}>
           <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/search")}>Search</Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="m-1">
             <Nav.Link onClick={() => navigate("/")}>My Page</Nav.Link>
           </Nav.Item>
           <Nav.Item className="m-1">
