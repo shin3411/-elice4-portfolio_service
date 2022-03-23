@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Form, Row, Col, Card } from "react-bootstrap";
+import { Container, Form, Row, Col } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 
 import AwardSearchForm from "./AwardSearchForm";

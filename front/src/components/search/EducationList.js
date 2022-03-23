@@ -16,7 +16,7 @@ const EducationList = ({ education }) => {
                 {education.major}({education.position})
               </Card.Text>
             </Col>
-            <Col xs={2}>
+            <Col xs={1}>
               <Button
                 size="sm"
                 variant="secondary"
