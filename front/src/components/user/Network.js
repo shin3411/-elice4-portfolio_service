@@ -39,7 +39,7 @@ function Network() {
 
   return (
     <Container fluid>
-      <Form className="mb-4" onSubmit={handleSubmit}>
+      <Form id="networkForm" className="mb-4" onSubmit={handleSubmit}>
         <Row className="justify-content-center">
           <Col xs={2}>
             <Form.Select

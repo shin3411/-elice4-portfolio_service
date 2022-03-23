@@ -28,6 +28,7 @@ const MobileNavbar = ({ logout }) => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
+            <Nav.Link onClick={() => navigate("/search")}>Search</Nav.Link>
             <Nav.Link onClick={() => navigate("/")}>My Page</Nav.Link>
             <Nav.Link onClick={() => navigate("/network")}>Network</Nav.Link>
             <Nav.Link onClick={logout}>Logout</Nav.Link>

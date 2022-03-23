@@ -6,13 +6,13 @@ import { modeState } from "../atom/themeState";
 
 const GuestbookForm = () => {
   const mokComment = [
-    { nickname: "user1", comment: "안녕하세요" },
-    { nickname: "user2", comment: "반갑습니다." },
-    { nickname: "user3", comment: "오늘 날씨 좋나요?" },
-    { nickname: "user4", comment: "비 오니까 우산 챙기세요" },
-    { nickname: "user5", comment: "비 오니까 우산 챙기세요" },
-    { nickname: "user5", comment: "비 오니까 우산 챙기세요" },
-    { nickname: "user5", comment: "비 오니까 우산 챙기세요" },
+    { nickname: "user1", comment: "좋은 포트폴리오네요!" },
+    { nickname: "user2", comment: "프로젝트 경험이 좋아요!" },
+    { nickname: "user3", comment: "테스트 메시지....." },
+    { nickname: "user4", comment: "테스트 메시지....." },
+    { nickname: "user5", comment: "테스트 메시지....." },
+    { nickname: "user5", comment: "테스트 메시지....." },
+    { nickname: "user5", comment: "테스트 메시지....." },
   ];
 
   const ModeState = useRecoilValue(modeState);

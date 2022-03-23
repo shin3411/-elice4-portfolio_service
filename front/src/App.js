@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GlobalCss from "./styles/GlobalCss";
-import styled from "styled-components";
+import { Wrapper } from "./styles/Wrapper";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
@@ -84,16 +84,3 @@ function App() {
 }
 
 export default App;
-
-const Wrapper = styled.div`
-  width: 1400px;
-  margin: auto;
-
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    button {
-      margin: 5px;
-    }
-  }
-`;
