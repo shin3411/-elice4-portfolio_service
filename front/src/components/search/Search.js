@@ -33,7 +33,7 @@ const Search = () => {
   }, [userState, navigate]);
 
   return (
-    <Container>
+    <Container className="mt-5">
       <Row className="justify-content-center">
         <Col xs={2}>
           <Form.Select
