@@ -11,8 +11,8 @@ class Certificate {
         return certificate;
     }
 
-    static async findAll({ user_id }) {
-        const certificates = await CertificateModel.find({ user_id: user_id });
+    static async findByQuery(query) {
+        const certificates = await CertificateModel.find(query);
         return certificates;
     }
 
