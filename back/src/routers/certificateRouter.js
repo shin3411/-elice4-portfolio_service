@@ -53,7 +53,7 @@ certificateRouter.get('/certificates/search', login_required, async (req, res, n
                 query.date = { ...query.date, $gte: req.query.dateAfter }
             }
         }
-        console.log(query)
+
         if (!(query.title || query.description || query.date)) {
             throw new Error('쿼리를 정확하게 입력해 주세요.')
         }
