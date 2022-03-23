@@ -1,20 +1,42 @@
-import React, { useState } from "react";
-import { Form, Row, Col, InputGroup, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Form,
+  Row,
+  Col,
+  InputGroup,
+  Button,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import * as Api from "../../api";
 
 const ProjectSearchForm = ({ setData }) => {
   const [title, setTitle] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [dateAfter, setDateAfter] = useState("");
+  const [dateBefore, setDateBefore] = useState("");
+  const [dateAfterValid, setDateAfterValid] = useState(false);
+  const [dateBeforeValid, setDateBeforeValid] = useState(false);
 
-  const formValid = title || fromDate || toDate;
+  const dateValid = (!dateAfter && !dateBefore) || (dateAfter && dateBefore);
+  const formValid = dateValid || (title && !dateAfter && !dateBefore);
+
+  useEffect(() => {
+    if (!dateAfter && dateBefore) {
+      setDateAfterValid(true);
+    } else if (dateAfter && !dateBefore) {
+      setDateBeforeValid(true);
+    } else {
+      setDateAfterValid(false);
+      setDateBeforeValid(false);
+    }
+  }, [dateAfter, dateBefore]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("projects", "search", {
       title: title ? encodeURIComponent(title) : null,
-      fromDate: fromDate ? fromDate : null,
-      toDate: toDate ? toDate : null,
+      dateAfter: dateAfter ? dateAfter : null,
+      dateBefore: dateBefore ? dateBefore : null,
     });
     setData({ projects: data });
   };
@@ -31,22 +53,40 @@ const ProjectSearchForm = ({ setData }) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              <Form.Control
-                type="text"
-                placeholder="시작일"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-              />
-              <Form.Control
-                type="text"
-                placeholder="종료일"
-                onFocus={(e) => (e.target.type = "date")}
-                onBlur={(e) => (e.target.type = "text")}
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-              />
+              <OverlayTrigger
+                show={dateAfterValid}
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={
+                  <Tooltip id="button-tooltip">시작일을 입력해주세요.</Tooltip>
+                }
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="시작일"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                  value={dateAfter}
+                  onChange={(e) => setDateAfter(e.target.value)}
+                />
+              </OverlayTrigger>
+              <OverlayTrigger
+                show={dateBeforeValid}
+                placement="bottom"
+                delay={{ show: 250, hide: 400 }}
+                overlay={
+                  <Tooltip id="button-tooltip">종료일을 입력해주세요.</Tooltip>
+                }
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="종료일"
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => (e.target.type = "text")}
+                  value={dateBefore}
+                  onChange={(e) => setDateBefore(e.target.value)}
+                />
+              </OverlayTrigger>
             </InputGroup>
           </Col>
           <Col xs={1}>
