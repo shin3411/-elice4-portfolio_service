@@ -1,12 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Form, Row, Col } from "react-bootstrap";
+import { Container, Form, Row, Col, Card } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 
 import AwardSearchForm from "./AwardSearchForm";
+import AwardList from "./AwardList";
 import EducationSearchForm from "./EducationSearchForm";
+import EducationList from "./EducationList";
 import ProjectSearchForm from "./ProjectSearchForm";
+import ProjectList from "./ProjectList";
 import CertificateSearchForm from "./CertificateSearchForm";
+import CertificateList from "./CertificateList";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -50,6 +54,30 @@ const Search = () => {
         {selected === "certificates" && (
           <CertificateSearchForm setData={setData} />
         )}
+      </Row>
+
+      <Row className="justify-content-center mt-5">
+        {data.educations &&
+          data.educations.map((education) => {
+            return <EducationList key={education._id} education={education} />;
+          })}
+        {data.awards &&
+          data.awards.map((award) => {
+            return <AwardList key={award._id} award={award} />;
+          })}
+        {data.projects &&
+          data.projects.map((project) => {
+            return <ProjectList key={project._id} project={project} />;
+          })}
+        {data.certificates &&
+          data.certificates.map((certificate) => {
+            return (
+              <CertificateList
+                key={certificate._id}
+                certificate={certificate}
+              />
+            );
+          })}
       </Row>
     </Container>
   );

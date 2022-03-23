@@ -20,9 +20,9 @@ const EducationSearchForm = ({ setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("educations", "search", {
-      school: encodeURIComponent(school) ? school : null,
-      major: encodeURIComponent(major) ? major : null,
-      position: encodeURIComponent(position) ? position : null,
+      school: school ? encodeURIComponent(school) : null,
+      major: major ? encodeURIComponent(major) : null,
+      position: position ? encodeURIComponent(position) : null,
     });
     setData({ educations: data });
   };
@@ -31,7 +31,7 @@ const EducationSearchForm = ({ setData }) => {
     <Col xs={7}>
       <Form onSubmit={handleSubmit}>
         <Row>
-          <Col xs={10}>
+          <Col xs={11}>
             <InputGroup>
               <Form.Control
                 type="text"
@@ -57,10 +57,12 @@ const EducationSearchForm = ({ setData }) => {
               </Form.Select>
             </InputGroup>
           </Col>
-          <Col xs={2}>
-            <Button type="submit" disabled={!formValid}>
-              검색
-            </Button>
+          <Col xs={1}>
+            <Row className="justify-content-center">
+              <Button type="submit" disabled={!formValid}>
+                검색
+              </Button>
+            </Row>
           </Col>
         </Row>
       </Form>

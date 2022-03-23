@@ -4,6 +4,7 @@ import * as Api from "../../api";
 
 const CertificateSearchForm = ({ setData }) => {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
 
   const formValid = title || date;
@@ -11,7 +12,8 @@ const CertificateSearchForm = ({ setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("certificates", "search", {
-      title: encodeURIComponent(title) ? title : null,
+      title: title ? encodeURIComponent(title) : null,
+      description: description ? encodeURIComponent(description) : null,
       date: date ? date : null,
     });
     setData({ certificates: data });
@@ -21,13 +23,19 @@ const CertificateSearchForm = ({ setData }) => {
     <Col xs={7}>
       <Form onSubmit={handleSubmit}>
         <Row>
-          <Col xs={10}>
+          <Col xs={11}>
             <InputGroup>
               <Form.Control
                 type="text"
                 placeholder="자격증 제목"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+              />
+              <Form.Control
+                type="text"
+                placeholder="상세내역"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
               <Form.Control
                 type="text"
@@ -39,10 +47,12 @@ const CertificateSearchForm = ({ setData }) => {
               />
             </InputGroup>
           </Col>
-          <Col xs={2}>
-            <Button type="submit" disabled={!formValid}>
-              검색
-            </Button>
+          <Col xs={1}>
+            <Row className="justify-content-center">
+              <Button type="submit" disabled={!formValid}>
+                검색
+              </Button>
+            </Row>
           </Col>
         </Row>
       </Form>
