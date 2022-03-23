@@ -2,6 +2,10 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { upload, nameField } from "../middlewares/multerMiddleware";
+import fs from "fs";
+import bodyParser from "body-parser";
+const parser = bodyParser.urlencoded({ extended: false });
 
 const userAuthRouter = Router();
 
@@ -146,5 +150,46 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
       `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
     );
 });
+
+userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next){
+  try{
+    //console.log(req.file);
+    const filePath = req.file.path; // 파일 전체 경로
+    const imgBuffer = fs.readFileSync(filePath); //filePath에 위치한 파일을 "문자열(string)" or 버퍼(binary데이터)으로 가져온다.
+    // const encodeImg = Buffer.from(imgBuffer).toString('base64'); // 파일 인코딩, 'base64'의 의미 : binary데이터를 6비트 단위로 끊어 인코딩
+    const contentType = req.file.mimetype;
+    const img = { 
+      data: imgBuffer,
+      contentType,
+    }
+    const userId = req.currentUserId;
+    
+    const updatedResult = await userAuthService.setUserImg({ userId, img, filePath });
+
+    if(updatedResult.errorMessage){
+      throw new Error(updatedResult.errorMessage);
+    }
+    
+    res.status(200).send(updatedResult);
+ } catch(error) {
+    next(error);
+ }
+})
+
+userAuthRouter.get('/profileimg', login_required, async function (req, res, next){
+  try{
+    const currentUserId = req.currentUserId;
+    
+    const userImg = await userAuthService.getUserImg({ currentUserId });
+
+    if(userImg.errorMessage){
+      throw new Error(userImg.errorMessage);
+    }
+    
+    res.status(200).send(userImg);
+ } catch(error) {
+    next(error);
+ }
+})
 
 export { userAuthRouter };
