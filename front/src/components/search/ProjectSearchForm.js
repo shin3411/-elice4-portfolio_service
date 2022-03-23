@@ -12,7 +12,7 @@ const ProjectSearchForm = ({ setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("projects", "search", {
-      title: title ? title : null,
+      title: title ? encodeURIComponent(title) : null,
       fromDate: fromDate ? fromDate : null,
       toDate: toDate ? toDate : null,
     });

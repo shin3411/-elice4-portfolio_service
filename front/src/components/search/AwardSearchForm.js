@@ -9,7 +9,9 @@ const AwardSearchForm = ({ setData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await Api.get("awards", "search", { title });
+    const { data } = await Api.get("awards", "search", {
+      title: encodeURIComponent(title),
+    });
     setData({ awards: data });
   };
 

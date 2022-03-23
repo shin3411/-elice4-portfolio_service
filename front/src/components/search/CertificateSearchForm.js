@@ -11,7 +11,7 @@ const CertificateSearchForm = ({ setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("certificates", "search", {
-      title: title ? title : null,
+      title: encodeURIComponent(title) ? title : null,
       date: date ? date : null,
     });
     setData({ certificates: data });

@@ -20,9 +20,9 @@ const EducationSearchForm = ({ setData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("educations", "search", {
-      school: school ? school : null,
-      major: major ? major : null,
-      position: position ? position : null,
+      school: encodeURIComponent(school) ? school : null,
+      major: encodeURIComponent(major) ? major : null,
+      position: encodeURIComponent(position) ? position : null,
     });
     setData({ educations: data });
   };
