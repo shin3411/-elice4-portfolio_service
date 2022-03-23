@@ -1,3 +1,4 @@
+// req.data에 들어있는 "전체 배열" 을 "특정 page의 배열"로 변환
 function pagenationMiddleware(req, res, next) {
     const users = req.data;  //req.data는 반드시 배열이어야 한다.
     const { page, limit } = req.query;
