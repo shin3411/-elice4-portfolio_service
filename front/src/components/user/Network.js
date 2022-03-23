@@ -24,7 +24,7 @@ function Network() {
 
   return (
     <Container fluid>
-      <Row xs="auto" style={{ width: "100%", marginLeft: "60px" }}>
+      <Row xs="auto" className="mt-2 m-5">
         {users.map((user) => (
           <UserCard key={user.id} user={user} isNetwork />
         ))}

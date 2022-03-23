@@ -17,6 +17,7 @@ const MobileNavbar = ({ logout }) => {
           ? "mt-2 bg-transparent navbar-dark"
           : "mt-2 bg-transparent navbar-white"
       }
+      style={{ width: "100%" }}
     >
       <Container>
         <Navbar.Brand>
