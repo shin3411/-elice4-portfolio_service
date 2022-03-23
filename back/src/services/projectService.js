@@ -161,6 +161,11 @@ class projectService {
         const modifiedProject = projectService.refineDateFields(project);
         return modifiedProject;
     }
+
+    static async searchProject(query) {
+        const projects = await Project.findsByQuery(query)
+        return projects;
+    }
 }
 
 export { projectService };
