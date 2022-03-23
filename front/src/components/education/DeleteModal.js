@@ -13,7 +13,7 @@ const DeleteModal = ({ education, showModal, setShowModal }) => {
     try {
       await Api.delete("educations", education.id);
     } catch (err) {
-      console.log(`${err} 삭제 중 에러 발생`);
+      alert("해당 학적이 존재하지 않습니다.");
     }
     setEducationList((prev) => {
       const newEdu = prev.filter((v) => v.id !== education.id);

@@ -32,6 +32,40 @@ certificateRouter.post("/certificate/create", login_required, async (req, res, n
     }
 })
 
+//검색
+certificateRouter.get('/certificates/search', login_required, async (req, res, next) => {
+    try {
+        const query = {}
+        //한글 깨져서 오는것 decode
+        if (req.query.title) {
+            query.title = { $regex: decodeURIComponent(req.query.title) }
+        }
+        if (req.query.description) {
+            query.description = { $regex: decodeURIComponent(req.query.description) }
+        }
+        if (req.query.date) {
+            query.date = req.query.date
+        } else {
+            if (req.query.dateBefore) {
+                query.date = { ...query.date, $lte: req.query.dateBefore }
+            }
+            if (req.query.dateAfter) {
+                query.date = { ...query.date, $gte: req.query.dateAfter }
+            }
+        }
+
+        if (!(query.title || query.description || query.date)) {
+            throw new Error('쿼리를 정확하게 입력해 주세요.')
+        }
+        const certificateinfo = await CertificateService.searchCertificates(query)
+
+        res.status(200).send(certificateinfo)
+
+    } catch (err) {
+        next(err)
+    }
+})
+
 //하나만 조회
 certificateRouter.get('/certificates/:id', login_required, async (req, res, next) => {
     try {

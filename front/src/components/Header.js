@@ -2,6 +2,15 @@ import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import { UserStateContext, DispatchContext } from "../App";
+import { Navbar, Container } from "react-bootstrap";
+
+import { useMediaQuery } from "react-responsive";
+
+import MobileNavbar from "./MobileNavbar";
+import ThemeToggle from "./ThemeToggle";
+
+import { useRecoilValue } from "recoil";
+import { modeState } from "../atom/themeState";
 
 function Header() {
   const navigate = useNavigate();
@@ -23,23 +32,49 @@ function Header() {
     navigate("/");
   };
 
-  return (
-    <Nav activeKey={location.pathname}>
-      <Nav.Item className="me-auto mb-5">
-        <Nav.Link disabled>안녕하세요, 포트폴리오 공유 서비스입니다.</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link onClick={() => navigate("/network")}>네트워크</Nav.Link>
-      </Nav.Item>
-      {isLogin && (
-        <Nav.Item>
-          <Nav.Link onClick={logout}>로그아웃</Nav.Link>
-        </Nav.Item>
-      )}
-    </Nav>
+  const ModeState = useRecoilValue(modeState);
+
+  // useMediaQuery훅을 사용해서 사용자가 모바일 환경인지 확인
+  const isMobile = useMediaQuery({
+    query: "(max-width: 767px)",
+  });
+
+  return !isMobile ? (
+    <Navbar
+      className="mb-2 mt-2"
+      variant={ModeState.mode === "dark" ? "dark" : "white"}
+    >
+      <Container>
+        <Navbar.Brand>
+          Sharing
+          <br />
+          Portfolios
+        </Navbar.Brand>
+        <Nav activeKey={location.pathname}>
+          <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/search")}>Search</Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/")}>My Page</Nav.Link>
+          </Nav.Item>
+          <Nav.Item className="m-1">
+            <Nav.Link onClick={() => navigate("/network")}>Network</Nav.Link>
+          </Nav.Item>
+          {isLogin && (
+            <Nav.Item className="m-1">
+              <Nav.Link onClick={logout}>Logout</Nav.Link>
+            </Nav.Item>
+          )}
+          <ThemeToggle />
+        </Nav>
+      </Container>
+    </Navbar>
+  ) : (
+    <>
+      <MobileNavbar logout={logout} />
+      <ThemeToggle />
+      <hr />
+    </>
   );
 }
 

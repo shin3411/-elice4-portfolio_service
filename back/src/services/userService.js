@@ -1,7 +1,8 @@
-import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
+import { User, UserImg } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로 index.js 로부터 import함.
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import path from "path";
 
 class userAuthService {
   static async addUser({ name, email, password }) {
@@ -22,6 +23,12 @@ class userAuthService {
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
+
+    //UserImg도 따로 생성
+    const createdUserId = createdNewUser.id;
+    await UserImg.create({ userId: createdUserId });
+    
+
     createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
     return createdNewUser;
@@ -69,8 +76,8 @@ class userAuthService {
     return loginUser;
   }
 
-  static async getUsers() {
-    const users = await User.findAll();
+  static async getUsers(query) {
+    const users = await User.findByQuery(query);
     return users;
   }
 
@@ -84,7 +91,7 @@ class userAuthService {
         "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
-   
+
     // 업데이트 대상에 name이 있다면, 즉 name 값이 null 이 아니라면 업데이트 진행
     if (toUpdate.name) {
       const fieldToUpdate = "name";
@@ -109,7 +116,7 @@ class userAuthService {
       const newValue = toUpdate.description;
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
-    
+
     return user;
   }
 
@@ -126,6 +133,51 @@ class userAuthService {
     return user;
   }
 
+  static async setUserImg({ userId, img, filePath }){
+    const foundUserImg = await UserImg.findById({ userId });
+
+    if(!foundUserImg){
+      await UserImg.create({ userId });
+    }
+
+    const setImgDocument = {
+      userId,
+      filePath,
+      img,
+    }
+    
+    const updatedUserImg = await UserImg.update({ userId, setImgDocument });
+    const updatedFilePath = updatedUserImg.filePath;
+    
+    if(!updatedFilePath){
+      const errorMessage =
+        "해당 유저의 프로필 이미지가 존재하지 않습니다.";
+      return { errorMessage };
+    }
+    
+    const fileName = path.basename(updatedFilePath);
+    const successResult = {
+      userId,
+      fileName,
+      message: "success",
+    }
+
+    return successResult;
+  }
+
+  static async getUserImg({ currentUserId }){
+    const foundUserImg = await UserImg.findById({ userId: currentUserId });
+    
+    if(!foundUserImg){
+      const errorMessage = 
+       "유저를 찾을 수 없습니다.";
+      return { errorMessage };
+    }
+
+    const { img } = foundUserImg;
+    
+    return img.data;
+  }
 }
 
 export { userAuthService };
