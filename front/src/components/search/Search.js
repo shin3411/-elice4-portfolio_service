@@ -38,7 +38,10 @@ const Search = () => {
         <Col xs={2}>
           <Form.Select
             value={selected}
-            onChange={(e) => setSelected(e.target.value)}
+            onChange={(e) => {
+              setSelected(e.target.value);
+              if (data.none) setData({});
+            }}
           >
             {selectList.map(({ value, item }) => (
               <option value={value} key={value}>
@@ -78,6 +81,13 @@ const Search = () => {
               />
             );
           })}
+        <Row className="text-center position-absolute top-50">
+          {data.none && (
+            <Col>
+              <h3>{data.none}</h3>
+            </Col>
+          )}
+        </Row>
       </Row>
     </Container>
   );

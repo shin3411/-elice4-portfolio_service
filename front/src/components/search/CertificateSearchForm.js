@@ -21,7 +21,26 @@ const CertificateSearchForm = ({ setData }) => {
       dateAfter: dateAfter ? dateAfter : null,
       dateBefore: dateBefore ? dateBefore : null,
     });
-    setData({ certificates: data });
+
+    if (data.length === 0) {
+      const searchString = [
+        title,
+        description,
+        date,
+        `${dateAfter} 이후`,
+        `${dateBefore} 이전`,
+      ].reduce((acc, i) => {
+        if (i !== "" && i !== " 이후" && i !== " 이전") {
+          if (acc.length !== 0) return (acc += `, ${i}`);
+          return (acc += i);
+        } else {
+          return acc;
+        }
+      }, "");
+      setData({ none: `'${searchString}'에 대한 검색 결과가 없습니다.` });
+    } else {
+      setData({ certificates: data });
+    }
   };
 
   return (

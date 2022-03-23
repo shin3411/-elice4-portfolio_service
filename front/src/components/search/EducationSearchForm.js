@@ -18,7 +18,20 @@ const EducationSearchForm = ({ setData }) => {
       major: major ? encodeURIComponent(major) : null,
       position: position ? encodeURIComponent(position) : null,
     });
-    setData({ educations: data });
+
+    if (data.length === 0) {
+      const searchString = [school, major, position].reduce((acc, i) => {
+        if (i !== "") {
+          if (acc.length !== 0) return (acc += `, ${i}`);
+          return (acc += i);
+        } else {
+          return acc;
+        }
+      }, "");
+      setData({ none: `'${searchString}'에 대한 검색 결과가 없습니다.` });
+    } else {
+      setData({ educations: data });
+    }
   };
 
   return (
