@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, InputGroup } from "react-bootstrap";
 import * as Api from "../../api";
 
 const AwardSearchForm = ({ setData }) => {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  const formValid = title;
+  const formValid = title || description;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data } = await Api.get("awards", "search", {
-      title: encodeURIComponent(title),
+      title: title ? encodeURIComponent(title) : null,
+      description: description ? encodeURIComponent(description) : null,
     });
     setData({ awards: data });
   };
@@ -20,12 +22,20 @@ const AwardSearchForm = ({ setData }) => {
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col xs={11}>
-            <Form.Control
-              type="text"
-              placeholder="수상내역"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+            <InputGroup>
+              <Form.Control
+                type="text"
+                placeholder="수상내역"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <Form.Control
+                type="text"
+                placeholder="상세내역"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </InputGroup>
           </Col>
           <Col xs={1}>
             <Row className="justify-content-center">
