@@ -29,12 +29,11 @@ function Network() {
     Api.get("userlist").then((res) => setUsers(res.data));
   }, [userState, navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const searchedUsers = await Api.get(
-      `users/search?${selected}=${encodeURIComponent(searchValue)}`
-    ).then((res) => setUsers(res.data));
-    setUsers(searchedUsers);
+    Api.get(`users/search?${selected}=${encodeURIComponent(searchValue)}`).then(
+      (res) => setUsers(res.data)
+    );
   };
 
   return (
