@@ -41,6 +41,12 @@ class AwardService {
         return awards;
     }
 
+    //검색용
+    static async searchAwards(query) {
+        const awards = await Award.findByQuery(query)
+        return awards
+    }
+
     //특정 1개의 수상 정보 수정
     static async setAwards({ toUpdate, awardId, currentUserId }) {
         let award = await Award.findById({ _id: awardId })

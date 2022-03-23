@@ -99,13 +99,6 @@ class eduService {
 
     static async searchEdu(query) {
         const educations = await Education.findsByQuery(query);
-
-        if (educations.length === 0) {
-            const errorMessage =
-                "해당하는 학력이 없습니다."
-            return { errorMessage };
-        }
-
         return educations;
     }
 }

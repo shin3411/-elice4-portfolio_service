@@ -46,10 +46,7 @@ awardRouter.get('/awards/search', login_required, async (req, res, next) => {
             throw new Error('쿼리를 정확하게 입력해 주세요.')
         }
 
-        const result = await AwardService.getAwards(query)
-        if (result.errorMessage) {
-            throw new Error(result.errorMessage)
-        }
+        const result = await AwardService.searchAwards(query)
         res.status(200).send(result)
     } catch (err) {
         next(err)

@@ -57,7 +57,7 @@ certificateRouter.get('/certificates/search', login_required, async (req, res, n
         if (!(query.title || query.description || query.date)) {
             throw new Error('쿼리를 정확하게 입력해 주세요.')
         }
-        const certificateinfo = await CertificateService.getCertificates(query)
+        const certificateinfo = await CertificateService.searchCertificates(query)
 
         res.status(200).send(certificateinfo)
 

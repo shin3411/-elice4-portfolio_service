@@ -40,6 +40,12 @@ class CertificateService {
         return certificates;
     }
 
+    //검색용
+    static async searchCertificates(query) {
+        const certificates = await Certificate.findByQuery(query)
+        return certificates;
+    }
+
     //특정 1개의 수상 정보 수정
     static async setCertificates({ toUpdate, certificateId, currentUserId }) {
         let certificate = await Certificate.findById({ _id: certificateId })
