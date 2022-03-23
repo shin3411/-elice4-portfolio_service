@@ -49,8 +49,7 @@ class eduService {
         let education = await Education.findById({ edu_id });
 
         //해당 유저의 학력중 수정하려는 내용과 동일한 학력이 존재하는지 확인용, 수정하려는 것이 아닌것중 확인하려고 $ne씀 
-        let isUnique = await Education.findsByQuery({ user_id: currentUserId, ...toUpdate, id: { $ne: edu_id } })
-
+        let isUnique = await Education.findsByQuery({ userId: currentUserId, ...toUpdate, id: { $ne: edu_id } })
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!education) {
             const errorMessage =

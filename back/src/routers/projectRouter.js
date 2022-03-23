@@ -85,7 +85,7 @@ projectRouter.put('/projects/:id', login_required, async (req, res, next) => {
         // from_date, to_date에 할당되는 값은 undefined 이다!
         const { title, description, from_date, to_date } = req.body;
         const toUpdate = { title, description, from_date, to_date };
-        const project = await projectService.setProject({ project_id, toUpdate });
+        const project = await projectService.setProject({ project_id, toUpdate, currentUserId: req.currentUserId });
 
         if (project.errorMessage) {
             throw new Error(project.errorMessage);

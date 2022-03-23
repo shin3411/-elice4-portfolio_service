@@ -52,9 +52,9 @@ class projectService {
             toDate: new Date(to_date),
         }
 
-        const project = await Project.findByQuery(query);
+        const project = await Project.findsByQuery({ userId: user_id, title });
         //프로젝트 중복
-        if (project) {
+        if (project.length >= 1) {
             const errorMessage =
                 "중복된 프로젝트입니다. 다른 프로젝트를 입력해 주세요."
             return { errorMessage };
@@ -81,14 +81,14 @@ class projectService {
         return modifiedProject;
     }
 
-    static async setProject({ project_id, toUpdate }) {
+    static async setProject({ project_id, toUpdate, currentUserId }) {
         // 우선 해당 id 의 학적이 db에 존재하는지 여부 확인
         let project = await Project.findById({ project_id });
 
         // db에서 찾지 못한 경우, 에러 메시지 반환
         if (!project) {
             const errorMessage =
-                "해당 학적이 존재하지 않습니다.";
+                "해당 프로젝트가 존재하지 않습니다.";
             return { errorMessage };
         }
 
@@ -108,6 +108,15 @@ class projectService {
                     "입력하신 날짜의 형식이 맞지 않습니다. 형식에 맞춰 주세요.";
                 return { errorMessage };
             }
+        }
+
+        //해당 유저의 학력중 수정하려는 내용과 동일한 학력이 존재하는지 확인용, 수정하려는 것이 아닌것중 확인하려고 $ne씀 
+        let isUnique = await Project.findsByQuery({ userId: currentUserId, title: toUpdate.title, id: { $ne: project_id } })
+
+        //중복 탐지
+        if (isUnique.length >= 1) {
+            const errorMessage = "이미 동일한 프로젝트가 존재합니다."
+            return { errorMessage }
         }
 
         for (const [key, value] of Object.entries(toUpdate)) {
