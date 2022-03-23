@@ -2,7 +2,6 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
-import { pagedIndices } from "../utils/pagedIndices";
 
 class userAuthService {
   static async addUser({ name, email, password }) {
@@ -127,21 +126,6 @@ class userAuthService {
     return user;
   }
 
-  static async getUsersbyPage({ page, limit }){
-    const users = await userAuthService.getUsers();
-    const { startIndex, lastIndex, errorMessage } = pagedIndices({ total: users.length, page, limit });
-    
-    if(errorMessage) {
-      return { errorMessage };
-    }
-
-    const pagedUsers = [];
-    for(let i=startIndex; i<=lastIndex; i++){
-      pagedUsers.push(users[i]);
-    }
-
-    return pagedUsers;
-  }
 }
 
 export { userAuthService };
