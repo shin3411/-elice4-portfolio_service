@@ -8,7 +8,6 @@ function User({ portfolioOwnerId, isEditable }) {
   const [isEditing, setIsEditing] = useState(false);
   // useState 훅을 통해 user 상태를 생성함.
   const [user, setUser] = useState(null);
-  const [imageSrc, setImageSrc] = useState("http://placekitten.com/200/200");
 
   useEffect(() => {
     // "users/유저id" 엔드포인트로 GET 요청을 하고, user를 response의 data로 세팅함.
@@ -22,15 +21,12 @@ function User({ portfolioOwnerId, isEditable }) {
           user={user}
           setIsEditing={setIsEditing}
           setUser={setUser}
-          imageSrc={imageSrc}
-          setImageSrc={setImageSrc}
         />
       ) : (
         <UserCard
           user={user}
           setIsEditing={setIsEditing}
           isEditable={isEditable}
-          imageSrc={imageSrc}
         />
       )}
     </>
