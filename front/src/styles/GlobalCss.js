@@ -7,7 +7,7 @@ import { modeState } from "../atom/themeState";
 </style>;
 
 const GlobalStyle = createGlobalStyle`
-  body, div.card-body,  div.modal-content {
+  body, div.card-body,  div.modal-content, div.card {
   // props 로 받은 색 적용 
   color : ${(currentTheme) => currentTheme.textColor};
   background-color : ${(currentTheme) => currentTheme.bgColor};

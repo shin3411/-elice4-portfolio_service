@@ -10,6 +10,7 @@ import educationListState from "../../atom/educationListState";
 const EducationEditFrom = ({ education, setIsEditing }) => {
   const [, setEducationList] = useRecoilState(educationListState);
   const grades = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
+  const [isDuplicate, setIsDuplicate] = useState(false); // 편집한 학력이 중복인지 확인하는 state
 
   const [inputs, setInputs] = useState({
     school: education.school,
@@ -35,18 +36,22 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
   // PUT 요청으로 학력 정보를 수정합니다.
   const onSubmit = async (e) => {
     e.preventDefault();
-    const response = await Api.put(`educations/${education.id}`, inputs);
-    const editedEdu = response.data;
-    setIsEditing(false);
+    try {
+      const response = await Api.put(`educations/${education.id}`, inputs);
+      const editedEdu = response.data;
+      setIsEditing(false);
 
-    setEducationList((prev) => {
-      const newEdu = prev.map((v) => {
-        if (v.id === education.id) {
-          return editedEdu;
-        } else return v;
+      setEducationList((prev) => {
+        const newEdu = prev.map((v) => {
+          if (v.id === education.id) {
+            return editedEdu;
+          } else return v;
+        });
+        return newEdu;
       });
-      return newEdu;
-    });
+    } catch (e) {
+      setIsDuplicate(true);
+    }
   };
 
   return (
@@ -63,6 +68,9 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
         {!isSchoolValid && (
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
+        {isDuplicate && (
+          <Form.Text className="text-success">중복된 학적입니다.</Form.Text>
+        )}
       </Form.Group>
 
       <Form.Group className="mt-3" controlId="formBasicPassword">
@@ -78,7 +86,7 @@ const EducationEditFrom = ({ education, setIsEditing }) => {
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
       </Form.Group>
-      <Form.Group key=" inline-radio" className="mt-3 mb-2">
+      <Form.Group key="inline-radio" className="mt-3 mb-2">
         {grades.map((grade, idx) => (
           <Form.Check
             key={`inline-radio-${idx}`}
