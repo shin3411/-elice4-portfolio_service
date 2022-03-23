@@ -23,6 +23,8 @@ class projectService {
 
         project.fromDate = fromDateString;
         project.toDate = toDateString;
+
+        
         return project;
     }
 
