@@ -31,9 +31,9 @@ function Network() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Api.get(`users/search?${selected}=${encodeURIComponent(searchValue)}`).then(
-      (res) => setUsers(res.data)
-    );
+    Api.get("users", "search", {
+      [selected]: encodeURIComponent(searchValue),
+    }).then((res) => setUsers(res.data));
   };
 
   return (
