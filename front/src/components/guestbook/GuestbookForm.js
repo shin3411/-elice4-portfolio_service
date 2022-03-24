@@ -1,39 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { Form, Card, Button } from "react-bootstrap";
 import * as Api from "../../api";
+import Guestbooks from "./Guestbooks";
 
 import { useRecoilValue } from "recoil";
 import { modeState } from "../../atom/themeState";
 
-import styled from "styled-components";
-import { MdDelete, MdCreate } from "react-icons/md";
-
 const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
-  const [guestBook, setGuestBook] = useState([]);
+  const [guestBooks, setGuestBooks] = useState([]);
+  const ModeState = useRecoilValue(modeState);
 
+  const fetch = async () => {
+    try {
+      const response = await Api.get("commentlist", portfolioOwnerId);
+      setGuestBooks(response.data);
+    } catch (e) {}
+  };
+
+  // 기존 방명록을 받아와 저장
   useEffect(() => {
-    const fetch = async () => {
-      try {
-        const response = await Api.get();
-        setGuestBook(response.data);
-      } catch (e) {}
-    };
     fetch();
   }, [portfolioOwnerId]);
 
-  console.log(guestBook);
+  console.log(guestBooks);
 
-  const mokComment = [
-    { nickname: "user1", comment: "좋은 포트폴리오네요!" },
-    { nickname: "user2", comment: "프로젝트 경험이 좋아요!" },
-    { nickname: "user3", comment: "테스트 메시지....." },
-    { nickname: "user4", comment: "테스트 메시지....." },
-    { nickname: "user5", comment: "테스트 메시지....." },
-    { nickname: "user5", comment: "테스트 메시지....." },
-    { nickname: "user5", comment: "테스트 메시지....." },
-  ];
+  // 입력받은 방명록을 저장하기 위한 state
+  const [inputs, setInputs] = useState({
+    userId: portfolioOwnerId,
+    comment: "",
+  });
 
-  const ModeState = useRecoilValue(modeState);
+  const onChange = (e) => {
+    setInputs({
+      ...inputs,
+      comment: e.target.value,
+    });
+  };
+
+  //
+  const addHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await Api.post("comment/create", inputs);
+      setGuestBooks((cur) => {
+        return [...cur, response.data];
+      });
+      fetch();
+    } catch (e) {}
+  };
 
   return (
     <Card
@@ -49,75 +63,25 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
       >
         방명록
       </Card.Header>
-      <Card.Body style={{ maxHeight: "350px", overflow: "auto" }}>
-        {mokComment.map((comment, idx) => (
-          <CardItemBlock>
-            <Card
-              scrollable="true"
-              key={idx}
-              className={
-                ModeState.mode === "dark"
-                  ? "mb-2 p-2 border-white"
-                  : "mb-2 p-2 "
-              }
-            >
-              {comment.nickname} : {comment.comment}
-              <IconBlock>
-                <Edit>
-                  <MdCreate />
-                </Edit>
-                <Remove>
-                  <MdDelete />
-                </Remove>
-              </IconBlock>
-            </Card>
-          </CardItemBlock>
-        ))}
-      </Card.Body>
+      <Guestbooks
+        guestBooks={guestBooks}
+        portfolioOwnerId={portfolioOwnerId}
+        isEditable={isEditable}
+      />
       <Form.Group className="mt-2" controlId="exampleForm.ControlTextarea1">
         <Form.Control
           as="textarea"
           placeholder="댓글을 입력해주세요."
           rows={3}
+          defaultValue={inputs.comment}
+          onChange={onChange}
         />
       </Form.Group>
-      <Button className="mt-2">등록</Button>
+      <Button className="mt-2" onClick={addHandler}>
+        등록
+      </Button>
     </Card>
   );
 };
 
 export default GuestbookForm;
-
-// 펜 모양 보여주는 컴포넌트
-const Edit = styled.div`
-  width: fit-content;
-  opacity: 0;
-  color: #dee2e6;
-  margin-right: 5px;
-  &:hover {
-    color: #7cd1b8;
-  }
-`;
-
-// 쓰레기통 보여주는 컴포넌트
-const Remove = styled.div`
-  width: fit-content;
-  opacity: 0;
-  color: #dee2e6;
-  &:hover {
-    color: #ff6b6b;
-  }
-`;
-
-const IconBlock = styled.div`
-  display: flex;
-  &:hover {
-    ${Remove}, ${Edit} {
-      opacity: 1;
-    }
-  }
-`;
-
-const CardItemBlock = styled.div`
-  width: 16rem;
-`;
