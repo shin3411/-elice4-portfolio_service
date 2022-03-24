@@ -14,7 +14,20 @@ const AwardSearchForm = ({ setData }) => {
       title: title ? encodeURIComponent(title) : null,
       description: description ? encodeURIComponent(description) : null,
     });
-    setData({ awards: data });
+
+    if (data.length === 0) {
+      const searchString = [title, description].reduce((acc, i) => {
+        if (i !== "") {
+          if (acc.length !== 0) return (acc += `, ${i}`);
+          return (acc += i);
+        } else {
+          return acc;
+        }
+      }, "");
+      setData({ none: `'${searchString}'에 대한 검색 결과가 없습니다.` });
+    } else {
+      setData({ awards: data });
+    }
   };
 
   return (

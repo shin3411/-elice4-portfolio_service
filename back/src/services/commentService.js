@@ -35,7 +35,7 @@ class CommentService {
     //특정 1개의 댓글 수정
     static async setComments({ toUpdate, commentId, currentUserId }) {
         let comment = await Comment.findById({ _id: commentId })
-        if (comment.writerId !== currentUserId) {
+        if (comment.writerId.id !== currentUserId) {
             const errorMessage = "권한이 없어 수정할 수 없습니다. 수정하려는 대상이 본인의 것인지 확인해주세요."
             return { errorMessage }
         }
@@ -55,7 +55,7 @@ class CommentService {
             return { errorMessage };
         }
 
-        if (comment.writerId !== currentUserId) {
+        if (comment.writerId.id !== currentUserId) {
             const errorMessage = "권한이 없어 삭제할 수 없습니다. 삭제하려는 대상이 본인의 것인지 확인해주세요."
             return { errorMessage }
         }
