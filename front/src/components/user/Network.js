@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Pagination } from "react-bootstrap";
 
 import * as Api from "../../api";
 import UserCard from "./UserCard";
@@ -16,9 +16,23 @@ function Network() {
   ];
   const [selected, setSelected] = useState("name");
   const [searchValue, setSearchValue] = useState("");
-  // useState 훅을 통해 users 상태를 생성함.
   const [users, setUsers] = useState([]);
   const [noSearch, setNoSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+
+  const pagination = [];
+  for (let num = 1; num <= lastPage; num++) {
+    pagination.push(
+      <Pagination.Item
+        key={num}
+        active={num === page}
+        onClick={() => setPage(num)}
+      >
+        {num}
+      </Pagination.Item>
+    );
+  }
 
   useEffect(() => {
     // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
@@ -27,8 +41,11 @@ function Network() {
       return;
     }
     // "userlist" 엔드포인트로 GET 요청을 하고, users를 response의 data로 세팅함.
-    Api.get("userlist").then((res) => setUsers(res.data));
-  }, [userState, navigate]);
+    Api.get("userlist", "", { page, limit: 8 }).then((res) => {
+      setUsers(res.data.data);
+      setLastPage(res.data.lastPage);
+    });
+  }, [userState, navigate, page]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,6 +101,21 @@ function Network() {
       <Row className="position-absolute top-50 start-50 translate-middle">
         <Col>
           <h3>{noSearch}</h3>
+        </Col>
+      </Row>
+      <Row className="position-absolute start-50 translate-middle">
+        <Col>
+          <Pagination>
+            <Pagination.Prev
+              disabled={page === 1}
+              onClick={() => setPage((cur) => cur - 1)}
+            />
+            {pagination}
+            <Pagination.Next
+              disabled={page === lastPage}
+              onClick={() => setPage((cur) => cur + 1)}
+            />
+          </Pagination>
         </Col>
       </Row>
     </Container>
