@@ -70,7 +70,9 @@ function Network() {
             />
           </Col>
           <Col xs={1}>
-            <Button type="submit">검색</Button>
+            <Button type="submit" disabled={!searchValue}>
+              검색
+            </Button>
           </Col>
         </Row>
       </Form>
