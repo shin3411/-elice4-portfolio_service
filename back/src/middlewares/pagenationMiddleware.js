@@ -10,7 +10,7 @@ function pagenationMiddleware(req, res, next) {
         const totalN = typeof total === 'number' ? total : Number(total);
         const pageN = typeof page === 'number' ? page : Number(page);
         const limitN = typeof limit === 'number' ? limit : Number(limit);
-        const lastPage = Math.floor(totalN / limitN) + 1;
+        const lastPage = Number.isInteger(totalN / limitN) ? totalN / limitN : Math.floor(totalN / limitN) + 1
 
         const startIndex = (pageN - 1) * limitN;
         if (startIndex > total - 1) {
