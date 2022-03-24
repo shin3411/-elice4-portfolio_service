@@ -45,6 +45,10 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
       setGuestBooks((cur) => {
         return [...cur, response.data];
       });
+      setInputs({
+        ...inputs,
+        comment: "",
+      });
       fetch();
     } catch (e) {}
   };
@@ -70,10 +74,11 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
       />
       <Form.Group className="mt-2" controlId="exampleForm.ControlTextarea1">
         <Form.Control
+          name="comment"
           as="textarea"
           placeholder="댓글을 입력해주세요."
           rows={3}
-          defaultValue={inputs.comment}
+          value={inputs.comment}
           onChange={onChange}
         />
       </Form.Group>
