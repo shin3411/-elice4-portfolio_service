@@ -2,7 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { CommentService } from "../services/commentService";
-
+import { userAuthService } from '../services/userService'
 const commentRouter = Router()
 
 //생성
@@ -13,7 +13,7 @@ commentRouter.post('/comment/create', login_required, async (req, res, next) => 
                 "headers의 Content-Type을 application/json으로 설정해주세요"
             );
         }
-        const writerId = req.currentUserId
+        const writerId = await userAuthService.getUserInfo({ user_id: req.currentUserId })
         const comment = req.body.comment
         const userId = req.body.userId
 
