@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import UserEditForm from "./UserEditForm";
 import UserCard from "./UserCard";
 import * as Api from "../../api";
-
+import { ImageUpdateContext } from "../../App";
 function User({ portfolioOwnerId, isEditable }) {
   // useState 훅을 통해 isEditing 상태를 생성함.
   const [isEditing, setIsEditing] = useState(false);
   // useState 훅을 통해 user 상태를 생성함.
   const [user, setUser] = useState(null);
-  const [imageSrc, setImageSrc] = useState("http://placekitten.com/200/200");
+  const { imageSrc, setImageSrc } = useContext(ImageUpdateContext);
 
   useEffect(() => {
     // "users/유저id" 엔드포인트로 GET 요청을 하고, user를 response의 data로 세팅함.
@@ -28,9 +28,11 @@ function User({ portfolioOwnerId, isEditable }) {
       ) : (
         <UserCard
           user={user}
+          portfolioOwnerId={portfolioOwnerId}
           setIsEditing={setIsEditing}
           isEditable={isEditable}
           imageSrc={imageSrc}
+          setImageSrc={setImageSrc}
         />
       )}
     </>
