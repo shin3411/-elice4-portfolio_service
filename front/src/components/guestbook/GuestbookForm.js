@@ -2,7 +2,9 @@ import React from "react";
 import { Form, Card, Button } from "react-bootstrap";
 
 import { useRecoilValue } from "recoil";
-import { modeState } from "../atom/themeState";
+import { modeState } from "../../atom/themeState";
+
+import { MdDone } from "react-icons/md";
 
 const GuestbookForm = () => {
   const mokComment = [
@@ -20,13 +22,12 @@ const GuestbookForm = () => {
   return (
     <>
       <Card
-        // className="mb-2 ms-3 mt-5 border-success"
         className={
           ModeState.mode === "dark"
             ? "mb-2 ms-3 mt-5 border-white"
             : "mb-2 ms-3 mt-5"
         }
-        style={{ width: "18rem", padding: "5px" }}
+        style={{ width: "21rem", padding: "5px" }}
       >
         <Card.Header
           className={ModeState.mode === "dark" ? "mb-1 border-white" : "mb-1"}

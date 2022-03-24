@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 1400px;
+  width: 1500px;
   margin: auto;
 
   @media only screen and (max-width: 768px) {
@@ -56,9 +56,10 @@ export const Wrapper = styled.div`
       div.col-1 button {
         margin: 0;
       }
+    }
 
-      div.justify-content-center {
-      }
+    div.container-fluid {
+      padding: 0;
     }
   }
 `;

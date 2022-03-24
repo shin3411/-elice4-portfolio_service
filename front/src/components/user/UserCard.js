@@ -4,11 +4,11 @@ import { Card, Row, Button, Col } from "react-bootstrap";
 function UserCard({ user, imageSrc, setIsEditing, isEditable, isNetwork }) {
   const navigate = useNavigate();
   return (
-    <Card className="mb-2 ms-3" style={{ width: "18rem", padding: "0px" }}>
+    <Card className="mb-2 ms-3" style={{ width: "21rem", padding: "0px" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img
-            style={{ width: "10rem", height: "8rem" }}
+            style={{ width: "13rem", height: "9rem" }}
             className="mb-3"
             src={imageSrc}
             alt="프로필 사진"

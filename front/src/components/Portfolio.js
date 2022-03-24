@@ -7,7 +7,7 @@ import * as Api from "../api";
 import User from "./user/User";
 import Award from "./award/Award";
 
-import GuestbookForm from "./GuestbookForm";
+import GuestbookForm from "./guestbook/GuestbookForm";
 import Certificates from "./certificate/Certificates";
 import Projects from "./project/Projects";
 import Educations from "./education/Educations";
