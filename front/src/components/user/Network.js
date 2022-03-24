@@ -1,27 +1,16 @@
-import React, { useEffect, useContext, useState, useMemo } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Pagination,
-  ButtonGroup,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 import * as Api from "../../api";
 import UserCard from "./UserCard";
+import NetworkSearchForm from "./NetworkSearchForm";
+import NetworkPagination from "./NetworkPagination";
 import { UserStateContext } from "../../App";
 
 function Network() {
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
-
-  const selectList = [
-    { value: "name", item: "이름" },
-    { value: "email", item: "이메일" },
-  ];
 
   // user 목록을 담는 state
   const [users, setUsers] = useState([]);
@@ -36,22 +25,6 @@ function Network() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
   const [lastPage, setLastPage] = useState(1);
-
-  const pagination = useMemo(() => {
-    const pagination = [];
-    for (let num = 1; num <= lastPage; num++) {
-      pagination.push(
-        <Pagination.Item
-          key={num}
-          active={num === page}
-          onClick={() => setPage(num)}
-        >
-          {num}
-        </Pagination.Item>
-      );
-    }
-    return pagination;
-  }, [lastPage, page]);
 
   // 유저 목록을 api 응답으로 받아오는 함수
   const getUserList = async () => {
@@ -81,13 +54,6 @@ function Network() {
     }
   };
 
-  // 검색폼 제출 시 작동하는 함수
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSearchValue(inputValue);
-    setPage(1);
-  };
-
   useEffect(() => {
     // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
     if (!userState.user) {
@@ -103,52 +69,15 @@ function Network() {
 
   return (
     <Container fluid>
-      <Form className="mb-4" onSubmit={handleSubmit}>
-        <Row className="justify-content-center">
-          <Col xs={2}>
-            <Form.Select
-              value={selected}
-              onChange={(e) => {
-                setSelected(e.target.value);
-                setInputValue("");
-                setSearchValue("");
-                setNoSearchList("");
-              }}
-            >
-              {selectList.map(({ value, item }) => (
-                <option value={value} key={value}>
-                  {item}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col xs={4}>
-            <Form.Control
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </Col>
-          <Col xs={2}>
-            <ButtonGroup>
-              <Button type="submit" disabled={!inputValue}>
-                검색
-              </Button>
-              <Button
-                variant="outline-primary"
-                onClick={() => {
-                  setPage(1);
-                  setInputValue("");
-                  setSearchValue("");
-                  setNoSearchList("");
-                }}
-              >
-                전체
-              </Button>
-            </ButtonGroup>
-          </Col>
-        </Row>
-      </Form>
+      <NetworkSearchForm
+        selected={selected}
+        inputValue={inputValue}
+        setSelected={setSelected}
+        setInputValue={setInputValue}
+        setSearchValue={setSearchValue}
+        setNoSearchList={setNoSearchList}
+        setPage={setPage}
+      />
       <Row xs="auto" className="mt-2 m-5">
         {users.map((user) => (
           <UserCard key={user.id} user={user} isNetwork />
@@ -160,35 +89,13 @@ function Network() {
         </Col>
       </Row>
       {lastPage !== 0 && (
-        <Row className="position-absolute start-50 translate-middle">
-          <Col>
-            <Form.Select
-              value={limit}
-              onChange={(e) => {
-                setPage(1);
-                setLimit(e.target.value);
-              }}
-            >
-              <option value="4">4</option>
-              <option value="8">8</option>
-              <option value="16">16</option>
-              <option value="32">32</option>
-            </Form.Select>
-          </Col>
-          <Col>
-            <Pagination>
-              <Pagination.Prev
-                disabled={page === 1}
-                onClick={() => setPage((cur) => cur - 1)}
-              />
-              {pagination}
-              <Pagination.Next
-                disabled={page === lastPage}
-                onClick={() => setPage((cur) => cur + 1)}
-              />
-            </Pagination>
-          </Col>
-        </Row>
+        <NetworkPagination
+          page={page}
+          lastPage={lastPage}
+          limit={limit}
+          setPage={setPage}
+          setLimit={setLimit}
+        />
       )}
     </Container>
   );
