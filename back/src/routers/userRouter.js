@@ -59,13 +59,30 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
   }
 });
 
+//프론트 요구 반영, userlist에 검색 기능 합치기
 userAuthRouter.get(
   "/userlist",
   login_required,
   async function (req, res, next) {
     try {
-      // 전체 사용자 목록을 얻음
-      const users = await userAuthService.getUsers();
+      const query = {}
+      let users
+      //한글 깨져서 오는것 decode
+      if (req.query.name) {
+        query.name = { $regex: decodeURIComponent(req.query.name) }
+      }
+      if (req.query.email) {
+        query.email = { $regex: decodeURIComponent(req.query.email) }
+      }
+      if (!(query.name || query.email)) {
+        //검색 요청이 아니어서 그냥 모든 유저 반환
+        users = await userAuthService.getUsers();
+      }
+      else {
+        //검색한 결과 반환
+        users = await userAuthService.getUsers(query)
+      }
+
 
       if (req.query.page && req.query.limit) {
         req.data = users;
@@ -191,8 +208,8 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
 });
 
 //로그인 유저의 프로필 사진 수정
-userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next){
-  try{
+userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next) {
+  try {
     const filePath = req.file.path; // 파일 전체 경로
     const imgBuffer = fs.readFileSync(filePath); //filePath에 위치한 파일을 "문자열(string)" or 버퍼(binary데이터)으로 가져온다.
     const contentType = req.file.mimetype;
@@ -215,27 +232,27 @@ userAuthRouter.post('/profileimg', login_required, upload.single(nameField), asy
 })
 
 //로그인 유저의 프로필 사진 조회
-userAuthRouter.get('/profileimg', login_required, async function (req, res, next){
-  try{
+userAuthRouter.get('/profileimg', login_required, async function (req, res, next) {
+  try {
     const currentUserId = req.currentUserId;
-    
+
     const userImg = await userAuthService.getUserImg({ user_id: currentUserId });
 
-    if(userImg.errorMessage){
+    if (userImg.errorMessage) {
       throw new Error(userImg.errorMessage);
     }
-    
+
     res.status(200).send(userImg);
- } catch(error) {
+  } catch (error) {
     next(error);
- }
+  }
 })
 
 //특정 유저의 프로필 사진 조회
-userAuthRouter.get('/profileimgs/:id', login_required, async function (req, res, next){
-  try{
+userAuthRouter.get('/profileimgs/:id', login_required, async function (req, res, next) {
+  try {
     const user_id = req.params.id;
-    
+
     const userImg = await userAuthService.getUserImg({ user_id });
 
     if (userImg.errorMessage) {

@@ -5,6 +5,8 @@ import * as Api from "../../api";
 const AwardEditForm = ({ setIsEditing, setList, award }) => {
   const [awardDescription, setAwardDescription] = useState(award.title);
   const [detailDescription, setDetailDescription] = useState(award.description);
+  const [errorMsg, setErrorMsg] = useState();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -19,10 +21,10 @@ const AwardEditForm = ({ setIsEditing, setList, award }) => {
         current[editedIndex] = editedAwards;
         return [...current];
       });
+      setIsEditing(false);
     } catch (e) {
-      console.log(e);
+      setErrorMsg("편집할 수 없습니다.");
     }
-    setIsEditing(false);
   };
   const handleCancel = () => {
     setIsEditing(false);
@@ -59,6 +61,7 @@ const AwardEditForm = ({ setIsEditing, setList, award }) => {
             )}
           </Form.Group>
 
+          <Form.Text className="text-success">{errorMsg}</Form.Text>
           <Form.Group as={Row} className="mt-3 text-center">
             <Col sm={{ span: 20 }}>
               <Button

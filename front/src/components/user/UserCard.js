@@ -1,8 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Card, Row, Button, Col } from "react-bootstrap";
-
-function UserCard({ user, imageSrc, setIsEditing, isEditable, isNetwork }) {
+function UserCard({
+  user,
+  imageSrc,
+  setImageSrc,
+  setIsEditing,
+  isEditable,
+  isNetwork,
+  portfolioOwnerId,
+  key,
+}) {
   const navigate = useNavigate();
+
   return (
     <Card className="mb-2 ms-3" style={{ width: "21rem", padding: "0px" }}>
       <Card.Body>

@@ -18,7 +18,7 @@ class Comment {
     }
 
     static async findByQuery(query) {
-        const comments = await CommentModel.find(query).sort('-createdAt').populate('writerId', 'email id name -_id');
+        const comments = await CommentModel.find(query).sort('createdAt').populate('writerId', 'email id name -_id');
         return comments;
     }
 
