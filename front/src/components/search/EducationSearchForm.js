@@ -7,13 +7,7 @@ const EducationSearchForm = ({ setData }) => {
   const [major, setMajor] = useState("");
   const [position, setPosition] = useState("");
 
-  const positionList = [
-    { value: "", item: "학위" },
-    { value: "재학중", item: "재학 중" },
-    { value: "학사졸업", item: "학사 졸업" },
-    { value: "석사졸업", item: "석사 졸업" },
-    { value: "박사졸업", item: "박사 졸업" },
-  ];
+  const positionList = ["재학 중", "학사 졸업", "석사 졸업", "박사 졸업"];
 
   const formValid = school || major || position;
 
@@ -24,7 +18,20 @@ const EducationSearchForm = ({ setData }) => {
       major: major ? encodeURIComponent(major) : null,
       position: position ? encodeURIComponent(position) : null,
     });
-    setData({ educations: data });
+
+    if (data.length === 0) {
+      const searchString = [school, major, position].reduce((acc, i) => {
+        if (i !== "") {
+          if (acc.length !== 0) return (acc += `, ${i}`);
+          return (acc += i);
+        } else {
+          return acc;
+        }
+      }, "");
+      setData({ none: `'${searchString}'에 대한 검색 결과가 없습니다.` });
+    } else {
+      setData({ educations: data });
+    }
   };
 
   return (
@@ -49,9 +56,10 @@ const EducationSearchForm = ({ setData }) => {
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
               >
-                {positionList.map(({ value, item }) => (
-                  <option key={value} value={value}>
-                    {item}
+                <option>학위</option>
+                {positionList.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
                   </option>
                 ))}
               </Form.Select>

@@ -18,6 +18,7 @@ function Network() {
   const [searchValue, setSearchValue] = useState("");
   // useState 훅을 통해 users 상태를 생성함.
   const [users, setUsers] = useState([]);
+  const [noSearch, setNoSearch] = useState("");
 
   useEffect(() => {
     // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
@@ -31,10 +32,18 @@ function Network() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const searchedUsers = await Api.get(
-      `users/search?${selected}=${encodeURIComponent(searchValue)}`
-    ).then((res) => setUsers(res.data));
-    setUsers(searchedUsers);
+    const { data } = await Api.get("users", "search", {
+      [selected]: encodeURIComponent(searchValue),
+    });
+
+    if (data.length === 0) {
+      const searchString = `'${searchValue}'에 대한 검색 결과가 없습니다.`;
+      setNoSearch(searchString);
+      setUsers(data);
+    } else {
+      setUsers(data);
+      setNoSearch("");
+    }
   };
 
   return (
@@ -61,7 +70,9 @@ function Network() {
             />
           </Col>
           <Col xs={1}>
-            <Button type="submit">검색</Button>
+            <Button type="submit" disabled={!searchValue}>
+              검색
+            </Button>
           </Col>
         </Row>
       </Form>
@@ -69,6 +80,11 @@ function Network() {
         {users.map((user) => (
           <UserCard key={user.id} user={user} isNetwork />
         ))}
+      </Row>
+      <Row className="position-absolute top-50 start-50 translate-middle">
+        <Col>
+          <h3>{noSearch}</h3>
+        </Col>
       </Row>
     </Container>
   );
