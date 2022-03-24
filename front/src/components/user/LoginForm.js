@@ -13,6 +13,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   //useState로 password 상태를 생성함.
   const [password, setPassword] = useState("");
+  const [passwordIncorrect, setPasswordIncorrect] = useState(false);
 
   //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
   const validateEmail = (email) => {
@@ -56,6 +57,7 @@ function LoginForm() {
       navigate("/", { replace: true });
     } catch (err) {
       console.log("로그인에 실패하였습니다.\n", err);
+      setPasswordIncorrect(true);
     }
   };
 
@@ -85,11 +87,19 @@ function LoginForm() {
                 type="password"
                 autoComplete="on"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordIncorrect(false);
+                }}
               />
               {!isPasswordValid && (
                 <Form.Text className="text-success">
                   비밀번호는 4글자 이상입니다.
+                </Form.Text>
+              )}
+              {passwordIncorrect && (
+                <Form.Text className="text-success">
+                  비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.
                 </Form.Text>
               )}
             </Form.Group>
