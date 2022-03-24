@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -13,12 +13,11 @@ import {
 import * as Api from "../../api";
 import UserCard from "./UserCard";
 import { UserStateContext } from "../../App";
-import { ImageUpdateContext } from "../../App";
 
 function Network() {
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
-  const { imageSrc, setImageSrc } = useContext(ImageUpdateContext);
+
   const selectList = [
     { value: "name", item: "이름" },
     { value: "email", item: "이메일" },
@@ -29,93 +28,78 @@ function Network() {
 
   // 검색과 관련된 state
   const [selected, setSelected] = useState("name");
+  const [inputValue, setInputValue] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [noSearchList, setNoSearchList] = useState("");
-  const [searched, setSearched] = useState(false);
 
   // 페이지네이션과 관련된 state
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
   const [lastPage, setLastPage] = useState(1);
 
-  const pagination = [];
-  for (let num = 1; num <= lastPage; num++) {
-    pagination.push(
-      <Pagination.Item
-        key={num}
-        active={num === page}
-        onClick={() => setPage(num)}
-      >
-        {num}
-      </Pagination.Item>
-    );
-  }
+  const pagination = useMemo(() => {
+    const pagination = [];
+    for (let num = 1; num <= lastPage; num++) {
+      pagination.push(
+        <Pagination.Item
+          key={num}
+          active={num === page}
+          onClick={() => setPage(num)}
+        >
+          {num}
+        </Pagination.Item>
+      );
+    }
+    return pagination;
+  }, [lastPage, page]);
 
-  // 전체 유저 목록을 api 응답으로 받아오는 함수
+  // 유저 목록을 api 응답으로 받아오는 함수
   const getUserList = async () => {
-    const { data } = await Api.get("userlist", "", { page, limit });
-    setUsers(data.data);
-    setLastPage(data.lastPage);
-  };
-
-  // 검색한 유저 목록을 api 응답으로 받아오는 함수
-  const getSearchedUserList = async () => {
-    const { data } = await Api.get("users/search", "", {
-      [selected]: encodeURIComponent(searchValue),
-      page,
-      limit,
-    });
-
-    if (data.data.length === 0) {
-      const searchString = `'${searchValue}'에 대한 검색 결과가 없습니다.`;
-      setNoSearchList(searchString);
-      setUsers(data.data);
-      setLastPage(0);
+    if (searchValue.length > 0) {
+      const { data } = await Api.get("userlist", "", {
+        [selected]: encodeURIComponent(searchValue),
+        page,
+        limit,
+      });
+      if (data.data.length === 0) {
+        const searchString = `'${searchValue}'에 대한 검색 결과가 없습니다.`;
+        setNoSearchList(searchString);
+        setUsers(data.data);
+        setLastPage(0);
+      } else {
+        setNoSearchList("");
+        setUsers(data.data);
+        setLastPage(data.lastPage);
+      }
     } else {
+      const { data } = await Api.get("userlist", "", {
+        page,
+        limit,
+      });
       setUsers(data.data);
       setLastPage(data.lastPage);
-      setNoSearchList("");
     }
   };
 
   // 검색폼 제출 시 작동하는 함수
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSearched(true);
+    setSearchValue(inputValue);
     setPage(1);
-    getSearchedUserList();
   };
 
-  const getOneImage = async (id) => {
-    const container = document.getElementById("img-container");
-    try {
-      const response = await fetch(`http://localhost:5001/profileimgs/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-        },
-      });
-
-      console.log(response);
-      const blobImg = await response.blob();
-      console.log(blobImg);
-
-      const imgUrl = URL.createObjectURL(blobImg);
-      console.log(imgUrl);
-      setImageSrc(imgUrl);
-    } catch (e) {
-      container.innerHTML = e.message;
-    }
-  };
   useEffect(() => {
     // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
     if (!userState.user) {
       navigate("/login");
       return;
     }
-    // "userlist" 엔드포인트로 GET 요청을 하고, users를 response의 data로 세팅함.
-    Api.get("userlist").then((res) => setUsers(res.data));
+    getUserList();
   }, [userState, navigate]);
+
+  useEffect(() => {
+    getUserList();
+  }, [page, limit, searchValue]);
 
   return (
     <Container fluid>
@@ -136,22 +120,21 @@ function Network() {
           <Col xs={4}>
             <Form.Control
               type="text"
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
           </Col>
           <Col xs={2}>
             <ButtonGroup>
-              <Button type="submit" disabled={!searchValue}>
+              <Button type="submit" disabled={!inputValue}>
                 검색
               </Button>
               <Button
                 variant="outline-primary"
                 onClick={() => {
-                  setSearched(false);
-                  setPage(1);
-                  getUserList();
                   setSearchValue("");
+                  setInputValue("");
+                  setPage(1);
                 }}
               >
                 전체
@@ -162,13 +145,7 @@ function Network() {
       </Form>
       <Row xs="auto" className="mt-2 m-5">
         {users.map((user) => (
-          <UserCard
-            key={user.id}
-            user={user}
-            imageSrc={imageSrc}
-            setImage={setImageSrc}
-            isNetwork
-          />
+          <UserCard key={user.id} user={user} isNetwork />
         ))}
       </Row>
       <Row className="position-absolute top-50 start-50 translate-middle">
@@ -181,7 +158,10 @@ function Network() {
           <Col>
             <Form.Select
               value={limit}
-              onChange={(e) => setLimit(e.target.value)}
+              onChange={(e) => {
+                setPage(1);
+                setLimit(e.target.value);
+              }}
             >
               <option value="4">4</option>
               <option value="8">8</option>
