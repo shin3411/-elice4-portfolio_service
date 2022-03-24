@@ -12,22 +12,26 @@ function pagenationMiddleware(req, res, next) {
         const limitN = typeof limit === 'number' ? limit : Number(limit);
         const lastPage = Number.isInteger(totalN / limitN) ? totalN / limitN : Math.floor(totalN / limitN) + 1
 
-        const startIndex = (pageN - 1) * limitN;
-        if (startIndex > total - 1) {
-            const errorMessage =
-                "해당 페이지는 이미 전체 개수를 넘었습니다.";
-            throw new Error(errorMessage);
+        if (total == 0) {
+            res.status(200).send({ lastPage: lastPage, data: [] })
+        } else {
+            const startIndex = (pageN - 1) * limitN;
+            if (startIndex > total - 1) {
+                const errorMessage =
+                    "해당 페이지는 이미 전체 개수를 넘었습니다.";
+                throw new Error(errorMessage);
+            }
+            const lastIndex = lastPage === pageN ? totalN - 1 : pageN * limitN - 1;
+
+            const pagedUsers = [];
+            for (let i = startIndex; i <= lastIndex; i++) {
+                pagedUsers.push(users[i]);
+            }
+
+            const ret = { lastPage: lastPage, data: pagedUsers }
+
+            res.status(200).send(ret);
         }
-        const lastIndex = lastPage === pageN ? totalN - 1 : pageN * limitN - 1;
-
-        const pagedUsers = [];
-        for (let i = startIndex; i <= lastIndex; i++) {
-            pagedUsers.push(users[i]);
-        }
-
-        const ret = { lastPage: lastPage, data: pagedUsers }
-
-        res.status(200).send(ret);
     } catch (error) {
         next(error);
     }
