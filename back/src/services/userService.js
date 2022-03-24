@@ -19,15 +19,20 @@ class userAuthService {
 
     // id 는 유니크 값 부여
     const id = uuidv4();
-    const newUser = { id, name, email, password: hashedPassword };
+    const newUser = {
+      id,
+      name,
+      email,
+      password: hashedPassword,
+      img: "http://placekitten.com/200/200",
+    };
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
 
-    //UserImg도 따로 생성
-    const createdUserId = createdNewUser.id;
-    await UserImg.create({ userId: createdUserId });
-    
+    // //UserImg도 따로 생성
+    // const createdUserId = createdNewUser.id;
+    // await UserImg.create({ userId: createdUserId });
 
     createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
 
@@ -63,6 +68,7 @@ class userAuthService {
     const id = user.id;
     const name = user.name;
     const description = user.description;
+    const img = user.img;
 
     const loginUser = {
       token,
@@ -70,6 +76,7 @@ class userAuthService {
       email,
       name,
       description,
+      img,
       errorMessage: null,
     };
 
@@ -87,8 +94,7 @@ class userAuthService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
-      const errorMessage =
-        "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
+      const errorMessage = "가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
       return { errorMessage };
     }
 
@@ -117,6 +123,12 @@ class userAuthService {
       user = await User.update({ user_id, fieldToUpdate, newValue });
     }
 
+    if (toUpdate.img) {
+      const fieldToUpdate = "img";
+      const newValue = toUpdate.img;
+      user = await User.update({ user_id, fieldToUpdate, newValue });
+    }
+
     return user;
   }
 
@@ -133,51 +145,49 @@ class userAuthService {
     return user;
   }
 
-  static async setUserImg({ userId, img, filePath }){
-    const foundUserImg = await UserImg.findById({ userId });
+  //   static async setUserImg({ userId, img, filePath }) {
+  //     const foundUserImg = await UserImg.findById({ userId });
 
-    if(!foundUserImg){
-      await UserImg.create({ userId });
-    }
+  //     if (!foundUserImg) {
+  //       await UserImg.create({ userId });
+  //     }
 
-    const setImgDocument = {
-      userId,
-      filePath,
-      img,
-    }
-    
-    const updatedUserImg = await UserImg.update({ userId, setImgDocument });
-    const updatedFilePath = updatedUserImg.filePath;
-    
-    if(!updatedFilePath){
-      const errorMessage =
-        "해당 유저의 프로필 이미지가 존재하지 않습니다.";
-      return { errorMessage };
-    }
-    
-    const fileName = path.basename(updatedFilePath);
-    const successResult = {
-      userId,
-      fileName,
-      message: "success",
-    }
+  //     const setImgDocument = {
+  //       userId,
+  //       filePath,
+  //       img,
+  //     };
 
-    return successResult;
-  }
+  //     const updatedUserImg = await UserImg.update({ userId, setImgDocument });
+  //     const updatedFilePath = updatedUserImg.filePath;
 
-  static async getUserImg({ user_id }){
-    const foundUserImg = await UserImg.findById({ userId: user_id });
-    
-    if(!foundUserImg){
-      const errorMessage = 
-       "유저를 찾을 수 없습니다.";
-      return { errorMessage };
-    }
+  //     if (!updatedFilePath) {
+  //       const errorMessage = "해당 유저의 프로필 이미지가 존재하지 않습니다.";
+  //       return { errorMessage };
+  //     }
 
-    const { img } = foundUserImg;
-    
-    return img.data;
-  }
+  //     const fileName = path.basename(updatedFilePath);
+  //     const successResult = {
+  //       userId,
+  //       fileName,
+  //       message: "success",
+  //     };
+
+  //     return successResult;
+  //   }
+
+  //   static async getUserImg({ user_id }) {
+  //     const foundUserImg = await UserImg.findById({ userId: user_id });
+
+  //     if (!foundUserImg) {
+  //       const errorMessage = "유저를 찾을 수 없습니다.";
+  //       return { errorMessage };
+  //     }
+
+  //     const { img } = foundUserImg;
+
+  //     return img.data;
+  //   }
 }
 
 export { userAuthService };

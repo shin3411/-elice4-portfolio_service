@@ -86,27 +86,6 @@ function Network() {
     getSearchedUserList();
   };
 
-  const getOneImage = async (id) => {
-    const container = document.getElementById("img-container");
-    try {
-      const response = await fetch(`http://localhost:5001/profileimgs/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-        },
-      });
-
-      console.log(response);
-      const blobImg = await response.blob();
-      console.log(blobImg);
-
-      const imgUrl = URL.createObjectURL(blobImg);
-      console.log(imgUrl);
-      setImageSrc(imgUrl);
-    } catch (e) {
-      container.innerHTML = e.message;
-    }
-  };
   useEffect(() => {
     // 만약 전역 상태의 user가 null이라면, 로그인 페이지로 이동함.
     if (!userState.user) {
@@ -165,7 +144,7 @@ function Network() {
           <UserCard
             key={user.id}
             user={user}
-            imageSrc={imageSrc}
+            imageSrc={user.img}
             setImage={setImageSrc}
             isNetwork
           />
