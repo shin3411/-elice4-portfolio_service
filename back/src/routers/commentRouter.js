@@ -45,7 +45,7 @@ commentRouter.get('/comments/:id', login_required, async (req, res, next) => {
 commentRouter.get('/commentlist/:user_id', login_required, async (req, res, next) => {
     try {
         const user_id = req.params.user_id;
-        const commentlist = await CommentService.getComments({ user_id });
+        const commentlist = await CommentService.getComments({ userId: user_id });
 
         if (commentlist.errorMessage) {
             throw new Error(commentlist.errorMessage);
