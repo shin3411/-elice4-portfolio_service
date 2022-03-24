@@ -108,7 +108,12 @@ function Network() {
           <Col xs={2}>
             <Form.Select
               value={selected}
-              onChange={(e) => setSelected(e.target.value)}
+              onChange={(e) => {
+                setSelected(e.target.value);
+                setInputValue("");
+                setSearchValue("");
+                setNoSearchList("");
+              }}
             >
               {selectList.map(({ value, item }) => (
                 <option value={value} key={value}>
@@ -132,9 +137,10 @@ function Network() {
               <Button
                 variant="outline-primary"
                 onClick={() => {
-                  setSearchValue("");
-                  setInputValue("");
                   setPage(1);
+                  setInputValue("");
+                  setSearchValue("");
+                  setNoSearchList("");
                 }}
               >
                 전체
