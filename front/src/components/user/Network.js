@@ -47,18 +47,24 @@ function Network() {
     });
   }, [userState, navigate, page]);
 
+  // 검색폼 제출 시 작동하는 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await Api.get("users", "search", {
+    const { data } = await Api.get("users/search", "", {
       [selected]: encodeURIComponent(searchValue),
+      page,
+      limit: 8,
     });
+    console.log(data);
 
-    if (data.length === 0) {
+    if (data.data.length === 0) {
       const searchString = `'${searchValue}'에 대한 검색 결과가 없습니다.`;
       setNoSearch(searchString);
-      setUsers(data);
+      setUsers(data.data);
+      setLastPage(0);
     } else {
-      setUsers(data);
+      setUsers(data.data);
+      setLastPage(data.lastPage);
       setNoSearch("");
     }
   };
@@ -103,21 +109,23 @@ function Network() {
           <h3>{noSearch}</h3>
         </Col>
       </Row>
-      <Row className="position-absolute start-50 translate-middle">
-        <Col>
-          <Pagination>
-            <Pagination.Prev
-              disabled={page === 1}
-              onClick={() => setPage((cur) => cur - 1)}
-            />
-            {pagination}
-            <Pagination.Next
-              disabled={page === lastPage}
-              onClick={() => setPage((cur) => cur + 1)}
-            />
-          </Pagination>
-        </Col>
-      </Row>
+      {lastPage !== 0 && (
+        <Row className="position-absolute start-50 translate-middle">
+          <Col>
+            <Pagination>
+              <Pagination.Prev
+                disabled={page === 1}
+                onClick={() => setPage((cur) => cur - 1)}
+              />
+              {pagination}
+              <Pagination.Next
+                disabled={page === lastPage}
+                onClick={() => setPage((cur) => cur + 1)}
+              />
+            </Pagination>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
