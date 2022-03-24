@@ -165,8 +165,8 @@ class userAuthService {
     return successResult;
   }
 
-  static async getUserImg({ currentUserId }){
-    const foundUserImg = await UserImg.findById({ userId: currentUserId });
+  static async getUserImg({ user_id }){
+    const foundUserImg = await UserImg.findById({ userId: user_id });
     
     if(!foundUserImg){
       const errorMessage = 

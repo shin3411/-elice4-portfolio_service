@@ -190,12 +190,11 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
     );
 });
 
-userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next) {
-  try {
-    //console.log(req.file);
+//로그인 유저의 프로필 사진 수정
+userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next){
+  try{
     const filePath = req.file.path; // 파일 전체 경로
     const imgBuffer = fs.readFileSync(filePath); //filePath에 위치한 파일을 "문자열(string)" or 버퍼(binary데이터)으로 가져온다.
-    // const encodeImg = Buffer.from(imgBuffer).toString('base64'); // 파일 인코딩, 'base64'의 의미 : binary데이터를 6비트 단위로 끊어 인코딩
     const contentType = req.file.mimetype;
     const img = {
       data: imgBuffer,
@@ -215,11 +214,29 @@ userAuthRouter.post('/profileimg', login_required, upload.single(nameField), asy
   }
 })
 
-userAuthRouter.get('/profileimg', login_required, async function (req, res, next) {
-  try {
+//로그인 유저의 프로필 사진 조회
+userAuthRouter.get('/profileimg', login_required, async function (req, res, next){
+  try{
     const currentUserId = req.currentUserId;
+    
+    const userImg = await userAuthService.getUserImg({ user_id: currentUserId });
 
-    const userImg = await userAuthService.getUserImg({ currentUserId });
+    if(userImg.errorMessage){
+      throw new Error(userImg.errorMessage);
+    }
+    
+    res.status(200).send(userImg);
+ } catch(error) {
+    next(error);
+ }
+})
+
+//특정 유저의 프로필 사진 조회
+userAuthRouter.get('/profileimgs/:id', login_required, async function (req, res, next){
+  try{
+    const user_id = req.params.id;
+    
+    const userImg = await userAuthService.getUserImg({ user_id });
 
     if (userImg.errorMessage) {
       throw new Error(userImg.errorMessage);
