@@ -17,7 +17,9 @@ const ProjectSearchForm = ({ setData }) => {
   const [dateAfterValid, setDateAfterValid] = useState(false);
   const [dateBeforeValid, setDateBeforeValid] = useState(false);
 
-  const dateValid = (!dateAfter && !dateBefore) || (dateAfter && dateBefore);
+  const dateValid =
+    ((!dateAfter && !dateBefore) || (dateAfter && dateBefore)) &&
+    dateAfter <= dateBefore;
   const formValid = dateValid || (title && !dateAfter && !dateBefore);
 
   useEffect(() => {
@@ -38,7 +40,23 @@ const ProjectSearchForm = ({ setData }) => {
       dateAfter: dateAfter ? dateAfter : null,
       dateBefore: dateBefore ? dateBefore : null,
     });
-    setData({ projects: data });
+
+    if (data.length === 0) {
+      const searchString = [title, `${dateAfter} ~ ${dateBefore}`].reduce(
+        (acc, i) => {
+          if (i !== "" && i !== " ~ ") {
+            if (acc.length !== 0) return (acc += `, ${i}`);
+            return (acc += i);
+          } else {
+            return acc;
+          }
+        },
+        ""
+      );
+      setData({ none: `'${searchString}'에 대한 검색 결과가 없습니다.` });
+    } else {
+      setData({ projects: data });
+    }
   };
 
   return (
