@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Container, Form, Row, Col } from "react-bootstrap";
 import { UserStateContext } from "../../App";
 
-import AwardSearchForm from "./AwardSearchForm";
-import AwardList from "./AwardList";
-import EducationSearchForm from "./EducationSearchForm";
-import EducationList from "./EducationList";
-import ProjectSearchForm from "./ProjectSearchForm";
-import ProjectList from "./ProjectList";
-import CertificateSearchForm from "./CertificateSearchForm";
-import CertificateList from "./CertificateList";
+import {
+  AwardSearchForm,
+  AwardList,
+  EducationSearchForm,
+  EducationList,
+  ProjectSearchForm,
+  ProjectList,
+  CertificateSearchForm,
+  CertificateList,
+} from "./index";
 
 const Search = () => {
   const navigate = useNavigate();
