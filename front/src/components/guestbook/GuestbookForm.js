@@ -24,13 +24,13 @@ const GuestbookForm = ({ portfolioOwnerId }) => {
 
   // 입력받은 방명록을 저장하기 위한 state
   const [inputs, setInputs] = useState({
-    userId: portfolioOwnerId,
+    userId: "",
     comment: "",
   });
 
   const onChange = (e) => {
     setInputs({
-      ...inputs,
+      userId: portfolioOwnerId,
       comment: e.target.value,
     });
   };
@@ -40,6 +40,7 @@ const GuestbookForm = ({ portfolioOwnerId }) => {
     e.preventDefault();
     try {
       const response = await Api.post("comment/create", inputs);
+      console.log(inputs);
       setGuestBooks((cur) => {
         return [...cur, response.data];
       });
