@@ -58,7 +58,7 @@ const GuestbookForm = ({ portfolioOwnerId }) => {
           ? "mb-2 ms-3 mt-5 border-white"
           : "mb-2 ms-3 mt-5"
       }
-      style={{ width: "21rem", padding: "5px" }}
+      style={{ width: "19rem", padding: "5px" }}
     >
       <Card.Header
         className={ModeState.mode === "dark" ? "mb-1 border-white" : "mb-1"}

@@ -66,7 +66,7 @@ function Portfolio() {
   return (
     <Container fixed>
       <Row style={{ margin: "0" }}>
-        <Col id="userGB" md={4} style={{ width: "30%" }} xs={12}>
+        <Col md={4} style={{ width: "30%" }} xs={12}>
           <User
             portfolioOwnerId={portfolioOwner.id}
             isEditable={portfolioOwner.id === userState.user?.id}
