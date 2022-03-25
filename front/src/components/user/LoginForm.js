@@ -64,7 +64,7 @@ function LoginForm() {
   return (
     <Container>
       <Row className="justify-content-md-center mt-5">
-        <Col lg={8}>
+        <Col lg={5}>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="loginEmail">
               <Form.Label>이메일 주소</Form.Label>
