@@ -78,7 +78,7 @@ function Network() {
         setNoSearchList={setNoSearchList}
         setPage={setPage}
       />
-      <Row xs="auto" className="mt-2" style={{ margin: "0 1.3rem" }}>
+      <Row xs="auto" className="mt-2 m-5" style={{ margin: "0 1.3rem" }}>
         {users.map((user) => (
           <UserCard key={user.id} user={user} imageSrc={user.img} isNetwork />
         ))}
