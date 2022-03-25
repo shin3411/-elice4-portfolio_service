@@ -72,6 +72,7 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
         setGuestBooks={setGuestBooks}
         portfolioOwnerId={portfolioOwnerId}
         isEditable={isEditable}
+        fetch={fetch}
       />
       <Form.Group className="mt-2" controlId="exampleForm.ControlTextarea1">
         <Form.Control
