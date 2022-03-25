@@ -1,16 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Card, Row, Button, Col } from "react-bootstrap";
-function UserCard({
-  user,
-  imageSrc,
-  setImageSrc,
-  setIsEditing,
-  isEditable,
-  isNetwork,
-  portfolioOwnerId,
-  key,
-}) {
+function UserCard({ user, imageSrc, setIsEditing, isEditable, isNetwork }) {
   const navigate = useNavigate();
 
   return (

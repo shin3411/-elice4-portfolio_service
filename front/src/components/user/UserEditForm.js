@@ -10,27 +10,7 @@ function UserEditForm({ user, imageSrc, setImageSrc, setIsEditing, setUser }) {
   //useState로 description 상태를 생성함.
   const [description, setDescription] = useState(user.description);
   //useState로 imgChanged 상태를 생성함.
-  const getOneImage = async () => {
-    const container = document.getElementById("img-container");
-    try {
-      const response = await fetch("http://localhost:5001/profileimg", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-        },
-      });
-
-      console.log(response);
-      const blobImg = await response.blob();
-      console.log(blobImg);
-
-      const imgUrl = URL.createObjectURL(blobImg);
-      console.log(imgUrl);
-      setImageSrc(imgUrl);
-    } catch (e) {
-      container.innerHTML = e.message;
-    }
-  };
+  const [img, setImg] = useState(user.img);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,28 +20,13 @@ function UserEditForm({ user, imageSrc, setImageSrc, setIsEditing, setUser }) {
       name,
       email,
       description,
+      img,
     });
     // 유저 정보는 response의 data임.
     const updatedUser = res.data;
     // 해당 유저 정보로 user을 세팅함.
     setUser(updatedUser);
 
-    //input으로 들어온 imgFile이 변했을 때 서버로 이미지를 업로드함.
-    const FormInput = document.getElementById("userEditImg");
-    const fileBlob = FormInput.files[0];
-
-    const formData = new FormData();
-    formData.append("myImg", fileBlob);
-    const response = await fetch("http://localhost:5001/profileimg", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      },
-      body: formData,
-    });
-    const jsonResult = await response.json();
-    console.log(jsonResult);
-    getOneImage();
     // isEditing을 false로 세팅함.
     setIsEditing(false);
   };
@@ -73,21 +38,9 @@ function UserEditForm({ user, imageSrc, setImageSrc, setIsEditing, setUser }) {
 
     reader.onload = () => {
       setImageSrc(reader.result);
+      setImg(reader.result);
     };
   };
-
-  // const handleProfileImageChange = async (fileBlob) => {
-  //   const formData = new FormData();
-  //   formData.append("myImg", fileBlob);
-  //   const response = await fetch("http://localhost:5001/profileimg", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-  //     },
-  //     body: formData,
-  //   });
-  //   const jsonResult = await response.json();
-  // }
 
   return (
     <Card className="mb-2">
