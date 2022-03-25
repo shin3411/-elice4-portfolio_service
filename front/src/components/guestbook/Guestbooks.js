@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Form, Card, Button } from "react-bootstrap";
+import React from "react";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import { MdDelete, MdCreate } from "react-icons/md";
+import * as Api from "../../api";
 
 import { useRecoilValue } from "recoil";
 import { modeState } from "../../atom/themeState";
 import loginIdState from "../../atom/loginIdState";
 
-const Guestbooks = ({ portfolioOwnerId, isEditable, guestBooks }) => {
+const Guestbooks = ({
+  portfolioOwnerId,
+  isEditable,
+  guestBooks,
+  setGuestBooks,
+}) => {
   const ModeState = useRecoilValue(modeState);
   const loginId = useRecoilValue(loginIdState);
-
   return (
     <Card.Body style={{ maxHeight: "350px", overflow: "auto" }}>
       {guestBooks.map((comment, idx) => (
@@ -29,7 +34,15 @@ const Guestbooks = ({ portfolioOwnerId, isEditable, guestBooks }) => {
                   <MdCreate />
                 </Edit>
                 <Remove>
-                  <MdDelete />
+                  <MdDelete
+                    onClick={async () => {
+                      await Api.delete("comments", comment._id);
+                      setGuestBooks((prev) => {
+                        const newGB = prev.filter((v) => v._id !== comment._id);
+                        return newGB;
+                      });
+                    }}
+                  />
                 </Remove>
               </IconBlock>
             )}

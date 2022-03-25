@@ -69,6 +69,7 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
       </Card.Header>
       <Guestbooks
         guestBooks={guestBooks}
+        setGuestBooks={setGuestBooks}
         portfolioOwnerId={portfolioOwnerId}
         isEditable={isEditable}
       />
