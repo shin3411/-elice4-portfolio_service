@@ -80,7 +80,7 @@ function Network() {
       />
       <Row
         xs="auto"
-        className="mt-2 justify-content-center"
+        className="mt-2"
         style={{ width: "100%", margin: "0 1.3rem" }}
       >
         {users.map((user) => (
