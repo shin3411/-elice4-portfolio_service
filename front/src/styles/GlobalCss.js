@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
 }
 
   div.card-body {
-    border: 1px solid #C7C8D2;
+  border: 1px solid #C7C8D2;
   box-sizing: border-box;
   border-radius: 8px;
   }
