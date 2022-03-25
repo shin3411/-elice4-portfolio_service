@@ -19,8 +19,8 @@ const NetworkPagination = ({ page, lastPage, limit, setPage, setLimit }) => {
   }, [lastPage, page]);
 
   return (
-    <Row className="position-absolute start-50 translate-middle">
-      <Col>
+    <Row className="justify-content-center mt-3">
+      <Col className="col-1">
         <Form.Select
           value={limit}
           onChange={(e) => {
@@ -34,7 +34,7 @@ const NetworkPagination = ({ page, lastPage, limit, setPage, setLimit }) => {
           <option value="32">32</option>
         </Form.Select>
       </Col>
-      <Col>
+      <Col className="col-2">
         <Pagination>
           <Pagination.Prev
             disabled={page === 1}
