@@ -17,10 +17,9 @@ const ProjectSearchForm = ({ setData }) => {
   const [dateAfterValid, setDateAfterValid] = useState(false);
   const [dateBeforeValid, setDateBeforeValid] = useState(false);
 
-  const dateValid =
-    ((!dateAfter && !dateBefore) || (dateAfter && dateBefore)) &&
+  const formValid =
+    ((dateAfter && dateBefore) || (title && !dateAfter && !dateBefore)) &&
     dateAfter <= dateBefore;
-  const formValid = dateValid || (title && !dateAfter && !dateBefore);
 
   useEffect(() => {
     if (!dateAfter && dateBefore) {
