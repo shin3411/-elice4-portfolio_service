@@ -24,7 +24,7 @@ const NetworkSearchForm = ({
 
   return (
     <Form className="mb-4" onSubmit={handleSubmit}>
-      <Row className="justify-content-center">
+      <Row className="justify-content-center" style={{ margin: "0" }}>
         <Col xs={2}>
           <Form.Select
             value={selected}
