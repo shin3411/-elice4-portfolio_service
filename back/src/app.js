@@ -15,14 +15,14 @@ const app = express();
 app.use(cors());
 
 //bodyParser.urlencoded() 등록으로 req.body로 받을 수 있게 됨.
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '3mb' }));
+app.use(bodyParser.urlencoded({ limit: '3mb', extended: true }));
 
 // express 기본 제공 middleware
 // express.json(): POST 등의 요청과 함께 오는 json형태의 데이터를 인식하고 핸들링할 수 있게 함.
 // express.urlencoded: 주로 Form submit 에 의해 만들어지는 URL-Encoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
-app.use(express.json());
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '3mb' }));
+app.use(express.urlencoded({ limit: "3mb", extended: false }));
 
 // 기본 페이지
 app.get("/", (req, res) => {
