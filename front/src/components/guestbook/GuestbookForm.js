@@ -6,7 +6,7 @@ import Guestbooks from "./Guestbooks";
 import { useRecoilValue } from "recoil";
 import { modeState } from "../../atom/themeState";
 
-const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
+const GuestbookForm = ({ portfolioOwnerId }) => {
   const [guestBooks, setGuestBooks] = useState([]);
   const ModeState = useRecoilValue(modeState);
 
@@ -21,8 +21,6 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
   useEffect(() => {
     fetch();
   }, [portfolioOwnerId]);
-
-  console.log(guestBooks);
 
   // 입력받은 방명록을 저장하기 위한 state
   const [inputs, setInputs] = useState({
@@ -70,8 +68,6 @@ const GuestbookForm = ({ portfolioOwnerId, isEditable }) => {
       <Guestbooks
         guestBooks={guestBooks}
         setGuestBooks={setGuestBooks}
-        portfolioOwnerId={portfolioOwnerId}
-        isEditable={isEditable}
         fetch={fetch}
       />
       <Form.Group className="mt-2" controlId="exampleForm.ControlTextarea1">

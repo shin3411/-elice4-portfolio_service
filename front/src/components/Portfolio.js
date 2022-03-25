@@ -66,7 +66,7 @@ function Portfolio() {
 
   return (
     <Container fluid>
-      <Row>
+      <Row style={{ margin: "0" }}>
         <Col id="userGB" lg="3">
           <User
             portfolioOwnerId={portfolioOwner.id}

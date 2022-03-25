@@ -120,7 +120,7 @@ function Network() {
   return (
     <Container fluid>
       <Form id="networkForm" className="mb-4" onSubmit={handleSubmit}>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center" style={{ margin: 0 }}>
           <Col xs={2}>
             <Form.Select
               value={selected}
@@ -160,7 +160,7 @@ function Network() {
           </Col>
         </Row>
       </Form>
-      <Row xs="auto" className="mt-2 m-5">
+      <Row xs="auto" className="mt-2" style={{ margin: "1.5rem" }}>
         {users.map((user) => (
           <UserCard
             key={user.id}
