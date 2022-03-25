@@ -65,24 +65,22 @@ userAuthRouter.get(
   login_required,
   async function (req, res, next) {
     try {
-      const query = {}
-      let users
+      const query = {};
+      let users;
       //한글 깨져서 오는것 decode
       if (req.query.name) {
-        query.name = { $regex: decodeURIComponent(req.query.name) }
+        query.name = { $regex: decodeURIComponent(req.query.name) };
       }
       if (req.query.email) {
-        query.email = { $regex: decodeURIComponent(req.query.email) }
+        query.email = { $regex: decodeURIComponent(req.query.email) };
       }
       if (!(query.name || query.email)) {
         //검색 요청이 아니어서 그냥 모든 유저 반환
         users = await userAuthService.getUsers();
-      }
-      else {
+      } else {
         //검색한 결과 반환
-        users = await userAuthService.getUsers(query)
+        users = await userAuthService.getUsers(query);
       }
-
 
       if (req.query.page && req.query.limit) {
         req.data = users;
@@ -132,8 +130,9 @@ userAuthRouter.put(
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
       const description = req.body.description ?? null;
+      const img = req.body.img ?? null;
 
-      const toUpdate = { name, email, password, description };
+      const toUpdate = { name, email, password, description, img };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ user_id, toUpdate });
@@ -150,32 +149,37 @@ userAuthRouter.put(
 );
 
 //검색
-userAuthRouter.get('/users/search', login_required, async (req, res, next) => {
-  try {
-    const query = {}
-    //한글 깨져서 오는것 decode
-    if (req.query.name) {
-      query.name = { $regex: decodeURIComponent(req.query.name) }
-    }
-    if (req.query.email) {
-      query.email = { $regex: decodeURIComponent(req.query.email) }
-    }
-    if (!(query.name || query.email)) {
-      throw new Error('쿼리를 정확하게 입력해 주세요.')
-    }
-    const result = await userAuthService.getUsers(query)
+userAuthRouter.get(
+  "/users/search",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const query = {};
+      //한글 깨져서 오는것 decode
+      if (req.query.name) {
+        query.name = { $regex: decodeURIComponent(req.query.name) };
+      }
+      if (req.query.email) {
+        query.email = { $regex: decodeURIComponent(req.query.email) };
+      }
+      if (!(query.name || query.email)) {
+        throw new Error("쿼리를 정확하게 입력해 주세요.");
+      }
+      const result = await userAuthService.getUsers(query);
 
-    if (req.query.page && req.query.limit) {
-      req.data = result;
-      next();
-      return;
-    }
+      if (req.query.page && req.query.limit) {
+        req.data = result;
+        next();
+        return;
+      }
 
-    res.status(200).send(result)
-  } catch (err) {
-    next(err)
-  }
-}, pagenationMiddleware)
+      res.status(200).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+  pagenationMiddleware
+);
 
 userAuthRouter.get(
   "/users/:id",
@@ -196,8 +200,6 @@ userAuthRouter.get(
   }
 );
 
-
-
 // jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
 userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
   res
@@ -206,63 +208,5 @@ userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
       `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
     );
 });
-
-//로그인 유저의 프로필 사진 수정
-userAuthRouter.post('/profileimg', login_required, upload.single(nameField), async function (req, res, next) {
-  try {
-    const filePath = req.file.path; // 파일 전체 경로
-    const imgBuffer = fs.readFileSync(filePath); //filePath에 위치한 파일을 "문자열(string)" or 버퍼(binary데이터)으로 가져온다.
-    const contentType = req.file.mimetype;
-    const img = {
-      data: imgBuffer,
-      contentType,
-    }
-    const userId = req.currentUserId;
-
-    const updatedResult = await userAuthService.setUserImg({ userId, img, filePath });
-
-    if (updatedResult.errorMessage) {
-      throw new Error(updatedResult.errorMessage);
-    }
-
-    res.status(200).send(updatedResult);
-  } catch (error) {
-    next(error);
-  }
-})
-
-//로그인 유저의 프로필 사진 조회
-userAuthRouter.get('/profileimg', login_required, async function (req, res, next) {
-  try {
-    const currentUserId = req.currentUserId;
-
-    const userImg = await userAuthService.getUserImg({ user_id: currentUserId });
-
-    if (userImg.errorMessage) {
-      throw new Error(userImg.errorMessage);
-    }
-
-    res.status(200).send(userImg);
-  } catch (error) {
-    next(error);
-  }
-})
-
-//특정 유저의 프로필 사진 조회
-userAuthRouter.get('/profileimgs/:id', login_required, async function (req, res, next) {
-  try {
-    const user_id = req.params.id;
-
-    const userImg = await userAuthService.getUserImg({ user_id });
-
-    if (userImg.errorMessage) {
-      throw new Error(userImg.errorMessage);
-    }
-
-    res.status(200).send(userImg);
-  } catch (error) {
-    next(error);
-  }
-})
 
 export { userAuthRouter };

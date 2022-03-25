@@ -80,7 +80,7 @@ function Network() {
       />
       <Row xs="auto" className="mt-2 m-5">
         {users.map((user) => (
-          <UserCard key={user.id} user={user} isNetwork />
+          <UserCard key={user.id} user={user} imageSrc={user.img} isNetwork />
         ))}
       </Row>
       <Row className="position-absolute top-50 start-50 translate-middle">

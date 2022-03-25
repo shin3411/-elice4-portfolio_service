@@ -32,27 +32,6 @@ function App() {
   // 아래 코드를 보면 isFetchCompleted 가 true여야 컴포넌트가 구현됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const [imageSrc, setImageSrc] = useState();
-  const getOneImage = async () => {
-    const container = document.getElementById("img-container");
-    try {
-      const response = await fetch("http://localhost:5001/profileimg", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-        },
-      });
-
-      console.log(response);
-      const blobImg = await response.blob();
-      console.log(blobImg);
-
-      const imgUrl = URL.createObjectURL(blobImg);
-      console.log(imgUrl);
-      setImageSrc(imgUrl);
-    } catch (e) {
-      container.innerHTML = e.message;
-    }
-  };
 
   const fetchCurrentUser = async () => {
     try {
@@ -77,7 +56,6 @@ function App() {
   // useEffect함수를 통해 fetchCurrentUser 함수를 실행함.
   useEffect(() => {
     fetchCurrentUser();
-    getOneImage();
   }, []);
 
   if (!isFetchCompleted) {

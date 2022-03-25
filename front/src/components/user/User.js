@@ -12,8 +12,11 @@ function User({ portfolioOwnerId, isEditable }) {
 
   useEffect(() => {
     // "users/유저id" 엔드포인트로 GET 요청을 하고, user를 response의 data로 세팅함.
-    Api.get("users", portfolioOwnerId).then((res) => setUser(res.data));
-  }, [portfolioOwnerId]);
+    Api.get("users", portfolioOwnerId).then((res) => {
+      setUser(res.data);
+      setImageSrc(res.data.img);
+    });
+  }, [portfolioOwnerId, setImageSrc]);
 
   return (
     <>
@@ -28,11 +31,9 @@ function User({ portfolioOwnerId, isEditable }) {
       ) : (
         <UserCard
           user={user}
-          portfolioOwnerId={portfolioOwnerId}
           setIsEditing={setIsEditing}
           isEditable={isEditable}
           imageSrc={imageSrc}
-          setImageSrc={setImageSrc}
         />
       )}
     </>
