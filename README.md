@@ -55,10 +55,10 @@ back 폴더 내부 README 참고
 
 ### 2. 포트폴리오 화면
 ##### 2-1. 포트폴리오 화면
-<img src="/uploads/447aa90339f769c4ab9378a483cf9e2f/image.png" width="80%"><br>
+<img src="/uploads/dd6b0353659679784c2a386af1336fed/image.png" width="80%"><br>
 
 ##### 2-2. 다른 유저의 포트폴리오 화면
-<img src="/uploads/1f87d7bcb5966687357408adde12c6f8/image.png" width="80%"><br>
+<img src="/uploads/96d1da9cad399619b4c87fa767ad911f/image.png" width="80%"><br>
 
 ##### 2-3. 프로필 화면
 <img src="/uploads/1e9dd10baf54627fb3ddf74e5e29bd25/image.png" width="20%">
@@ -93,7 +93,7 @@ back 폴더 내부 README 참고
 
 ### 4. 네트워크 화면
 ##### 4-1. 네트워크 전체 화면
-<img src="/uploads/94bdda30f960a3c7040d3785cfa141b2/image.png" width="80%"><br>
+<img src="/uploads/cdb2aaa89afaeca281b6973eedc51430/image.png" width="80%"><br>
 - 서비스를 이용하는 유저들 목록을 볼 수 있다.
 - [유저 포트폴리오로 이동]: 유저 카드의 '포트폴리오' 링크를 클릭하면 해당 유저의 포트폴리오 페이지로 이동할 수 있다.
 - [목록의 유저수 선택]: 화면 아래에 위치한 셀렉트박스를 통해 네트워크 페이지에 보여지는 유저수(4, 8, 16, 32)를 선택할 수 있다.
