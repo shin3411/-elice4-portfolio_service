@@ -4,7 +4,7 @@ function UserCard({ user, imageSrc, setIsEditing, isEditable, isNetwork }) {
   const navigate = useNavigate();
 
   return (
-    <Card className="mb-2 ms-3" style={{ width: "21rem", padding: "0px" }}>
+    <Card className="mb-2 ms-3" style={{ width: "19rem", padding: "0px" }}>
       <Card.Body>
         <Row className="justify-content-md-center">
           <Card.Img

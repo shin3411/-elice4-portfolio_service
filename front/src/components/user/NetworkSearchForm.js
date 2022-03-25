@@ -24,8 +24,11 @@ const NetworkSearchForm = ({
 
   return (
     <Form className="mb-4" onSubmit={handleSubmit}>
-      <Row className="justify-content-center" style={{ margin: "0" }}>
-        <Col xs={2}>
+      <Row
+        className="justify-content-center align-items-center"
+        style={{ margin: "0" }}
+      >
+        <Col md={2} xs={3}>
           <Form.Select
             value={selected}
             onChange={(e) => {
@@ -42,14 +45,14 @@ const NetworkSearchForm = ({
             ))}
           </Form.Select>
         </Col>
-        <Col xs={4}>
+        <Col md={4} xs={5}>
           <Form.Control
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
         </Col>
-        <Col xs={2}>
+        <Col md={2} xs={4}>
           <ButtonGroup>
             <Button type="submit" disabled={!inputValue}>
               검색
