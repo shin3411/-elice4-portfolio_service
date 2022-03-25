@@ -12,6 +12,9 @@ import Certificates from "./certificate/Certificates";
 import Projects from "./project/Projects";
 import Educations from "./education/Educations";
 
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import loginIdState from "../atom/loginIdState";
+
 function Portfolio() {
   const navigate = useNavigate();
   const params = useParams();
@@ -21,6 +24,9 @@ function Portfolio() {
   // 아래 코드를 보면, isFetchCompleted가 false이면 "loading..."만 반환되어서, 화면에 이 로딩 문구만 뜨게 됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const userState = useContext(UserStateContext);
+  const loginId = useRecoilValue(loginIdState);
+  const setLoginId = useSetRecoilState(loginIdState);
+  setLoginId(loginId);
 
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
@@ -50,6 +56,7 @@ function Portfolio() {
       const ownerId = userState.user.id;
       // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
       fetchPorfolioOwner(ownerId);
+      setLoginId(loginId);
     }
   }, [params, userState, navigate]);
 
