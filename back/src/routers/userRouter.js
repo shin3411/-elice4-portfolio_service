@@ -2,6 +2,11 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { pagenationMiddleware } from "../middlewares/pagenationMiddleware";
+import { upload, nameField } from "../middlewares/multerMiddleware";
+import fs from "fs";
+import bodyParser from "body-parser";
+const parser = bodyParser.urlencoded({ extended: false });
 
 const userAuthRouter = Router();
 
@@ -54,18 +59,41 @@ userAuthRouter.post("/user/login", async function (req, res, next) {
   }
 });
 
+//프론트 요구 반영, userlist에 검색 기능 합치기
 userAuthRouter.get(
   "/userlist",
   login_required,
   async function (req, res, next) {
     try {
-      // 전체 사용자 목록을 얻음
-      const users = await userAuthService.getUsers();
+      const query = {};
+      let users;
+      //한글 깨져서 오는것 decode
+      if (req.query.name) {
+        query.name = { $regex: decodeURIComponent(req.query.name) };
+      }
+      if (req.query.email) {
+        query.email = { $regex: decodeURIComponent(req.query.email) };
+      }
+      if (!(query.name || query.email)) {
+        //검색 요청이 아니어서 그냥 모든 유저 반환
+        users = await userAuthService.getUsers();
+      } else {
+        //검색한 결과 반환
+        users = await userAuthService.getUsers(query);
+      }
+
+      if (req.query.page && req.query.limit) {
+        req.data = users;
+        next();
+        return;
+      }
+
       res.status(200).send(users);
     } catch (error) {
       next(error);
     }
-  }
+  },
+  pagenationMiddleware
 );
 
 userAuthRouter.get(
@@ -102,8 +130,9 @@ userAuthRouter.put(
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
       const description = req.body.description ?? null;
+      const img = req.body.img ?? null;
 
-      const toUpdate = { name, email, password, description };
+      const toUpdate = { name, email, password, description, img };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ user_id, toUpdate });
@@ -117,6 +146,39 @@ userAuthRouter.put(
       next(error);
     }
   }
+);
+
+//검색
+userAuthRouter.get(
+  "/users/search",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const query = {};
+      //한글 깨져서 오는것 decode
+      if (req.query.name) {
+        query.name = { $regex: decodeURIComponent(req.query.name) };
+      }
+      if (req.query.email) {
+        query.email = { $regex: decodeURIComponent(req.query.email) };
+      }
+      if (!(query.name || query.email)) {
+        throw new Error("쿼리를 정확하게 입력해 주세요.");
+      }
+      const result = await userAuthService.getUsers(query);
+
+      if (req.query.page && req.query.limit) {
+        req.data = result;
+        next();
+        return;
+      }
+
+      res.status(200).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+  pagenationMiddleware
 );
 
 userAuthRouter.get(

@@ -11,6 +11,7 @@ const CertificateEditForm = ({
   const [title, setTitle] = useState(certificate.title);
   const [description, setDescription] = useState(certificate.description);
   const [date, setDate] = useState(certificate.date.substring(0, 10));
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isTitleValid = title.length > 0;
   const isDescriptionValid = description.length > 0;
@@ -41,7 +42,7 @@ const CertificateEditForm = ({
         return newCertificateList;
       });
     } catch (e) {
-      console.log(e);
+      setErrorMessage(e.response.data.errorMessage);
     }
   };
 
@@ -53,11 +54,15 @@ const CertificateEditForm = ({
             className="mt-3"
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              setErrorMessage("");
+            }}
           />
           {!isTitleValid && (
             <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
           )}
+          <Form.Text className="text-success">{errorMessage}</Form.Text>
         </Form.Group>
         <Form.Group>
           <Form.Control

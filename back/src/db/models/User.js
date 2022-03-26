@@ -16,8 +16,9 @@ class User {
     return user;
   }
 
-  static async findAll() {
-    const users = await UserModel.find({});
+  static async findByQuery(query) {
+    //select로 password 지움
+    let users = await UserModel.find(query).select('-password');
     return users;
   }
 

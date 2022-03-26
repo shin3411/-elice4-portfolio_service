@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import * as Api from "../../api";
 
@@ -9,6 +9,7 @@ const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(defaultDate);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isTitleValid = title.length > 0;
   const isDescriptionValid = description.length > 0;
@@ -27,11 +28,10 @@ const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
       setCertificateList((current) => {
         return [...current, createdData];
       });
+      setIsAdding(false);
     } catch (e) {
-      console.log(e);
+      setErrorMessage(e.response.data.errorMessage);
     }
-
-    setIsAdding(false);
   };
 
   return (
@@ -42,11 +42,15 @@ const CertificateAddForm = ({ setIsAdding, setCertificateList }) => {
           type="text"
           placeholder="자격증 제목"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setErrorMessage("");
+          }}
         />
         {!isTitleValid && (
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
+        <Form.Text className="text-success">{errorMessage}</Form.Text>
       </Form.Group>
       <Form.Group>
         <Form.Control

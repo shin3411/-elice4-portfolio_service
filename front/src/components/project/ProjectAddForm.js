@@ -10,6 +10,7 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
   const [description, setDescription] = useState("");
   const [fromDate, setFromDate] = useState(defaultDate);
   const [toDate, setToDate] = useState(defaultDate);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isTitleValid = title.length > 0;
   const isDescriptionValid = description.length > 0;
@@ -35,11 +36,10 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
       setProjectList((current) => {
         return [...current, createdData];
       });
+      setIsAdding(false);
     } catch (e) {
-      console.log(e);
+      setErrorMessage(e.response.data.errorMessage);
     }
-
-    setIsAdding(false);
   };
 
   return (
@@ -50,11 +50,15 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
           type="text"
           placeholder="프로젝트 제목"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setErrorMessage("");
+          }}
         />
         {!isTitleValid && (
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
+        <Form.Text className="text-success">{errorMessage}</Form.Text>
       </Form.Group>
       <Form.Group>
         <Form.Control
@@ -88,7 +92,7 @@ const ProjectAddForm = ({ setIsAdding, setProjectList }) => {
           </Col>
         </Row>
         {!isDateValid && (
-          <Form.Text className="text-danger">
+          <Form.Text className="text-success">
             입력기간을 확인해주세요.
           </Form.Text>
         )}

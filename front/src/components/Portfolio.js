@@ -7,9 +7,13 @@ import * as Api from "../api";
 import User from "./user/User";
 import Award from "./award/Award";
 
+import GuestbookForm from "./guestbook/GuestbookForm";
 import Certificates from "./certificate/Certificates";
 import Projects from "./project/Projects";
 import Educations from "./education/Educations";
+
+import { useSetRecoilState } from "recoil";
+import loginIdState from "../atom/loginIdState";
 
 function Portfolio() {
   const navigate = useNavigate();
@@ -20,6 +24,17 @@ function Portfolio() {
   // 아래 코드를 보면, isFetchCompleted가 false이면 "loading..."만 반환되어서, 화면에 이 로딩 문구만 뜨게 됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
   const userState = useContext(UserStateContext);
+  const setLoginIdState = useSetRecoilState(loginIdState);
+
+  // 로그인 후 유저의 id를 전역으로 저장하기 위한 코드
+  useEffect(() => {
+    const firstIdFetch = async () => {
+      const res = await Api.get("users", userState.user.id);
+      const currentId = res.data.id;
+      setLoginIdState(currentId);
+    };
+    firstIdFetch();
+  }, []);
 
   const fetchPorfolioOwner = async (ownerId) => {
     // 유저 id를 가지고 "/users/유저id" 엔드포인트로 요청해 사용자 정보를 불러옴.
@@ -57,15 +72,19 @@ function Portfolio() {
   }
 
   return (
-    <Container fluid>
-      <Row>
-        <Col lg="3">
+    <Container fixed>
+      <Row style={{ margin: "0" }}>
+        <Col md={4} style={{ width: "30%" }} xs={12}>
           <User
             portfolioOwnerId={portfolioOwner.id}
             isEditable={portfolioOwner.id === userState.user?.id}
           />
+          <GuestbookForm
+            portfolioOwnerId={portfolioOwner.id}
+            isEditable={portfolioOwner.id === userState.user?.id}
+          />
         </Col>
-        <Col>
+        <Col xs={12} md={8}>
           <Educations
             portfolioOwnerId={portfolioOwner.id}
             isEditable={portfolioOwner.id === userState.user?.id}

@@ -6,6 +6,7 @@ import * as Api from "../../api";
 const AwardAddForm = ({ setAdd, setList }) => {
   const [awardDescription, setAwardDescription] = useState();
   const [detailDescription, setDetailDescription] = useState();
+  const [errorMsg, setErrorMsg] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +19,10 @@ const AwardAddForm = ({ setAdd, setList }) => {
       setList((current) => {
         return [...current, data];
       });
+      setAdd(false);
     } catch (e) {
-      console.log("데이터를 불러오지 못했습니다.", e);
+      setErrorMsg("수상이력을 생성할 수 없습니다.");
     }
-
-    setAdd(false);
   };
   const isFormValid = awardDescription && detailDescription;
   return (
@@ -56,6 +56,7 @@ const AwardAddForm = ({ setAdd, setList }) => {
               </Form.Text>
             )}
           </Form.Group>
+          <Form.Text className="text-success text-left">{errorMsg}</Form.Text>
 
           <Form.Group as={Row} className="mt-3 text-center">
             <Col sm={{ span: 20 }}>

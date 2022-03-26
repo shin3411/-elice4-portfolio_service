@@ -6,8 +6,9 @@ import * as Api from "../../api";
 const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
   const [title, setTitle] = useState(project.title);
   const [description, setDescription] = useState(project.description);
-  const [fromDate, setFromDate] = useState(project.fromDate);
-  const [toDate, setToDate] = useState(project.toDate);
+  const [fromDate, setFromDate] = useState(project.fromDate.substring(0, 10));
+  const [toDate, setToDate] = useState(project.toDate.substring(0, 10));
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isTitleValid = title.length > 0;
   const isDescriptionValid = description.length > 0;
@@ -40,7 +41,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
         return newProject;
       });
     } catch (e) {
-      console.log(e);
+      setErrorMessage(e.response.data.errorMessage);
     }
   };
   return (
@@ -51,11 +52,15 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
           type="text"
           placeholder="프로젝트 제목"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setErrorMessage("");
+          }}
         />
         {!isTitleValid && (
           <Form.Text className="text-success">필수 입력사항입니다.</Form.Text>
         )}
+        <Form.Text className="text-success">{errorMessage}</Form.Text>
       </Form.Group>
       <Form.Group>
         <Form.Control
@@ -89,7 +94,7 @@ const ProjectEditForm = ({ project, setProjectList, setIsEditing }) => {
           </Col>
         </Row>
         {!isDateValid && (
-          <Form.Text className="text-danger">
+          <Form.Text className="text-success">
             입력기간을 확인해주세요.
           </Form.Text>
         )}

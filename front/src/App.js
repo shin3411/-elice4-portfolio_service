@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useReducer, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import GlobalCss from "./styles/GlobalCss";
+import { Wrapper } from "./styles/Wrapper";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
@@ -9,13 +11,18 @@ import LoginForm from "./components/user/LoginForm";
 import Network from "./components/user/Network";
 import RegisterForm from "./components/user/RegisterForm";
 import Portfolio from "./components/Portfolio";
+import Search from "./components/search/Search";
 
-import { RecoilRoot } from "recoil";
+import { useRecoilValue } from "recoil";
+import { modeState } from "./atom/themeState";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
+export const ImageUpdateContext = createContext(null);
 
 function App() {
+  const currentTheme = useRecoilValue(modeState);
+  window.localStorage.setItem("mode", currentTheme.mode);
   // useReducer 훅을 통해 userState 상태와 dispatch함수를 생성함.
   const [userState, dispatch] = useReducer(loginReducer, {
     user: null,
@@ -24,6 +31,7 @@ function App() {
   // 아래의 fetchCurrentUser 함수가 실행된 다음에 컴포넌트가 구현되도록 함.
   // 아래 코드를 보면 isFetchCompleted 가 true여야 컴포넌트가 구현됨.
   const [isFetchCompleted, setIsFetchCompleted] = useState(false);
+  const [imageSrc, setImageSrc] = useState();
 
   const fetchCurrentUser = async () => {
     try {
@@ -55,23 +63,27 @@ function App() {
   }
 
   return (
-    <RecoilRoot>
+    <Wrapper>
       <DispatchContext.Provider value={dispatch}>
         <UserStateContext.Provider value={userState}>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/" exact element={<Portfolio />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
-              <Route path="/users/:userId" element={<Portfolio />} />
-              <Route path="/network" element={<Network />} />
-              <Route path="*" element={<Portfolio />} />
-            </Routes>
-          </Router>
+          <ImageUpdateContext.Provider value={{ imageSrc, setImageSrc }}>
+            <Router>
+              <Header />
+              <GlobalCss currentTheme={currentTheme} />
+              <Routes>
+                <Route path="/" exact element={<Portfolio />} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/users/:userId" element={<Portfolio />} />
+                <Route path="/network" element={<Network />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="*" element={<Portfolio />} />
+              </Routes>
+            </Router>
+          </ImageUpdateContext.Provider>
         </UserStateContext.Provider>
       </DispatchContext.Provider>
-    </RecoilRoot>
+    </Wrapper>
   );
 }
 
