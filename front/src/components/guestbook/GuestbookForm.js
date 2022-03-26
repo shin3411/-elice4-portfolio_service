@@ -75,7 +75,7 @@ const GuestbookForm = ({ portfolioOwnerId }) => {
         <Form.Control
           name="comment"
           as="textarea"
-          placeholder="댓글을 입력해주세요."
+          placeholder="방명록을 입력해주세요."
           rows={3}
           value={inputs.comment}
           onChange={onChange}
